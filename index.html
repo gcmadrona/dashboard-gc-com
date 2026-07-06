@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard GC & Comunicação | Madrona Advogados</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --azul:#00b2ff;
+  --grafite:#444444;
+  --cinza:#b2bab9;
+  --vermelho:#fc745c;
+  --verde:#8fd694;
+  --amarelo:#fff6d3;
+  --bg:#f4f5f6;
+  --card:#ffffff;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:var(--bg);
+  color:var(--grafite);
+}
+header{
+  background:var(--grafite);
+  color:#ffffff;
+  padding:14px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  border-bottom:1px solid #333;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.brand-mark{
+  display:flex;
+  align-items:center;
+}
+.brand-mark img{
+  height:56px;
+  display:block;
+}
+.brand-title{
+  font-size:14px;
+  font-weight:400;
+  color:#d8d8d8;
+  border-left:1px solid #666;
+  padding-left:16px;
+}
+.upload-area{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.upload-btn{
+  background:var(--azul);
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  border-radius:6px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+}
+.upload-btn:hover{ opacity:0.9; }
+#fileStatus{
+  font-size:12px;
+  color:#d8d8d8;
+}
+#lastUpdate{
+  font-size:11px;
+  color:var(--cinza);
+}
+nav.tabs{
+  display:flex;
+  background:#fff;
+  border-bottom:2px solid #eee;
+  overflow-x:auto;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+nav.tabs button{
+  background:none;
+  border:none;
+  padding:14px 20px;
+  font-size:13.5px;
+  font-weight:600;
+  color:var(--grafite);
+  cursor:pointer;
+  white-space:nowrap;
+  border-bottom:3px solid transparent;
+}
+nav.tabs button.active{
+  color:var(--azul);
+  border-bottom:3px solid var(--azul);
+}
+.subtabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:18px;
+  flex-wrap:wrap;
+}
+.subtabs button{
+  background:#fff;
+  border:1px solid #ddd;
+  padding:8px 16px;
+  border-radius:20px;
+  font-size:12.5px;
+  font-weight:600;
+  cursor:pointer;
+  color:var(--grafite);
+}
+.subtabs button.active{
+  background:var(--grafite);
+  color:#fff;
+  border-color:var(--grafite);
+}
+main{
+  padding:24px 28px 60px;
+  max-width:1500px;
+  margin:0 auto;
+}
+.page{ display:none; }
+.page.active{ display:block; }
+.subpage{ display:none; }
+.subpage.active{ display:block; }
+
+.empty-state{
+  text-align:center;
+  padding:80px 20px;
+  color:var(--cinza);
+}
+.empty-state h2{ color:var(--grafite); }
+
+.hero{
+  background:var(--grafite);
+  border-radius:10px;
+  padding:26px;
+  color:#fff;
+  margin-bottom:22px;
+}
+.hero.com{ background:#0a3a5c; }
+.hero-title{
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--cinza);
+  margin-bottom:14px;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:16px;
+}
+.hero-num{ font-size:30px; font-weight:700; }
+.hero-lbl{ font-size:12px; color:#d8d8d8; margin-top:4px; }
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:22px;
+}
+.kpi-card{
+  background:var(--card);
+  border-radius:10px;
+  padding:18px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  border-left:4px solid var(--azul);
+}
+.kpi-card .val{ font-size:26px; font-weight:700; color:var(--grafite); }
+.kpi-card .lbl{ font-size:12px; color:#888; margin-top:4px; }
+
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+.grid3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+@media(max-width:900px){
+  .grid2, .grid3{ grid-template-columns:1fr; }
+}
+.card{
+  background:var(--card);
+  border-radius:10px;
+  padding:18px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.08);
+}
+.card h3{
+  margin:0 0 14px;
+  font-size:14px;
+  color:var(--grafite);
+  border-bottom:1px solid #eee;
+  padding-bottom:8px;
+}
+.chart-wrap{ position:relative; height:280px; }
+.chart-wrap.tall{ height:360px; }
+
+table.data-table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12.5px;
+}
+table.data-table th{
+  background:#f0f1f2;
+  text-align:left;
+  padding:8px 10px;
+  position:sticky;
+  top:0;
+}
+table.data-table td{
+  padding:7px 10px;
+  border-bottom:1px solid #eee;
+}
+table.data-table tr:hover td{ background:#fafafa; }
+.table-scroll{ max-height:400px; overflow-y:auto; }
+
+.progress-row{ margin-bottom:14px; }
+.progress-row .plbl{
+  display:flex;
+  justify-content:space-between;
+  font-size:12.5px;
+  margin-bottom:4px;
+}
+.progress-bar-bg{
+  background:#eee;
+  border-radius:6px;
+  height:10px;
+  overflow:hidden;
+}
+.progress-bar-fill{
+  background:var(--azul);
+  height:100%;
+  border-radius:6px;
+}
+footer{
+  text-align:center;
+  font-size:11.5px;
+  color:var(--cinza);
+  padding:20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark"><img src="data:image/webp;base64,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" alt="Madrona Advogados"></div>
+    <div class="brand-title">Dashboard de Indicadores | Gestão do Conhecimento &amp; Comunicação 2026</div>
+  </div>
+  <div class="upload-area">
+    <div>
+      <div id="fileStatus">Nenhuma planilha carregada</div>
+      <div id="lastUpdate"></div>
+    </div>
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Carregar planilha</button>
+    <input type="file" id="fileInput" accept=".xlsx" style="display:none">
+  </div>
+</header>
+
+<nav class="tabs" id="mainTabs"></nav>
+
+<main id="mainContent"></main>
+
+<footer>Dashboard interno GC &amp; Comunicação, Madrona Advogados. Atualize a planilha mensalmente para manter os indicadores em dia.</footer>
+
+<script>
+/* =========================================================
+   DASHBOARD GC & COMUNICAÇÃO - MADRONA ADVOGADOS
+   ========================================================= */
+
+const PALETTE = ['#00b2ff','#fc745c','#8fd694','#fff6d3','#b2bab9','#444444','#7fd1ff','#ffb3a3'];
+
+// Ajuste aqui o total contratado de créditos/consultas do upMiner (usado para calcular o % restante de contrato).
+const UPMINER_CONTRACT_TOTAL = 30573;
+
+const TABS = [
+  { id:'geral', label:'Visão Geral' },
+  { id:'publicacoes', label:'Publicações' },
+  { id:'redes', label:'Redes & Mailing' },
+  { id:'academiamadrona', label:'Academia e Treinamentos' },
+  { id:'academia', label:'Grupos de Estudos e RT' },
+  { id:'lexjuris', label:'Lex & Juris' },
+  { id:'timesheet', label:'Timesheet Madrona Lab' },
+  { id:'ferramentas', label:'Ferramentas' },
+  { id:'labcoins', label:'Lab Coins' },
+  { id:'aquisicoes', label:'Aquisições' },
+];
+
+let WORKBOOK = null;
+let CHARTS = {};
+let DATA = {}; // parsed data cache
+
+function destroyChart(id){
+  if(CHARTS[id]){ CHARTS[id].destroy(); delete CHARTS[id]; }
+}
+function makeChart(canvasId, config){
+  destroyChart(canvasId);
+  const el = document.getElementById(canvasId);
+  if(!el) return;
+  CHARTS[canvasId] = new Chart(el.getContext('2d'), config);
+}
+
+/* ---------- Sheet helpers ---------- */
+function getSheetNames(){ return WORKBOOK ? WORKBOOK.SheetNames : []; }
+
+function findSheet(nameGuess){
+  const names = getSheetNames();
+  const norm = s => s.trim().toLowerCase();
+  let hit = names.find(n => norm(n) === norm(nameGuess));
+  if(!hit) hit = names.find(n => norm(n).includes(norm(nameGuess)));
+  return hit ? WORKBOOK.Sheets[hit] : null;
+}
+
+// Returns array-of-arrays (raw), skipping fully empty rows at the end
+function sheetToRows(ws){
+  if(!ws) return [];
+  return XLSX.utils.sheet_to_json(ws, { header:1, defval:null, raw:true });
+}
+
+// Build array of objects using row0 as headers (trimmed strings), from a given start row (default 0)
+function rowsToObjects(rows, startRow=0){
+  if(!rows || rows.length===0) return [];
+  const headers = rows[startRow].map(h => (h===null||h===undefined) ? '' : String(h).trim());
+  const out = [];
+  for(let i=startRow+1;i<rows.length;i++){
+    const row = rows[i];
+    if(!row || row.every(c=>c===null||c==='')) continue;
+    const obj = {};
+    headers.forEach((h,idx)=>{ if(h) obj[h] = row[idx]===undefined? null : row[idx]; });
+    out.push(obj);
+  }
+  return out;
+}
+
+function colIndex(headers, name){
+  return headers.findIndex(h => (h||'').toString().trim().toLowerCase() === name.toLowerCase());
+}
+
+function num(v){
+  if(v===null||v===undefined||v==='') return 0;
+  const n = parseFloat(String(v).toString().replace(',','.'));
+  return isNaN(n) ? 0 : n;
+}
+
+function fmtInt(n){ return Math.round(n).toLocaleString('pt-BR'); }
+function fmtMoney(n){ return n.toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}); }
+function fmtPct(n){ return (n*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'; }
+
+const MESES_ORDER = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+function monthKeyFromDate(d){
+  if(d instanceof Date && !isNaN(d)) return MESES_ORDER[d.getMonth()];
+  return null;
+}
+function excelDateToJS(v){
+  if(v instanceof Date) return v;
+  if(typeof v === 'number'){
+    const parsed = XLSX.SSF.parse_date_code(v);
+    if(parsed) return new Date(parsed.y, parsed.m-1, parsed.d);
+  }
+  if(typeof v === 'string'){
+    const d = new Date(v);
+    if(!isNaN(d)) return d;
+  }
+  return null;
+}
+
+function topN(arr, n){ return arr.slice(0,n); }
+
+function groupSum(objects, keyField, valFn){
+  const map = {};
+  objects.forEach(o=>{
+    const k = o[keyField]===undefined||o[keyField]===null||o[keyField]==='' ? 'Não informado' : String(o[keyField]).trim();
+    map[k] = (map[k]||0) + valFn(o);
+  });
+  return map;
+}
+
+function sortedEntries(map, desc=true){
+  return Object.entries(map).sort((a,b)=> desc ? b[1]-a[1] : a[1]-b[1]);
+}
+
+// Retorna { row, index } do último registro com valor não nulo/indefinido no campo informado
+function latestValid(rows, field){
+  for(let i=rows.length-1;i>=0;i--){
+    const v = rows[i][field];
+    if(v!==null && v!==undefined && v!=='') return { row:rows[i], index:i };
+  }
+  return null;
+}
+function previousValid(rows, beforeIndex, field){
+  for(let i=beforeIndex-1;i>=0;i--){
+    const v = rows[i][field];
+    if(v!==null && v!==undefined && v!=='') return { row:rows[i], index:i };
+  }
+  return null;
+}
+function monthNamePT(d){
+  if(!(d instanceof Date) || isNaN(d)) return '';
+  const nomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  return nomes[d.getMonth()];
+}
+function classifyPosicao(pos){
+  const p = (pos||'').toString().toLowerCase();
+  if(p.includes('estagi')) return 'Estagiário';
+  if(p.includes('sócio') || p.includes('socio')) return 'Sócio';
+  if(p.includes('sênior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sênior';
+  if(p.includes('pleno')) return 'Pleno';
+  if(p.includes('júnior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Júnior';
+  return 'ADM';
+}
+
+const MES_ABBR_ORDER = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const MES_ABBR_MAP = {jan:'Jan',fev:'Fev',mar:'Mar',abr:'Abr',mai:'Mai',jun:'Jun',jul:'Jul',ago:'Ago',set:'Set',out:'Out',nov:'Nov',dez:'Dez'};
+function monthAbbrPT(val){
+  if(val instanceof Date && !isNaN(val)) return MES_ABBR_ORDER[val.getMonth()];
+  if(typeof val === 'string'){
+    const k = val.trim().slice(0,3).toLowerCase();
+    return MES_ABBR_MAP[k] || val.trim();
+  }
+  return '';
+}
+
+// Cruzamento pessoas x UN, a partir da aba CT (não exibida como aba de resultado)
+function getCTMap(){
+  if(DATA.ctMap) return DATA.ctMap;
+  const ct = getCT();
+  const map = {};
+  ct.forEach(r=>{
+    const nome = (r['NOME']||'').toString().trim().toLowerCase();
+    if(nome) map[nome] = r['UN'] || 'Não informado';
+  });
+  DATA.ctMap = map;
+  return map;
+}
+function unForName(name){
+  const map = getCTMap();
+  const key = (name||'').toString().trim().toLowerCase();
+  return map[key] || 'Não informado';
+}
+function normalizeName(name){
+  return (name||'').toString().trim().replace(/\s+/g,' ').toLowerCase().replace(/\b\w/g, c=>c.toUpperCase());
+}
+
+/* ---------- Navigation ---------- */
+let ACTIVE_TAB = 'geral';
+let ACTIVE_SUB = { geral:'gc', ferramentas:'lexter' };
+
+function renderTabsNav(){
+  const nav = document.getElementById('mainTabs');
+  nav.innerHTML = TABS.map(t=>
+    `<button data-tab="${t.id}" class="${t.id===ACTIVE_TAB?'active':''}">${t.label}</button>`
+  ).join('');
+  nav.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ ACTIVE_TAB = btn.dataset.tab; renderAll(); });
+  });
+}
+
+function emptyState(msg){
+  return `<div class="empty-state"><h2>Carregue a planilha para visualizar este painel</h2><p>${msg||''}</p></div>`;
+}
+
+function renderAll(){
+  renderTabsNav();
+  const main = document.getElementById('mainContent');
+  if(!WORKBOOK){
+    main.innerHTML = emptyState('Use o botão "Carregar planilha (.xlsx)" no topo da página.');
+    return;
+  }
+  switch(ACTIVE_TAB){
+    case 'geral': main.innerHTML = pageGeralHTML(); afterRenderGeral(); break;
+    case 'publicacoes': main.innerHTML = pagePublicacoesHTML(); afterRenderPublicacoes(); break;
+    case 'redes': main.innerHTML = pageRedesHTML(); afterRenderRedes(); break;
+    case 'academiamadrona': main.innerHTML = pageAcademiaMadronaHTML(); afterRenderAcademiaMadrona(); break;
+    case 'academia': main.innerHTML = pageAcademiaHTML(); afterRenderAcademia(); break;
+    case 'lexjuris': main.innerHTML = pageLexJurisHTML(); afterRenderLexJuris(); break;
+    case 'timesheet': main.innerHTML = pageTimesheetHTML(); afterRenderTimesheet(); break;
+    case 'ferramentas': main.innerHTML = pageFerramentasHTML(); afterRenderFerramentas(); break;
+    case 'labcoins': main.innerHTML = pageLabCoinsHTML(); afterRenderLabCoins(); break;
+    case 'aquisicoes': main.innerHTML = pageAquisicoesHTML(); afterRenderAquisicoes(); break;
+  }
+}
+
+function subtabsHTML(tabId, subs){
+  return `<div class="subtabs">${subs.map(s=>
+    `<button data-sub="${s.id}" class="${ACTIVE_SUB[tabId]===s.id?'active':''}">${s.label}</button>`
+  ).join('')}</div>`;
+}
+function bindSubtabs(tabId, containerSel){
+  document.querySelectorAll(`${containerSel} [data-sub]`).forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      ACTIVE_SUB[tabId] = btn.dataset.sub;
+      renderAll();
+    });
+  });
+}
+
+/* ---------- File upload ---------- */
+document.getElementById('fileInput').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt){
+    const data = new Uint8Array(evt.target.result);
+    WORKBOOK = XLSX.read(data, { type:'array', cellDates:true });
+    DATA = {};
+    document.getElementById('fileStatus').textContent = 'Planilha carregada: ' + file.name;
+    document.getElementById('lastUpdate').textContent = 'Atualizado em ' + new Date().toLocaleString('pt-BR');
+    renderAll();
+  };
+  reader.readAsArrayBuffer(file);
+});
+
+renderTabsNav();
+renderAll();
+
+/* =========================================================
+   DATA GETTERS
+   ========================================================= */
+function getCT(){
+  if(DATA.ct) return DATA.ct;
+  const ws = findSheet('CT');
+  const rows = sheetToRows(ws);
+  DATA.ct = rowsToObjects(rows);
+  return DATA.ct;
+}
+function getPublicacoes(){
+  if(DATA.pub) return DATA.pub;
+  const ws = findSheet('Controle Publicações');
+  const rows = sheetToRows(ws);
+  DATA.pub = rowsToObjects(rows);
+  return DATA.pub;
+}
+function getRedesSociais(){
+  if(DATA.redes) return DATA.redes;
+  const ws = findSheet('Redes Sociais');
+  const rows = sheetToRows(ws);
+  DATA.redes = rowsToObjects(rows);
+  return DATA.redes;
+}
+function getMailling(){
+  if(DATA.mailling) return DATA.mailling;
+  const ws = findSheet('Mailling');
+  const rows = sheetToRows(ws);
+  DATA.mailling = rowsToObjects(rows);
+  return DATA.mailling;
+}
+function getAcademia(){
+  if(DATA.academia) return DATA.academia;
+  const ws = findSheet('Academia Madrona');
+  const rows = sheetToRows(ws);
+  DATA.academia = rowsToObjects(rows);
+  return DATA.academia;
+}
+function getGruposEstudo(){
+  if(DATA.grupos) return DATA.grupos;
+  const ws = findSheet('Grupos de Estudos');
+  const rows = sheetToRows(ws);
+  DATA.grupos = rowsToObjects(rows);
+  return DATA.grupos;
+}
+function getPesquisas(){
+  if(DATA.pesquisas) return DATA.pesquisas;
+  const ws = findSheet('Pesquisas');
+  const rows = sheetToRows(ws);
+  DATA.pesquisas = rowsToObjects(rows);
+  return DATA.pesquisas;
+}
+function getAquisicoes(){
+  if(DATA.aquis) return DATA.aquis;
+  const ws = findSheet('Aquisições');
+  const rows = sheetToRows(ws);
+  DATA.aquis = rowsToObjects(rows);
+  return DATA.aquis;
+}
+function getLexter(){
+  if(DATA.lexter) return DATA.lexter;
+  const ws = findSheet('Lexter');
+  const rows = sheetToRows(ws);
+  DATA.lexter = rowsToObjects(rows);
+  return DATA.lexter;
+}
+function getPortData(){
+  if(DATA.portdata) return DATA.portdata;
+  const ws = findSheet('PortData');
+  const rows = sheetToRows(ws);
+  DATA.portdata = rowsToObjects(rows);
+  return DATA.portdata;
+}
+function getCopilot(){
+  if(DATA.copilot) return DATA.copilot;
+  const ws = findSheet('Copilot');
+  const rows = sheetToRows(ws);
+  DATA.copilot = rowsToObjects(rows);
+  return DATA.copilot;
+}
+function getSaga(){
+  if(DATA.saga) return DATA.saga;
+  const ws = findSheet('Saga');
+  const rows = sheetToRows(ws);
+  DATA.saga = rowsToObjects(rows);
+  return DATA.saga;
+}
+function getIManage(){
+  if(DATA.im) return DATA.im;
+  const ws = findSheet('iM');
+  const rows = sheetToRows(ws);
+  DATA.im = rowsToObjects(rows);
+  return DATA.im;
+}
+function getLabCoins(){
+  if(DATA.labcoins) return DATA.labcoins;
+  const ws = findSheet('Madrona Star');
+  const rows = sheetToRows(ws);
+  DATA.labcoins = rows; // raw, custom layout
+  return DATA.labcoins;
+}
+function getUpMiner(){
+  if(DATA.upminer) return DATA.upminer;
+  const ws = findSheet('upMiner');
+  const rows = sheetToRows(ws);
+  DATA.upminer = rowsToObjects(rows);
+  return DATA.upminer;
+}
+function getTreinamentoIM(){
+  if(DATA.treinIm) return DATA.treinIm;
+  const ws = findSheet('Treinamento iM');
+  const rows = sheetToRows(ws);
+  DATA.treinIm = rowsToObjects(rows);
+  return DATA.treinIm;
+}
+function getScouts(){
+  if(DATA.scouts) return DATA.scouts;
+  const ws = findSheet('Scouts');
+  const rows = sheetToRows(ws);
+  DATA.scouts = rowsToObjects(rows);
+  return DATA.scouts;
+}
+function getLexJuris(){
+  if(DATA.lexjuris) return DATA.lexjuris;
+  const ws = findSheet('Lex e Juris 3.0');
+  const rows = sheetToRows(ws);
+  DATA.lexjuris = rowsToObjects(rows);
+  return DATA.lexjuris;
+}
+function getTimesheet(){
+  if(DATA.timesheet) return DATA.timesheet;
+  const ws = findSheet('Relatório TS');
+  const rows = sheetToRows(ws);
+  DATA.timesheet = rowsToObjects(rows);
+  return DATA.timesheet;
+}
+function computeDocuCertisignSummary(){
+  if(DATA.docuCertiSummary) return DATA.docuCertiSummary;
+  const ws = findSheet('Docusign & Certisign') || findSheet('Docusign e Certisign') || findSheet('Docusign');
+  const rows = ws ? sheetToRows(ws) : [];
+  if(!rows.length){ DATA.docuCertiSummary = null; return null; }
+  const result = { certisign:{contratados:0,disponiveis:0,usados:0}, docusign:{contratados:0,disponiveis:0,usados:0} };
+  let current = null;
+  rows.forEach(r=>{
+    if(!r) return;
+    const label = (r[0]||'').toString().trim().toUpperCase();
+    if(!label) return;
+    if(label==='CERTISIGN'){ current='certisign'; return; }
+    if(label==='DOCUSIGN'){ current='docusign'; return; }
+    if(!current) return;
+    const val = num(r[1]);
+    if(label.includes('CONTRATAD')) result[current].contratados = val;
+    else if(label.includes('DISPONIV')) result[current].disponiveis = val;
+    else if(label.includes('USADO')) result[current].usados = val;
+  });
+  DATA.docuCertiSummary = result;
+  return result;
+}
+function getBibliotecas(){
+  if(DATA.bibliotecas) return DATA.bibliotecas;
+  const ws = findSheet('Bibliotecas Digitais') || findSheet('Bibliotecas digitais') || findSheet('Bibliotecas');
+  DATA.bibliotecas = ws ? rowsToObjects(sheetToRows(ws)) : null;
+  return DATA.bibliotecas;
+}
+
+
+/* =========================================================
+   PÁGINA: VISÃO GERAL (GC / COM)
+   ========================================================= */
+function pageGeralHTML(){
+  return `
+    ${subtabsHTML('geral',[{id:'gc',label:'Gestão do Conhecimento'},{id:'com',label:'Comunicação'}])}
+    <div id="geral-gc" class="subpage ${ACTIVE_SUB.geral==='gc'?'active':''}"></div>
+    <div id="geral-com" class="subpage ${ACTIVE_SUB.geral==='com'?'active':''}"></div>
+  `;
+}
+
+function afterRenderGeral(){
+  bindSubtabs('geral', '#mainContent');
+  if(ACTIVE_SUB.geral==='gc'){
+    document.getElementById('geral-gc').innerHTML = buildGCOverview();
+    renderGCOverviewCharts();
+  } else {
+    document.getElementById('geral-com').innerHTML = buildCOMOverview();
+    renderCOMOverviewCharts();
+  }
+}
+
+function computeUpMinerSummary(){
+  const rows = getUpMiner();
+  const totalBD = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='BD').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalCT = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='CT').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalUsado = totalBD + totalCT;
+  const pctBD = UPMINER_CONTRACT_TOTAL ? totalBD/UPMINER_CONTRACT_TOTAL : 0;
+  const pctCT = UPMINER_CONTRACT_TOTAL ? totalCT/UPMINER_CONTRACT_TOTAL : 0;
+  const pctRestante = UPMINER_CONTRACT_TOTAL ? Math.max(0, 1 - (totalUsado/UPMINER_CONTRACT_TOTAL)) : 0;
+  return { totalBD, totalCT, totalUsado, pctBD, pctCT, pctRestante };
+}
+
+let GC_MONTH_FILTER = 'todos';
+
+function buildGCOverview(){
+  const academia = getAcademia();
+  const grupos = getGruposEstudo();
+  const pesquisas = getPesquisas();
+  const aquis = getAquisicoes();
+  const treinIm = getTreinamentoIM();
+  const scouts = getScouts();
+  const lexJuris = getLexJuris();
+  const upminer = computeUpMinerSummary();
+  const labcoins = computeLabCoinsSummary();
+  const dc = computeDocuCertisignSummary();
+
+  const ts = getTimesheet();
+  const meses = [...new Set(ts.map(r=>monthAbbrPT(r['Data'])))].filter(Boolean);
+  const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
+
+  return `
+  <div class="hero">
+    <div class="hero-title">Gestão do Conhecimento 2026</div>
+    <div class="hero-grid">
+      <div><div class="hero-num">${fmtInt(academia.length)}</div><div class="hero-lbl">Sessões Academia Madrona</div></div>
+      <div><div class="hero-num">${fmtInt(grupos.length)}</div><div class="hero-lbl">Encontros Grupos de Estudos</div></div>
+      <div><div class="hero-num">${fmtInt(pesquisas.length)}</div><div class="hero-lbl">Pesquisas realizadas</div></div>
+      <div><div class="hero-num">${fmtInt(aquis.length)}</div><div class="hero-lbl">Aquisições de material</div></div>
+      <div><div class="hero-num">${fmtInt(treinIm.length)}</div><div class="hero-lbl">Treinamentos iManage</div></div>
+      <div><div class="hero-num">${fmtInt(scouts.length)}</div><div class="hero-lbl">Scouts realizados</div></div>
+      <div><div class="hero-num">${fmtInt(lexJuris.length)}</div><div class="hero-lbl">Reportes Lex e Juris 3.0</div></div>
+      <div><div class="hero-num">${fmtInt(labcoins.totalCoins)}</div><div class="hero-lbl">Lab Coins distribuídos</div></div>
+      <div><div class="hero-num">${fmtPct(upminer.pctBD+upminer.pctCT)}</div><div class="hero-lbl">Consumo contrato upMiner</div></div>
+      <div><div class="hero-num">${dc? fmtPct(dc.certisign.usados/dc.certisign.contratados) : '-'}</div><div class="hero-lbl">Consumo Certisign${dc? '' : ' (sem dados na planilha)'}</div></div>
+      <div><div class="hero-num">${dc? fmtPct(dc.docusign.usados/dc.docusign.contratados) : '-'}</div><div class="hero-lbl">Consumo Docusign${dc? '' : ' (sem dados na planilha)'}</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+    <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
+    <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
+      <option value="todos" ${GC_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
+      ${mesesOrdenados.map(m=>`<option value="${m}" ${GC_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
+    </select>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <h3>Investimento por frente (Madrona Lab), em horas</h3>
+    <div class="chart-wrap tall"><canvas id="chGCFrente"></canvas></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCUn"></canvas></div></div>
+    <div class="card"><h3>Média geral por profissionais da UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCProf"></canvas></div></div>
+  </div>
+  `;
+}
+
+function renderGCOverviewCharts(){
+  const select = document.getElementById('gcMonthFilter');
+  if(select){
+    select.addEventListener('change', ()=>{
+      GC_MONTH_FILTER = select.value;
+      renderGCStrategicCharts();
+    });
+  }
+  renderGCStrategicCharts();
+}
+
+function renderGCStrategicCharts(){
+  const tsAll = getTimesheet();
+  const ts = GC_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===GC_MONTH_FILTER);
+
+  const frenteMap = groupSum(ts,'Caso Real', r=>num(r['Tempo Investido']));
+  const frenteEntries = sortedEntries(frenteMap);
+  makeChart('chGCFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  const unMap = groupSum(ts,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
+  const unEntries = sortedEntries(unMap);
+  makeChart('chGCUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  const profSum = {}; const profCount = {};
+  ts.forEach(r=>{
+    const nome = normalizeName(r['Nome Prof. Rev.'])||'Não informado';
+    profSum[nome] = (profSum[nome]||0) + num(r['Tempo Investido']);
+    profCount[nome] = (profCount[nome]||0) + 1;
+  });
+  const profAvg = Object.keys(profSum).map(nome=>[nome, profSum[nome]/profCount[nome]]).sort((a,b)=>b[1]-a[1]).slice(0,20);
+  makeChart('chGCProf',{ type:'bar', data:{ labels:profAvg.map(e=>e[0]), datasets:[{ label:'Média de horas por lançamento', data:profAvg.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+}
+
+function computeMailingGrowth(){
+  const mail = getMailling();
+  const totalRow = mail.find(r=>(r['Area']||'').toString().trim().toLowerCase()==='todos');
+  if(!totalRow) return null;
+  const monthCols = Object.keys(totalRow).filter(k=>k!=='Area');
+  let baseKey=null, baseVal=null, latestKey=null, latestVal=null;
+  monthCols.forEach(k=>{
+    const v = totalRow[k];
+    if(v!==null && v!==undefined && v!==''){
+      if(baseKey===null){ baseKey=k; baseVal=num(v); }
+      latestKey=k; latestVal=num(v);
+    }
+  });
+  if(baseVal===null || latestVal===null) return null;
+  return { baseKey, baseVal, latestKey, latestVal, pct:(latestVal-baseVal)/baseVal };
+}
+
+function buildCOMOverview(){
+  const pub = getPublicacoes();
+  const redes = getRedesSociais();
+  const liLatest = latestValid(redes,'LinkedIn - Seguidores');
+  const igLatest = latestValid(redes,'Insta - Seguidores');
+  const siteLatest = latestValid(redes,'Site - Visualizações');
+  const mailGrowth = computeMailingGrowth();
+
+  return `
+  <div class="hero com">
+    <div class="hero-title">Comunicação 2026</div>
+    <div class="hero-grid">
+      <div><div class="hero-num">${fmtInt(pub.length)}</div><div class="hero-lbl">Publicações no período</div></div>
+      <div><div class="hero-num">${fmtInt(liLatest?num(liLatest.row['LinkedIn - Seguidores']):0)}</div><div class="hero-lbl">Seguidores LinkedIn</div></div>
+      <div><div class="hero-num">${fmtInt(igLatest?num(igLatest.row['Insta - Seguidores']):0)}</div><div class="hero-lbl">Seguidores Instagram</div></div>
+      <div><div class="hero-num">${fmtInt(siteLatest?num(siteLatest.row['Site - Visualizações']):0)}</div><div class="hero-lbl">Views no site</div></div>
+      <div><div class="hero-num">${mailGrowth? (mailGrowth.pct>=0?'+':'')+fmtPct(mailGrowth.pct) : '-'}</div><div class="hero-lbl">Crescimento do mailing no ano</div></div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="card"><h3>Publicações por classificação</h3><div class="chart-wrap"><canvas id="chCOMTipo"></canvas></div></div>
+    <div class="card"><h3>Publicações por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chCOMUn"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Crescimento LinkedIn</h3><div class="chart-wrap"><canvas id="chCOMLinkedin"></canvas></div></div>
+    <div class="card"><h3>Crescimento Instagram</h3><div class="chart-wrap"><canvas id="chCOMInsta"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Ranking do mailing por área</h3><div class="chart-wrap tall"><canvas id="chCOMMail"></canvas></div></div>
+  `;
+}
+
+function renderCOMOverviewCharts(){
+  const pub = getPublicacoes();
+  const tipoMap = groupSum(pub, 'Classificação', ()=>1);
+  makeChart('chCOMTipo', {
+    type:'doughnut',
+    data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]},
+    options:{ responsive:true, maintainAspectRatio:false }
+  });
+  const unMap = groupSum(pub, 'UN', ()=>1);
+  const unEntries = sortedEntries(unMap).slice(0,10);
+  makeChart('chCOMUn', {
+    type:'bar',
+    data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]},
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false }
+  });
+
+  const redes = getRedesSociais();
+  const labels = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short'}) : r['Mês']);
+  makeChart('chCOMLinkedin', {
+    type:'line',
+    data:{ labels, datasets:[{ label:'Seguidores LinkedIn', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]},
+    options:{ responsive:true, maintainAspectRatio:false }
+  });
+  makeChart('chCOMInsta', {
+    type:'line',
+    data:{ labels, datasets:[{ label:'Seguidores Instagram', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]},
+    options:{ responsive:true, maintainAspectRatio:false }
+  });
+
+  const mail = getMailling();
+  const mailRank = mail.filter(r=>(r['Area']||'').toString().trim().toLowerCase()!=='todos').map(r=>{
+    const cols = Object.keys(r).filter(k=>k!=='Area');
+    let v=0;
+    for(let i=cols.length-1;i>=0;i--){ if(r[cols[i]]!==null && r[cols[i]]!==undefined){ v=num(r[cols[i]]); break; } }
+    return [r['Area'], v];
+  }).sort((a,b)=>b[1]-a[1]);
+  makeChart('chCOMMail', {
+    type:'bar',
+    data:{ labels:mailRank.map(e=>e[0]), datasets:[{ label:'Contatos', data:mailRank.map(e=>e[1]), backgroundColor:PALETTE[2] }]},
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false }
+  });
+}
+
+/* =========================================================
+   PÁGINA: PUBLICAÇÕES
+   ========================================================= */
+function pagePublicacoesHTML(){
+  return `
+  <div class="kpi-grid" id="pubKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Publicações por classificação</h3><div class="chart-wrap"><canvas id="chPubClass"></canvas></div></div>
+    <div class="card"><h3>Publicações por mês</h3><div class="chart-wrap"><canvas id="chPubMes"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Top Unidades de Negócio</h3><div class="chart-wrap tall"><canvas id="chPubUn"></canvas></div></div>
+  <div class="card"><h3>Site, visualizações e usuários</h3><div class="chart-wrap"><canvas id="chRSite"></canvas></div></div>
+  <div class="card">
+    <h3>Últimas publicações</h3>
+    <div class="table-scroll">
+      <table class="data-table" id="tblPub"></table>
+    </div>
+  </div>
+  `;
+}
+function afterRenderPublicacoes(){
+  const pub = getPublicacoes();
+  const redes = getRedesSociais();
+  const totalViews = pub.reduce((s,r)=>s+num(r['Visualizações']),0);
+  document.getElementById('pubKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(pub.length)}</div><div class="lbl">Total de publicações</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalViews)}</div><div class="lbl">Visualizações totais (LinkedIn)</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pub,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pub,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteúdo</div></div>
+    ${monthValueCard(redes,'Site - Visualizações','Visualização Site')}
+    ${monthGrowthCard(redes,'Site - Visualizações','Crescimento Site')}
+  `;
+  const classMap = groupSum(pub,'Classificação',()=>1);
+  makeChart('chPubClass',{ type:'pie', data:{ labels:Object.keys(classMap), datasets:[{ data:Object.values(classMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const mesMap = {};
+  pub.forEach(r=>{
+    const d = excelDateToJS(r['Data']);
+    const k = d ? monthKeyFromDate(d) : null;
+    if(k) mesMap[k]=(mesMap[k]||0)+1;
+  });
+  const mesLabels = MESES_ORDER.filter(m=>mesMap[m]!==undefined);
+  makeChart('chPubMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Publicações', data:mesLabels.map(m=>mesMap[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const unMap = groupSum(pub,'UN',()=>1);
+  const unEntries = sortedEntries(unMap);
+  makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[3-1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+
+  const labelsRedes = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mês']);
+  makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
+      { label:'Visualizações', data:redes.map(r=>num(r['Site - Visualizações'])), backgroundColor:PALETTE[0] },
+      { label:'Usuários', data:redes.map(r=>num(r['Site - Usuários'])), backgroundColor:PALETTE[2] }
+    ]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const sorted = [...pub].sort((a,b)=>{
+    const da = excelDateToJS(a['Data']); const db = excelDateToJS(b['Data']);
+    return (db?db.getTime():0) - (da?da.getTime():0);
+  }).slice(0,50);
+  document.getElementById('tblPub').innerHTML = `
+    <tr><th>Data</th><th>Título</th><th>Classificação</th><th>UN</th></tr>
+    ${sorted.map(r=>{
+      const d = excelDateToJS(r['Data']);
+      return `<tr><td>${d?d.toLocaleDateString('pt-BR'):''}</td><td>${r['Título + Link']||''}</td><td>${r['Classificação']||''}</td><td>${r['UN']||''}</td></tr>`;
+    }).join('')}
+  `;
+}
+
+/* =========================================================
+   PÁGINA: REDES & MAILING
+   ========================================================= */
+function pageRedesHTML(){
+  return `
+  <div class="kpi-grid" id="redesKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Intranet, visualizações da página</h3><div class="chart-wrap"><canvas id="chRIntranet"></canvas></div></div>
+    <div class="card"><h3>LinkedIn, seguidores por mês</h3><div class="chart-wrap"><canvas id="chRLinkedin"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Instagram, seguidores por mês</h3><div class="chart-wrap"><canvas id="chRInsta"></canvas></div></div>
+  </div>
+  <div class="card">
+    <h3>Mailing por área jurídica (mês a mês)</h3>
+    <div class="table-scroll"><table class="data-table" id="tblMail"></table></div>
+  </div>
+  `;
+}
+
+function monthGrowthCard(rows, field, label){
+  const latest = latestValid(rows, field);
+  if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
+  const prev = previousValid(rows, latest.index, field);
+  const mesNome = monthNamePT(excelDateToJS(latest.row['Mês']));
+  if(!prev){
+    return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}, crescimento no mês: ${mesNome}</div></div>`;
+  }
+  const pct = (num(latest.row[field]) - num(prev.row[field])) / num(prev.row[field]);
+  return `<div class="kpi-card"><div class="val">${pct>=0?'+':''}${fmtPct(pct)}</div><div class="lbl">${label}, crescimento no mês: ${mesNome}</div></div>`;
+}
+
+function monthValueCard(rows, field, label){
+  const latest = latestValid(rows, field);
+  if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
+  const mesNome = monthNamePT(excelDateToJS(latest.row['Mês']));
+  return `<div class="kpi-card"><div class="val">${fmtInt(num(latest.row[field]))}</div><div class="lbl">${label}: ${mesNome}</div></div>`;
+}
+
+function afterRenderRedes(){
+  const redes = getRedesSociais();
+  const mail = getMailling();
+  const liLatest = latestValid(redes,'LinkedIn - Seguidores');
+  const igLatest = latestValid(redes,'Insta - Seguidores');
+
+  document.getElementById('redesKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(liLatest?num(liLatest.row['LinkedIn - Seguidores']):0)}</div><div class="lbl">Seguidores LinkedIn (atual)</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(igLatest?num(igLatest.row['Insta - Seguidores']):0)}</div><div class="lbl">Seguidores Instagram (atual)</div></div>
+    ${monthGrowthCard(redes,'LinkedIn - Seguidores','Crescimento LinkedIn')}
+    ${monthGrowthCard(redes,'Insta - Seguidores','Crescimento Instagram')}
+  `;
+  const labels = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mês']);
+  makeChart('chRLinkedin',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
+  makeChart('chRInsta',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
+  makeChart('chRIntranet',{ type:'line', data:{ labels, datasets:[{ label:'Visualizações Intranet', data:redes.map(r=>num(r['Intranet - Visualizações da página'])), borderColor:PALETTE[5], backgroundColor:PALETTE[5]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const monthCols = mail.length ? Object.keys(mail[0]).filter(k=>k!=='Area') : [];
+  document.getElementById('tblMail').innerHTML = `
+    <tr><th>Área</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
+    ${mail.map(r=>`<tr><td>${r['Area']}</td>${monthCols.map(m=>`<td>${r[m]!==null&&r[m]!==undefined?fmtInt(num(r[m])):''}</td>`).join('')}</tr>`).join('')}
+  `;
+}
+
+/* =========================================================
+   PÁGINA: ACADEMIA E TREINAMENTOS
+   ========================================================= */
+function pageAcademiaMadronaHTML(){
+  return `
+  <div class="kpi-grid" id="acadMadKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Participantes vs. meta por sessão</h3><div class="chart-wrap tall"><canvas id="chAcadMadPart"></canvas></div></div>
+    <div class="card"><h3>Sessões por pilar</h3><div class="chart-wrap"><canvas id="chAcadMadPilar"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Treinamentos iManage, participantes vs. convidados</h3><div class="chart-wrap"><canvas id="chTreinImConv"></canvas></div></div>
+  </div>
+  `;
+}
+function afterRenderAcademiaMadrona(){
+  const academia = getAcademia();
+  const treinIm = getTreinamentoIM();
+  const totalPart = academia.reduce((s,r)=>s+num(r['PARTICIPANTES']),0);
+  const totalMeta = academia.reduce((s,r)=>s+num(r['META']),0);
+  document.getElementById('acadMadKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(academia.length)}</div><div class="lbl">Sessões Academia Madrona</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalPart)}</div><div class="lbl">Total de participantes</div></div>
+    <div class="kpi-card"><div class="val">${totalMeta? fmtPct(totalPart/totalMeta):'-'}</div><div class="lbl">Atingimento vs. meta</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(treinIm.length)}</div><div class="lbl">Treinamentos iManage realizados</div></div>
+  `;
+  makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TÍTULO']), datasets:[
+      { label:'Participantes', data:academia.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
+      { label:'Meta', data:academia.map(r=>num(r['META'])), backgroundColor:PALETTE[4] }
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  const pilarMap = groupSum(academia,'PILAR',()=>1);
+  makeChart('chAcadMadPilar',{ type:'doughnut', data:{ labels:Object.keys(pilarMap), datasets:[{ data:Object.values(pilarMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TÍTULO']; }), datasets:[
+      { label:'Participantes', data:treinIm.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
+      { label:'Convidados', data:treinIm.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[2] }
+    ]}, options:{responsive:true,maintainAspectRatio:false}});
+}
+
+/* =========================================================
+   PÁGINA: GRUPOS DE ESTUDOS E RT
+   ========================================================= */
+function pageAcademiaHTML(){
+  return `
+  <div class="kpi-grid" id="acadKpis"></div>
+  <div class="card" style="margin-bottom:20px;"><h3>Grupos de Estudos, taxa de presença</h3><div class="chart-wrap"><canvas id="chAcadGrupos"></canvas></div></div>
+  <div class="card"><h3>Grupos de Estudos, participantes vs. convidados</h3><div class="chart-wrap tall"><canvas id="chAcadGruposPart"></canvas></div></div>
+  `;
+}
+function afterRenderAcademia(){
+  const grupos = getGruposEstudo();
+  const taxaMedia = grupos.length ? grupos.reduce((s,r)=>s+num(r['% presença']),0)/grupos.length : 0;
+
+  document.getElementById('acadKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(grupos.length)}</div><div class="lbl">Encontros Grupos de Estudos</div></div>
+    <div class="kpi-card"><div class="val">${fmtPct(taxaMedia)}</div><div class="lbl">Presença média Grupos de Estudos</div></div>
+  `;
+
+  const byTitulo = {};
+  grupos.forEach(r=>{
+    const t = r['TÍTULO']||'Outro';
+    if(!byTitulo[t]) byTitulo[t] = {presenc:0,n:0};
+    byTitulo[t].presenc += num(r['% presença']);
+    byTitulo[t].n++;
+  });
+  const gLabels = Object.keys(byTitulo);
+  makeChart('chAcadGrupos',{ type:'bar', data:{ labels:gLabels, datasets:[{ label:'Presença média', data:gLabels.map(k=>byTitulo[k].presenc/byTitulo[k].n), backgroundColor:PALETTE[1] }]}, options:{responsive:true,maintainAspectRatio:false, scales:{y:{ticks:{callback:v=>fmtPct(v)}}}}});
+
+  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TÍTULO']), datasets:[
+      { label:'Participantes', data:grupos.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
+      { label:'Convidados', data:grupos.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[4] }
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+}
+
+/* =========================================================
+   PÁGINA: LEX & JURIS
+   ========================================================= */
+function pageLexJurisHTML(){
+  return `
+  <div class="kpi-grid" id="ljKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Lex ou Juris</h3><div class="chart-wrap"><canvas id="chLJTipo"></canvas></div></div>
+    <div class="card"><h3>Por UN</h3><div class="chart-wrap"><canvas id="chLJUn"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Reportes por atividade</h3><div class="chart-wrap"><canvas id="chLJAtividade"></canvas></div></div>
+  <div class="card">
+    <h3>Detalhamento das análises</h3>
+    <div class="table-scroll"><table class="data-table" id="tblLJ"></table></div>
+  </div>
+  `;
+}
+function afterRenderLexJuris(){
+  const lj = getLexJuris();
+  document.getElementById('ljKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(lj.length)}</div><div class="lbl">Total de análises</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lj,'UN 1',()=>1)).length}</div><div class="lbl">UNs envolvidas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lj,'Responsável pela análise',()=>1)).length}</div><div class="lbl">Responsáveis envolvidos</div></div>
+  `;
+  const tipoMap = groupSum(lj,'Lex ou Juris',()=>1);
+  makeChart('chLJTipo',{ type:'pie', data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+  const unMap = groupSum(lj,'UN 1',()=>1);
+  makeChart('chLJUn',{ type:'pie', data:{ labels:Object.keys(unMap), datasets:[{ data:Object.values(unMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+  const ativMap = groupSum(lj,'Atividade',()=>1);
+  const ativEntries = sortedEntries(ativMap);
+  makeChart('chLJAtividade',{ type:'bar', data:{ labels:ativEntries.map(e=>e[0]), datasets:[{ label:'Reportes', data:ativEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  document.getElementById('tblLJ').innerHTML = `
+    <tr><th>UN</th><th>Responsável</th><th>Tema</th></tr>
+    ${lj.map(r=>`<tr><td>${r['UN 1']||''}</td><td>${r['Responsável pela análise']||''}</td><td>${r['Tema']||''}</td></tr>`).join('')}
+  `;
+}
+
+/* =========================================================
+   PÁGINA: TIMESHEET MADRONA LAB
+   ========================================================= */
+function pageTimesheetHTML(){
+  return `
+  <div class="kpi-grid" id="tsKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Investimento por frente, em horas</h3><div class="chart-wrap tall"><canvas id="chTsFrente"></canvas></div></div>
+    <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chTsUn"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Investimento por mês, em horas</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
+    <div class="card"><h3>Top 15 profissionais por horas investidas</h3><div class="chart-wrap tall"><canvas id="chTsProf"></canvas></div></div>
+  </div>
+  `;
+}
+function afterRenderTimesheet(){
+  const ts = getTimesheet();
+  const totalHoras = ts.reduce((s,r)=>s+num(r['Tempo Investido']),0);
+  const profissionaisUnicos = new Set(ts.map(r=>normalizeName(r['Nome Prof. Rev.'])).filter(Boolean));
+  document.getElementById('tsKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(totalHoras)}</div><div class="lbl">Horas investidas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(ts,'Caso Real',()=>1)).length}</div><div class="lbl">Frentes ativas</div></div>
+    <div class="kpi-card"><div class="val">${profissionaisUnicos.size}</div><div class="lbl">Profissionais envolvidos</div></div>
+  `;
+  const frenteMap = groupSum(ts,'Caso Real', r=>num(r['Tempo Investido']));
+  const frenteEntries = sortedEntries(frenteMap);
+  makeChart('chTsFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+
+  const unMap = groupSum(ts,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
+  const unEntries = sortedEntries(unMap);
+  makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+
+  const mesMap = {};
+  ts.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
+  const mesLabels = MES_ABBR_ORDER.filter(m=>mesMap[m]!==undefined);
+  makeChart('chTsMes',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Horas investidas', data:mesLabels.map(m=>mesMap[m]), borderColor:PALETTE[2], backgroundColor:PALETTE[2]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const profMap = {};
+  ts.forEach(r=>{ const nome = normalizeName(r['Nome Prof. Rev.']); if(nome) profMap[nome] = (profMap[nome]||0) + num(r['Tempo Investido']); });
+  const profEntries = sortedEntries(profMap).slice(0,15);
+  makeChart('chTsProf',{ type:'bar', data:{ labels:profEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:profEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+}
+
+/* =========================================================
+   PÁGINA: FERRAMENTAS
+   ========================================================= */
+function pageFerramentasHTML(){
+  const subs = [
+    {id:'lexter',label:'Lexter'},
+    {id:'portdata',label:'PortData'},
+    {id:'copilot',label:'Copilot'},
+    {id:'saga',label:'Saga'},
+    {id:'imanage',label:'iManage'},
+    {id:'upminer',label:'upMiner'},
+    {id:'docucerti',label:'Docusign e Certisign'},
+    {id:'bibliotecas',label:'Bibliotecas digitais'},
+  ];
+  return `
+    ${subtabsHTML('ferramentas', subs)}
+    <div id="sub-lexter" class="subpage ${ACTIVE_SUB.ferramentas==='lexter'?'active':''}"></div>
+    <div id="sub-portdata" class="subpage ${ACTIVE_SUB.ferramentas==='portdata'?'active':''}"></div>
+    <div id="sub-copilot" class="subpage ${ACTIVE_SUB.ferramentas==='copilot'?'active':''}"></div>
+    <div id="sub-saga" class="subpage ${ACTIVE_SUB.ferramentas==='saga'?'active':''}"></div>
+    <div id="sub-imanage" class="subpage ${ACTIVE_SUB.ferramentas==='imanage'?'active':''}"></div>
+    <div id="sub-upminer" class="subpage ${ACTIVE_SUB.ferramentas==='upminer'?'active':''}"></div>
+    <div id="sub-docucerti" class="subpage ${ACTIVE_SUB.ferramentas==='docucerti'?'active':''}"></div>
+    <div id="sub-bibliotecas" class="subpage ${ACTIVE_SUB.ferramentas==='bibliotecas'?'active':''}"></div>
+  `;
+}
+function afterRenderFerramentas(){
+  bindSubtabs('ferramentas', '#mainContent');
+  const s = ACTIVE_SUB.ferramentas;
+  if(s==='lexter'){ document.getElementById('sub-lexter').innerHTML = buildLexterHTML(); renderLexterCharts(); }
+  if(s==='portdata'){ document.getElementById('sub-portdata').innerHTML = buildPortDataHTML(); renderPortDataCharts(); }
+  if(s==='copilot'){ document.getElementById('sub-copilot').innerHTML = buildCopilotHTML(); renderCopilotCharts(); }
+  if(s==='saga'){ document.getElementById('sub-saga').innerHTML = buildSagaHTML(); renderSagaCharts(); }
+  if(s==='imanage'){ document.getElementById('sub-imanage').innerHTML = buildImanageHTML(); renderImanageCharts(); }
+  if(s==='upminer'){ document.getElementById('sub-upminer').innerHTML = buildUpMinerHTML(); renderUpMinerCharts(); }
+  if(s==='docucerti'){ document.getElementById('sub-docucerti').innerHTML = buildDocuCertiHTML(); renderDocuCertiCharts(); }
+  if(s==='bibliotecas'){ document.getElementById('sub-bibliotecas').innerHTML = buildBibliotecasHTML(); renderBibliotecasCharts(); }
+}
+
+function buildDocuCertiHTML(){
+  const dc = computeDocuCertisignSummary();
+  if(!dc){
+    return `<div class="empty-state"><h2>Sem dados de Docusign e Certisign na planilha</h2><p>Adicione a aba "Docusign & Certisign" em BI_GC_Com_2026.xlsx com os campos ENVELOPES CONTRATADOS, ENVELOPES DISPONIVEIS e ENVELOPES USADOS para cada ferramenta.</p></div>`;
+  }
+  return `
+  <div class="kpi-grid" id="dcKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Envelopes por ferramenta</h3><div class="chart-wrap"><canvas id="chDcFerramenta"></canvas></div></div>
+    <div class="card"><h3>Contratados vs. usados vs. disponíveis</h3><div class="chart-wrap"><canvas id="chDcDetalhe"></canvas></div></div>
+  </div>
+  `;
+}
+function renderDocuCertiCharts(){
+  const dc = computeDocuCertisignSummary();
+  if(!dc) return;
+  const pctCert = dc.certisign.contratados ? dc.certisign.disponiveis/dc.certisign.contratados : 0;
+  const pctDocu = dc.docusign.contratados ? dc.docusign.disponiveis/dc.docusign.contratados : 0;
+  document.getElementById('dcKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtPct(pctCert)}</div><div class="lbl">Envelopes restantes, Certisign (${fmtInt(dc.certisign.contratados)} contratados)</div></div>
+    <div class="kpi-card"><div class="val">${fmtPct(pctDocu)}</div><div class="lbl">Envelopes restantes, Docusign (${fmtInt(dc.docusign.contratados)} contratados)</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(dc.certisign.usados)}</div><div class="lbl">Envelopes usados, Certisign</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(dc.docusign.usados)}</div><div class="lbl">Envelopes usados, Docusign</div></div>
+  `;
+  makeChart('chDcFerramenta',{ type:'doughnut', data:{ labels:['Certisign usados','Docusign usados'], datasets:[{ data:[dc.certisign.usados,dc.docusign.usados], backgroundColor:[PALETTE[0],PALETTE[1]] }]}, options:{responsive:true,maintainAspectRatio:false}});
+  makeChart('chDcDetalhe',{ type:'bar', data:{ labels:['Certisign','Docusign'], datasets:[
+      { label:'Contratados', data:[dc.certisign.contratados, dc.docusign.contratados], backgroundColor:PALETTE[4] },
+      { label:'Usados', data:[dc.certisign.usados, dc.docusign.usados], backgroundColor:PALETTE[0] },
+      { label:'Disponíveis', data:[dc.certisign.disponiveis, dc.docusign.disponiveis], backgroundColor:PALETTE[2] }
+    ]}, options:{responsive:true,maintainAspectRatio:false}});
+}
+
+function buildBibliotecasHTML(){
+  return `
+  <div class="kpi-grid" id="bibKpis"></div>
+  <p style="font-size:12px;color:#999;margin-top:-8px;">Planilha em revisão: os números de uso mensal ainda não estão disponíveis.</p>
+  `;
+}
+function renderBibliotecasCharts(){
+  document.getElementById('bibKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">-</div><div class="lbl">Uso mensal, Minha Biblioteca</div></div>
+    <div class="kpi-card"><div class="val">-</div><div class="lbl">Uso mensal, ProView</div></div>
+  `;
+}
+
+function buildLexterHTML(){
+  return `
+  <div class="kpi-grid" id="lexKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Análises por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chLexUn"></canvas></div></div>
+    <div class="card"><h3>Top usuários (por análises)</h3><div class="chart-wrap"><canvas id="chLexUsers"></canvas></div></div>
+  </div>
+  `;
+}
+function renderLexterCharts(){
+  const lex = getLexter();
+  const totalDoc = lex.reduce((s,r)=>s+num(r['DOCUMENTOS']),0);
+  const totalResp = lex.reduce((s,r)=>s+num(r['RESPOSTAS']),0);
+  document.getElementById('lexKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(lex.length)}</div><div class="lbl">Total de análises</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalDoc)}</div><div class="lbl">Documentos processados</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalResp)}</div><div class="lbl">Créditos/respostas geradas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lex,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+  `;
+  const unMap = groupSum(lex,'UN',()=>1);
+  const unEntries = sortedEntries(unMap);
+  makeChart('chLexUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  const userMap = groupSum(lex,'USUÁRIO',()=>1);
+  const userEntries = sortedEntries(userMap).slice(0,15);
+  makeChart('chLexUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+}
+
+function buildPortDataHTML(){
+  return `
+  <div class="kpi-grid" id="pdKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Gasto por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chPdUn"></canvas></div></div>
+    <div class="card"><h3>Top usuários (por consultas)</h3><div class="chart-wrap"><canvas id="chPdUsers"></canvas></div></div>
+  </div>
+  `;
+}
+function renderPortDataCharts(){
+  const pd = getPortData();
+  const totalValor = pd.reduce((s,r)=>s+num(r['VALOR']),0);
+  document.getElementById('pdKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(pd.length)}</div><div class="lbl">Total de consultas</div></div>
+    <div class="kpi-card"><div class="val">${fmtMoney(totalValor)}</div><div class="lbl">Gasto total</div></div>
+    <div class="kpi-card"><div class="val">${pd.length? fmtMoney(totalValor/pd.length):'-'}</div><div class="lbl">Ticket médio</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pd,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+  `;
+  const unMap = groupSum(pd,'UN', r=>num(r['VALOR']));
+  const unEntries = sortedEntries(unMap);
+  makeChart('chPdUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Gasto (R$)', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[2] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  const userMap = groupSum(pd,'USUÁRIO',()=>1);
+  const userEntries = sortedEntries(userMap).slice(0,15);
+  makeChart('chPdUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Consultas', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+}
+
+function buildCopilotHTML(){
+  return `
+  <div class="kpi-grid" id="cpKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Top usuários por prompts</h3><div class="chart-wrap"><canvas id="chCpUsers"></canvas></div></div>
+    <div class="card"><h3>Copilot work vs. web</h3><div class="chart-wrap"><canvas id="chCpWorkWeb"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Prompts por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chCpUn"></canvas></div></div>
+  `;
+}
+function renderCopilotCharts(){
+  const cp = getCopilot();
+  const totalPrompts = cp.reduce((s,r)=>s+num(r['Prompts todos Apps']),0);
+  const totalWork = cp.reduce((s,r)=>s+num(r['Prompts Copilot (work)']),0);
+  const totalWeb = cp.reduce((s,r)=>s+num(r['Prompts Copilot (web)']),0);
+  document.getElementById('cpKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(totalPrompts)}</div><div class="lbl">Prompts totais (todos os apps)</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalWork)}</div><div class="lbl">Prompts Copilot work</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalWeb)}</div><div class="lbl">Prompts Copilot web</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(cp,'Nome',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+  `;
+  const userMap = groupSum(cp,'Nome', r=>num(r['Prompts todos Apps']));
+  const userEntries = sortedEntries(userMap).slice(0,15);
+  makeChart('chCpUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  const topUsers = userEntries.slice(0,10).map(e=>e[0]);
+  const workMap = groupSum(cp,'Nome', r=>num(r['Prompts Copilot (work)']));
+  const webMap = groupSum(cp,'Nome', r=>num(r['Prompts Copilot (web)']));
+  makeChart('chCpWorkWeb',{ type:'bar', data:{ labels:topUsers, datasets:[
+      { label:'Work', data:topUsers.map(u=>workMap[u]||0), backgroundColor:PALETTE[0] },
+      { label:'Web', data:topUsers.map(u=>webMap[u]||0), backgroundColor:PALETTE[1] }
+    ]}, options:{responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}}});
+
+  const unMap = {};
+  cp.forEach(r=>{ const un = unForName(r['Nome']); unMap[un] = (unMap[un]||0) + num(r['Prompts todos Apps']); });
+  const unEntries = sortedEntries(unMap);
+  makeChart('chCpUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[2] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+}
+
+function buildSagaHTML(){
+  return `
+  <div class="kpi-grid" id="sgKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Mensagens enviadas por usuário (top 15)</h3><div class="chart-wrap"><canvas id="chSgMsg"></canvas></div></div>
+    <div class="card"><h3>Projetos totais vs. compartilhados (top 15)</h3><div class="chart-wrap"><canvas id="chSgProj"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Mensagens por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chSgUn"></canvas></div></div>
+  `;
+}
+function renderSagaCharts(){
+  const sg = getSaga();
+  const totalMsg = sg.reduce((s,r)=>s+num(r['Enviado']),0);
+  const totalProj = sg.reduce((s,r)=>s+num(r['Total Projetos']),0);
+  const totalCompl = sg.reduce((s,r)=>s+num(r['Projetos Comp.']),0);
+  document.getElementById('sgKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(totalMsg)}</div><div class="lbl">Mensagens enviadas</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalProj)}</div><div class="lbl">Projetos totais</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalCompl)}</div><div class="lbl">Projetos compartilhados</div></div>
+    <div class="kpi-card"><div class="val">${totalProj? fmtPct(totalCompl/totalProj):'-'}</div><div class="lbl">Taxa de compartilhamento</div></div>
+  `;
+  const sorted = [...sg].sort((a,b)=>num(b['Enviado'])-num(a['Enviado'])).slice(0,15);
+  makeChart('chSgMsg',{ type:'bar', data:{ labels:sorted.map(r=>r['Nome']), datasets:[{ label:'Mensagens', data:sorted.map(r=>num(r['Enviado'])), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  const sorted2 = [...sg].sort((a,b)=>num(b['Total Projetos'])-num(a['Total Projetos'])).slice(0,15);
+  makeChart('chSgProj',{ type:'bar', data:{ labels:sorted2.map(r=>r['Nome']), datasets:[
+      { label:'Total', data:sorted2.map(r=>num(r['Total Projetos'])), backgroundColor:PALETTE[4] },
+      { label:'Compartilhados', data:sorted2.map(r=>num(r['Projetos Comp.'])), backgroundColor:PALETTE[2] }
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+
+  const unMap = {};
+  sg.forEach(r=>{ const un = unForName(r['Nome']); unMap[un] = (unMap[un]||0) + num(r['Enviado']); });
+  const unEntries = sortedEntries(unMap);
+  makeChart('chSgUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Mensagens', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+}
+
+function buildImanageHTML(){
+  return `
+  <div class="kpi-grid" id="imKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Distribuição por posição</h3><div class="chart-wrap"><canvas id="chImPos"></canvas></div></div>
+    <div class="card"><h3>O que mais produziram (volume por tipo de ação)</h3><div class="chart-wrap"><canvas id="chImProd"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Top 10 usuários, por tipo de ação</h3><div class="chart-wrap tall"><canvas id="chImTopUsers"></canvas></div></div>
+  `;
+}
+function renderImanageCharts(){
+  const im = getIManage();
+  const totalAcoes = im.reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalDoc = im.reduce((s,r)=>s+num(r['DOC. CRIADO']),0);
+  const totalVer = im.reduce((s,r)=>s+num(r['V. CRIADA']),0);
+  const totalEmail = im.reduce((s,r)=>s+num(r['EMAIL ARQ.']),0);
+  const totalExp = im.reduce((s,r)=>s+num(r['EXP.']),0);
+  document.getElementById('imKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(totalAcoes)}</div><div class="lbl">Total de ações</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalDoc)}</div><div class="lbl">Documentos criados</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalVer)}</div><div class="lbl">Versões criadas</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalEmail)}</div><div class="lbl">E-mails arquivados</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalExp)}</div><div class="lbl">Exportações</div></div>
+  `;
+  const posMap = {};
+  im.forEach(r=>{ const cat = classifyPosicao(r['POSIÇÃO']); posMap[cat] = (posMap[cat]||0) + num(r['TOTAL']); });
+  const posOrder = ['Estagiário','Júnior','Pleno','Sênior','Sócio','ADM'];
+  const posLabels = posOrder.filter(p=>posMap[p]!==undefined);
+  makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const paletteProd = [PALETTE[5],PALETTE[3],PALETTE[4],PALETTE[1]];
+  makeChart('chImProd',{ type:'bar', data:{ labels:['Documentos criados','Versões criadas','E-mails arquivados','Exportações'], datasets:[{ label:'Volume', data:[totalDoc,totalVer,totalEmail,totalExp], backgroundColor:paletteProd }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  const userMap = groupSum(im,'NOME', r=>num(r['TOTAL']));
+  const topUsers = sortedEntries(userMap).slice(0,10).map(e=>e[0]);
+  const byUserDoc = groupSum(im,'NOME', r=>num(r['DOC. CRIADO']));
+  const byUserVer = groupSum(im,'NOME', r=>num(r['V. CRIADA']));
+  const byUserEmail = groupSum(im,'NOME', r=>num(r['EMAIL ARQ.']));
+  const byUserExp = groupSum(im,'NOME', r=>num(r['EXP.']));
+  makeChart('chImTopUsers',{ type:'bar', data:{ labels:topUsers, datasets:[
+      { label:'Documentos criados', data:topUsers.map(u=>byUserDoc[u]||0), backgroundColor:PALETTE[0] },
+      { label:'Versões criadas', data:topUsers.map(u=>byUserVer[u]||0), backgroundColor:PALETTE[1] },
+      { label:'E-mails arquivados', data:topUsers.map(u=>byUserEmail[u]||0), backgroundColor:PALETTE[2] },
+      { label:'Exportações', data:topUsers.map(u=>byUserExp[u]||0), backgroundColor:PALETTE[3] }
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}}});
+}
+
+function buildUpMinerHTML(){
+  return `
+  <div class="kpi-grid" id="upKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Uso por área</h3><div class="chart-wrap"><canvas id="chUpArea"></canvas></div></div>
+    <div class="card"><h3>Uso mensal</h3><div class="chart-wrap"><canvas id="chUpMes"></canvas></div></div>
+  </div>
+  `;
+}
+function renderUpMinerCharts(){
+  const upAll = getUpMiner();
+  const up = upAll.filter(r=>['BD','CT'].includes((r['ÁREA']||'').toString().trim().toUpperCase()));
+  const summary = computeUpMinerSummary();
+  document.getElementById('upKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtMoney(summary.totalUsado)}</div><div class="lbl">Total consumido</div></div>
+    <div class="kpi-card"><div class="val">${fmtMoney(summary.totalBD)}</div><div class="lbl">Consumido por BD</div></div>
+    <div class="kpi-card"><div class="val">${fmtMoney(summary.totalCT)}</div><div class="lbl">Consumido por CT</div></div>
+    <div class="kpi-card"><div class="val">${fmtPct(summary.pctRestante)}</div><div class="lbl">Restante do contrato</div></div>
+  `;
+  const areaMap = { BD: summary.totalBD, CT: summary.totalCT };
+  makeChart('chUpArea',{ type:'doughnut', data:{ labels:Object.keys(areaMap), datasets:[{ data:Object.values(areaMap), backgroundColor:[PALETTE[0],PALETTE[1]] }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const areas = ['BD','CT'];
+  const meses = [...new Set(up.map(r=>r['MÊS']))];
+  const mesesOrdenados = MESES_ORDER.map(m=> meses.find(x=>(x||'').toString().toLowerCase()===m)).filter(Boolean);
+  const finalMeses = mesesOrdenados.length ? mesesOrdenados : meses;
+  makeChart('chUpMes',{ type:'bar', data:{ labels:finalMeses, datasets: areas.map((a,i)=>({
+      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ÁREA']||'').toString().trim().toUpperCase()===a && r['MÊS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: [PALETTE[0],PALETTE[1]][i]
+    })) }, options:{responsive:true,maintainAspectRatio:false}});
+}
+
+/* =========================================================
+   PÁGINA: LAB COINS (Madrona Star)
+   ========================================================= */
+function computeLabCoinsSummary(){
+  const rows = getLabCoins();
+  const empty = { items:[], totalCoins:0, totalOrc:0, totalPremioMes:0 };
+  if(!rows || rows.length<2) return empty;
+  const header = rows[0];
+  const idxUN = colIndex(header,'UN');
+  const idxEnt = colIndex(header,'Entregável');
+  const idxCoins = colIndex(header,'LAB COINS');
+  const idxOrc = colIndex(header,'Orçamento total');
+  const idxPremioEsp = colIndex(header,'Prêmio especial');
+  const idxPremioMes = colIndex(header,'Prêmios mensais');
+
+  const items = [];
+  for(let i=1;i<rows.length;i++){
+    const r = rows[i];
+    if(!r) continue;
+    const un = idxUN>=0 ? r[idxUN] : null;
+    const ent = idxEnt>=0 ? r[idxEnt] : null;
+    if(!un && !ent) continue;
+    items.push({
+      un: un || 'Não informado',
+      ent: ent || '',
+      coins: idxCoins>=0 ? num(r[idxCoins]) : 0,
+      orcamento: idxOrc>=0 ? num(r[idxOrc]) : 0,
+      premioEsp: idxPremioEsp>=0 ? num(r[idxPremioEsp]) : 0,
+      premioMes: idxPremioMes>=0 ? num(r[idxPremioMes]) : 0,
+    });
+  }
+  return {
+    items,
+    totalCoins: items.reduce((s,r)=>s+r.coins,0),
+    totalOrc: items.reduce((s,r)=>s+r.orcamento,0),
+    totalPremioMes: items.reduce((s,r)=>s+r.premioMes,0),
+  };
+}
+
+function pageLabCoinsHTML(){
+  return `<div class="empty-state"><h2>Aba em revisão</h2><p>A planilha de Lab Coins está sendo revista pelo time. Assim que o novo modelo for consolidado, os indicadores voltam a aparecer aqui.</p></div>`;
+}
+function afterRenderLabCoins(){
+  // Conteúdo zerado propositalmente: a planilha de Lab Coins está sendo revista.
+}
+
+/* =========================================================
+   PÁGINA: AQUISIÇÕES
+   ========================================================= */
+function pageAquisicoesHTML(){
+  return `
+  <div class="kpi-grid" id="aqKpis"></div>
+  <div class="grid2">
+    <div class="card"><h3>Volume por mês</h3><div class="chart-wrap"><canvas id="chAqMes"></canvas></div></div>
+    <div class="card"><h3>Valor por mês (R$)</h3><div class="chart-wrap"><canvas id="chAqValor"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Por tipo de material</h3><div class="chart-wrap"><canvas id="chAqTipo"></canvas></div></div>
+    <div class="card"><h3>Por localidade</h3><div class="chart-wrap"><canvas id="chAqLoc"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chAqUn"></canvas></div></div>
+  <div class="card"><h3>Registros</h3><div class="table-scroll"><table class="data-table" id="tblAq"></table></div></div>
+  `;
+}
+function afterRenderAquisicoes(){
+  const aq = getAquisicoes();
+  const totalValor = aq.reduce((s,r)=>s+num(r['VALOR']),0);
+  document.getElementById('aqKpis').innerHTML = `
+    <div class="kpi-card"><div class="val">${fmtInt(aq.length)}</div><div class="lbl">Total de aquisições</div></div>
+    <div class="kpi-card"><div class="val">${fmtMoney(totalValor)}</div><div class="lbl">Valor total investido</div></div>
+    <div class="kpi-card"><div class="val">${aq.length? fmtMoney(totalValor/aq.length):'-'}</div><div class="lbl">Ticket médio</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(aq,'TIPO',()=>1)).length}</div><div class="lbl">Tipos de material</div></div>
+  `;
+  const mesMapCount = {}; const mesMapValor = {};
+  aq.forEach(r=>{ const m=(r['MÊS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
+  const mesLabels = MESES_ORDER.filter(m=>mesMapCount[m]!==undefined);
+  makeChart('chAqMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Aquisições', data:mesLabels.map(m=>mesMapCount[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
+  makeChart('chAqValor',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Valor (R$)', data:mesLabels.map(m=>mesMapValor[m]), borderColor:PALETTE[3], backgroundColor:PALETTE[3]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const tipoMap = groupSum(aq,'TIPO',()=>1);
+  makeChart('chAqTipo',{ type:'doughnut', data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+  const locMapRaw = groupSum(aq,'LOCALIDADE',()=>1);
+  const locMap = {};
+  Object.entries(locMapRaw).forEach(([k,v])=>{
+    const label = (!k || k==='Não informado') ? 'Digital' : k;
+    locMap[label] = (locMap[label]||0) + v;
+  });
+  const locLabels = Object.keys(locMap);
+  const otherColors = PALETTE.filter(c=>c!==PALETTE[2]);
+  let oi = 0;
+  const locColors = locLabels.map(l=> l==='Digital' ? PALETTE[2] : otherColors[(oi++)%otherColors.length]);
+  makeChart('chAqLoc',{ type:'pie', data:{ labels:locLabels, datasets:[{ data:Object.values(locMap), backgroundColor:locColors }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  const unMap = groupSum(aq,'UN/AN',()=>1);
+  const unEntries = sortedEntries(unMap);
+  makeChart('chAqUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Aquisições', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[4] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  document.getElementById('tblAq').innerHTML = `
+    <tr><th>Mês</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
+    ${aq.slice(0,80).map(r=>`<tr><td>${r['MÊS']||''}</td><td>${r['TÍTULO']||''}</td><td>${r['UN/AN']||''}</td><td>${r['TIPO']||''}</td><td>${r['VALOR']?fmtMoney(num(r['VALOR'])):''}</td><td>${r['LOCALIDADE']||''}</td></tr>`).join('')}
+  `;
+}
+
+</script>
+</body>
+</html>
