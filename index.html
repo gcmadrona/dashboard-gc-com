@@ -265,10 +265,10 @@ footer{
   </div>
   <div class="upload-area">
     <div>
-      <div id="fileStatus">Nenhuma planilha carregada</div>
+      <div id="fileStatus">Carregando planilha...</div>
       <div id="lastUpdate"></div>
     </div>
-    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Carregar planilha</button>
+    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Carregar outra planilha</button>
     <input type="file" id="fileInput" accept=".xlsx" style="display:none">
   </div>
 </header>
@@ -288,6 +288,10 @@ const PALETTE = ['#00b2ff','#fc745c','#8fd694','#fff6d3','#b2bab9','#444444','#7
 
 // Ajuste aqui o total contratado de créditos/consultas do upMiner (usado para calcular o % restante de contrato).
 const UPMINER_CONTRACT_TOTAL = 30573;
+
+// Caminho do arquivo de dados dentro do próprio repositório do GitHub Pages.
+// Troque este arquivo mensalmente para atualizar o dashboard (mantenha o mesmo nome e caminho).
+const DATA_FILE_PATH = './BI%20GC_Com%202026.xlsx';
 
 const TABS = [
   { id:'geral', label:'Visão Geral' },
@@ -472,14 +476,14 @@ function renderTabsNav(){
 }
 
 function emptyState(msg){
-  return `<div class="empty-state"><h2>Carregue a planilha para visualizar este painel</h2><p>${msg||''}</p></div>`;
+  return `<div class="empty-state"><h2>Não foi possível carregar os dados</h2><p>${msg||''}</p></div>`;
 }
 
 function renderAll(){
   renderTabsNav();
   const main = document.getElementById('mainContent');
   if(!WORKBOOK){
-    main.innerHTML = emptyState('Use o botão "Carregar planilha (.xlsx)" no topo da página.');
+    main.innerHTML = emptyState('Aguardando o carregamento automático da planilha de dados.');
     return;
   }
   switch(ACTIVE_TAB){
@@ -510,24 +514,48 @@ function bindSubtabs(tabId, containerSel){
   });
 }
 
-/* ---------- File upload ---------- */
+/* ---------- Carregamento dos dados ---------- */
+
+// Processa os bytes do arquivo (ArrayBuffer) e atualiza o dashboard
+function loadWorkbookFromArrayBuffer(arrayBuffer, sourceLabel){
+  const data = new Uint8Array(arrayBuffer);
+  WORKBOOK = XLSX.read(data, { type:'array', cellDates:true });
+  DATA = {};
+  document.getElementById('fileStatus').textContent = sourceLabel;
+  document.getElementById('lastUpdate').textContent = 'Atualizado em ' + new Date().toLocaleString('pt-BR');
+  renderAll();
+}
+
+// Busca automaticamente o arquivo de dados publicado junto com a página (sem exigir upload manual)
+function autoLoadWorkbook(){
+  document.getElementById('fileStatus').textContent = 'Carregando planilha...';
+  fetch(DATA_FILE_PATH, { cache: 'no-store' })
+    .then(resp=>{
+      if(!resp.ok) throw new Error('HTTP ' + resp.status);
+      return resp.arrayBuffer();
+    })
+    .then(buf=> loadWorkbookFromArrayBuffer(buf, 'Dados atualizados automaticamente'))
+    .catch(err=>{
+      console.error('Não foi possível carregar a planilha automaticamente:', err);
+      document.getElementById('fileStatus').textContent = 'Não foi possível carregar os dados automaticamente';
+      renderAll();
+    });
+}
+
+/* ---------- File upload (opção manual, ex.: para testar uma versão nova) ---------- */
 document.getElementById('fileInput').addEventListener('change', function(e){
   const file = e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
   reader.onload = function(evt){
-    const data = new Uint8Array(evt.target.result);
-    WORKBOOK = XLSX.read(data, { type:'array', cellDates:true });
-    DATA = {};
-    document.getElementById('fileStatus').textContent = 'Planilha carregada: ' + file.name;
-    document.getElementById('lastUpdate').textContent = 'Atualizado em ' + new Date().toLocaleString('pt-BR');
-    renderAll();
+    loadWorkbookFromArrayBuffer(evt.target.result, 'Planilha carregada manualmente: ' + file.name);
   };
   reader.readAsArrayBuffer(file);
 });
 
 renderTabsNav();
 renderAll();
+autoLoadWorkbook();
 
 /* =========================================================
    DATA GETTERS
