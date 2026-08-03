@@ -1191,6 +1191,7 @@ function pageTimesheetHTML(){
     <div class="card"><h3>Investimento por mês, em horas</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
     <div class="card"><h3>Top 15 profissionais por horas investidas</h3><div class="chart-wrap tall"><canvas id="chTsProf"></canvas></div></div>
   </div>
+  <div class="card"><h3>Participação proporcional por Unidade de Negócio (% de pessoas da UN que lançaram horas)</h3><div class="chart-wrap tall"><canvas id="chTsPart"></canvas></div></div>
   `;
 }
 function afterRenderTimesheet(){
@@ -1219,6 +1220,23 @@ function afterRenderTimesheet(){
   ts.forEach(r=>{ const nome = normalizeName(r['Nome Prof. Rev.']); if(nome) profMap[nome] = (profMap[nome]||0) + num(r['Tempo Investido']); });
   const profEntries = sortedEntries(profMap).slice(0,15);
   makeChart('chTsProf',{ type:'bar', data:{ labels:profEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:profEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+
+  // Participação proporcional por UN: quantas pessoas da equipe (aba CT) de fato lançaram horas,
+  // em vez do total de horas em si (que naturalmente favorece UNs maiores).
+  const headcountByUN = groupSum(getCT(), 'UN', ()=>1);
+  const participantesByUN = {};
+  ts.forEach(r=>{
+    const un = (r['Desc. Grupo Jurídico']||'').toString().trim();
+    const nome = normalizeName(r['Nome Prof. Rev.']);
+    if(!un || !nome) return;
+    if(!participantesByUN[un]) participantesByUN[un] = new Set();
+    participantesByUN[un].add(nome);
+  });
+  const partEntries = Object.keys(participantesByUN)
+    .filter(un=>headcountByUN[un])
+    .map(un=>[un, Math.round(participantesByUN[un].size/headcountByUN[un]*1000)/10])
+    .sort((a,b)=>b[1]-a[1]);
+  makeChart('chTsPart',{ type:'bar', data:{ labels:partEntries.map(e=>e[0]), datasets:[{ label:'% da equipe que participou', data:partEntries.map(e=>e[1]), backgroundColor:PALETTE[4] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}, tooltip:{callbacks:{label:ctx=>ctx.parsed.x+'% da equipe'}}}, scales:{x:{ticks:{callback:v=>v+'%'}}}}});
 }
 
 /* =========================================================
