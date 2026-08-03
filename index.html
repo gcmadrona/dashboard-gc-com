@@ -1180,22 +1180,45 @@ function afterRenderLexJuris(){
 /* =========================================================
    PÁGINA: TIMESHEET MADRONA LAB
    ========================================================= */
+let TS_MONTH_FILTER = 'todos';
+
 function pageTimesheetHTML(){
+  const tsAllMeses = getTimesheet();
+  const meses = [...new Set(tsAllMeses.map(r=>monthAbbrPT(r['Data'])))].filter(Boolean);
+  const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
+  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+    <h3 style="margin:0; border:none; padding:0;">Filtro de mês</h3>
+    <select id="tsMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
+      <option value="todos" ${TS_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
+      ${mesesOrdenados.map(m=>`<option value="${m}" ${TS_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
+    </select>
+  </div>
   <div class="kpi-grid" id="tsKpis"></div>
   <div class="grid2">
     <div class="card"><h3>Investimento por frente, em horas</h3><div class="chart-wrap tall"><canvas id="chTsFrente"></canvas></div></div>
     <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chTsUn"></canvas></div></div>
   </div>
   <div class="grid2">
-    <div class="card"><h3>Investimento por mês, em horas</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
+    <div class="card"><h3>Investimento por mês, em horas${TS_MONTH_FILTER!=='todos'?' (sempre mostra o ano todo, para dar contexto de tendência)':''}</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
     <div class="card"><h3>Top 15 profissionais por horas investidas</h3><div class="chart-wrap tall"><canvas id="chTsProf"></canvas></div></div>
   </div>
   <div class="card"><h3>Participação proporcional por Unidade de Negócio (% de pessoas da UN que lançaram horas)</h3><div class="chart-wrap tall"><canvas id="chTsPart"></canvas></div></div>
   `;
 }
 function afterRenderTimesheet(){
-  const ts = getTimesheet();
+  const select = document.getElementById('tsMonthFilter');
+  if(select){
+    select.addEventListener('change', ()=>{
+      TS_MONTH_FILTER = select.value;
+      afterRenderTimesheetData();
+    });
+  }
+  afterRenderTimesheetData();
+}
+function afterRenderTimesheetData(){
+  const tsAll = getTimesheet();
+  const ts = TS_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===TS_MONTH_FILTER);
   const totalHoras = ts.reduce((s,r)=>s+num(r['Tempo Investido']),0);
   const profissionaisUnicos = new Set(ts.map(r=>normalizeName(r['Nome Prof. Rev.'])).filter(Boolean));
   document.getElementById('tsKpis').innerHTML = `
@@ -1212,7 +1235,7 @@ function afterRenderTimesheet(){
   makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
 
   const mesMap = {};
-  ts.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
+  tsAll.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
   const mesLabels = MES_ABBR_ORDER.filter(m=>mesMap[m]!==undefined);
   makeChart('chTsMes',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Horas investidas', data:mesLabels.map(m=>mesMap[m]), borderColor:PALETTE[2], backgroundColor:PALETTE[2]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
 
