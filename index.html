@@ -1431,18 +1431,42 @@ function renderSagaCharts(){
   makeChart('chSgUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Mensagens', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
 }
 
+let IM_MONTH_FILTER = 'todos';
+
 function buildImanageHTML(){
+  const imAll = getIManage();
+  const meses = [...new Set(imAll.map(r=>monthAbbrPT(r['MÊS'])))].filter(Boolean);
+  const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
+  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+    <h3 style="margin:0; border:none; padding:0;">Filtro de mês</h3>
+    <select id="imMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
+      <option value="todos" ${IM_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
+      ${mesesOrdenados.map(m=>`<option value="${m}" ${IM_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
+    </select>
+  </div>
   <div class="kpi-grid" id="imKpis"></div>
   <div class="grid2">
     <div class="card"><h3>Distribuição por posição</h3><div class="chart-wrap"><canvas id="chImPos"></canvas></div></div>
     <div class="card"><h3>O que mais produziram (volume por tipo de ação)</h3><div class="chart-wrap"><canvas id="chImProd"></canvas></div></div>
   </div>
   <div class="card"><h3>Top 10 usuários, por tipo de ação</h3><div class="chart-wrap tall"><canvas id="chImTopUsers"></canvas></div></div>
+  <div class="card"><h3>Total de ações por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chImUn"></canvas></div></div>
   `;
 }
 function renderImanageCharts(){
-  const im = getIManage();
+  const select = document.getElementById('imMonthFilter');
+  if(select){
+    select.addEventListener('change', ()=>{
+      IM_MONTH_FILTER = select.value;
+      renderImanageChartsData();
+    });
+  }
+  renderImanageChartsData();
+}
+function renderImanageChartsData(){
+  const imAll = getIManage();
+  const im = IM_MONTH_FILTER==='todos' ? imAll : imAll.filter(r=>monthAbbrPT(r['MÊS'])===IM_MONTH_FILTER);
   const totalAcoes = im.reduce((s,r)=>s+num(r['TOTAL']),0);
   const totalDoc = im.reduce((s,r)=>s+num(r['DOC. CRIADO']),0);
   const totalVer = im.reduce((s,r)=>s+num(r['V. CRIADA']),0);
@@ -1476,6 +1500,10 @@ function renderImanageCharts(){
       { label:'E-mails arquivados', data:topUsers.map(u=>byUserEmail[u]||0), backgroundColor:PALETTE[2] },
       { label:'Exportações', data:topUsers.map(u=>byUserExp[u]||0), backgroundColor:PALETTE[3] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}}});
+
+  const unMap = groupSum(im,'UN', r=>num(r['TOTAL']));
+  const unEntries = sortedEntries(unMap);
+  makeChart('chImUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Total de ações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
 }
 
 function buildUpMinerHTML(){
