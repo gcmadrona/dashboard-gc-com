@@ -179,6 +179,35 @@ main{
 }
 .kpi-card .val{ font-size:26px; font-weight:700; color:var(--grafite); }
 .kpi-card .lbl{ font-size:12px; color:#888; margin-top:4px; }
+.kpi-card.azul{ border-left-color:var(--azul); }
+.kpi-card.verde{ border-left-color:var(--verde); }
+.kpi-card.vermelho{ border-left-color:var(--vermelho); }
+.kpi-card.amarelo{ border-left-color:#e0b400; }
+.kpi-card.grafite{ border-left-color:var(--grafite); }
+
+/* ---------- Cards de insight (leitura estratégica, não só número bruto) ---------- */
+.insight-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:22px; }
+.insight-card{
+  background:var(--card);
+  border-radius:10px;
+  padding:16px 18px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  border-left:4px solid var(--cinza);
+}
+.insight-card.positivo{ border-left-color:var(--verde); }
+.insight-card.alerta{ border-left-color:var(--vermelho); }
+.insight-card.atencao{ border-left-color:#e0b400; }
+.insight-card .titulo{ font-size:13.5px; font-weight:700; color:var(--grafite); margin-bottom:6px; }
+.insight-card .texto{ font-size:12.5px; color:#555; line-height:1.45; }
+
+/* ---------- Ranking de adoção por UN (barra de progresso horizontal) ---------- */
+.adopt-row{ margin-bottom:13px; }
+.adopt-row .lbl{ display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; color:var(--grafite); }
+.adopt-row .lbl b{ font-weight:700; }
+.adopt-bar-bg{ background:#eee; border-radius:6px; height:9px; overflow:hidden; }
+.adopt-bar-fill{ height:100%; border-radius:6px; }
+.adopt-bar-fill.alta{ background:var(--azul); }
+.adopt-bar-fill.baixa{ background:var(--vermelho); }
 
 .grid2{
   display:grid;
@@ -254,6 +283,103 @@ footer{
   color:var(--cinza);
   padding:20px;
 }
+
+/* ---------- Interatividade entre gráficos (crossfilter) ---------- */
+.filter-chips{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.filter-chips:empty{ display:none; }
+.filter-chip{
+  background:#eaf8ff;
+  border:1px solid var(--azul);
+  color:var(--grafite);
+  font-size:12px;
+  font-weight:600;
+  padding:5px 10px;
+  border-radius:16px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.filter-chip button{
+  background:none;
+  border:none;
+  color:var(--azul);
+  font-weight:700;
+  cursor:pointer;
+  font-size:14px;
+  line-height:1;
+  padding:0;
+}
+.filter-clear-all{
+  background:none;
+  border:1px solid var(--cinza);
+  color:var(--grafite);
+  font-size:12px;
+  padding:5px 10px;
+  border-radius:16px;
+  cursor:pointer;
+}
+.chart-hint{ font-size:11px; color:var(--cinza); margin:-10px 0 12px; }
+
+/* ---------- Card de referência (ex.: link para dashboard externo) ---------- */
+.ref-card{
+  background:#0a3a5c;
+  color:#fff;
+  border-radius:10px;
+  padding:20px 22px;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.ref-card .ref-title{ font-size:14px; font-weight:700; margin-bottom:4px; }
+.ref-card p{ margin:0; font-size:12.5px; color:#d8e6ee; max-width:640px; }
+.ref-card a.ref-btn{
+  background:var(--azul);
+  color:#fff;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+  padding:10px 18px;
+  border-radius:6px;
+  white-space:nowrap;
+}
+.ref-card a.ref-btn:hover{ opacity:0.9; }
+
+/* ---------- Contrato: barra de "loading" uso x vencimento ---------- */
+.contract-block{ margin-bottom:16px; }
+.contract-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:10px;
+}
+.contract-head .name{ font-size:13.5px; font-weight:700; color:var(--grafite); }
+.contract-head .deadline{ font-size:12px; color:#888; }
+.contract-row{ margin-bottom:14px; }
+.contract-row .lbl{ display:flex; justify-content:space-between; font-size:12px; color:#666; margin-bottom:5px; }
+.loading-bar-bg{
+  background:#eee;
+  border-radius:20px;
+  height:18px;
+  overflow:hidden;
+  position:relative;
+}
+.loading-bar-fill{
+  height:100%;
+  border-radius:20px;
+  background-image: linear-gradient(135deg, rgba(255,255,255,.3) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.3) 50%, rgba(255,255,255,.3) 75%, transparent 75%, transparent);
+  background-size: 24px 24px;
+  animation: loadingMove 1.3s linear infinite;
+  transition: width 1s ease;
+}
+.loading-bar-fill.time{ background-color: var(--grafite); }
+.loading-bar-fill.uso{ background-color: var(--azul); }
+.loading-bar-fill.alerta{ background-color: var(--vermelho); }
+@keyframes loadingMove{ from{ background-position:0 0; } to{ background-position:24px 0; } }
 </style>
 </head>
 <body>
@@ -289,6 +415,50 @@ const PALETTE = ['#00b2ff','#fc745c','#8fd694','#fff6d3','#b2bab9','#444444','#7
 // Ajuste aqui o total contratado de créditos/consultas do upMiner (usado para calcular o % restante de contrato).
 const UPMINER_CONTRACT_TOTAL = 30573;
 
+// Datas de vencimento dos contratos (ajuste aqui quando renovar).
+const CONTRACT_DEADLINES = {
+  upminer:  { label:'upMiner',  end: new Date(2027,2,31) },  // vence em março/2027
+  docusign: { label:'Docusign', end: new Date(2027,1,28) },  // vence em fevereiro/2027
+};
+
+// Calcula, para um contrato com vencimento em `end` e ciclo de `cycleMonths` meses,
+// quanto do tempo já passou (pctTime) e quantos dias faltam até o vencimento.
+function contractTimeProgress(end, cycleMonths=12){
+  const start = new Date(end.getFullYear(), end.getMonth()-cycleMonths, end.getDate());
+  const now = new Date();
+  const total = end - start;
+  const elapsed = Math.min(Math.max(now-start,0), total);
+  const pctTime = total>0 ? elapsed/total : 0;
+  const daysLeft = Math.max(0, Math.ceil((end-now)/(1000*60*60*24)));
+  return { pctTime, daysLeft, start, end };
+}
+function fmtDatePT(d){ return d.toLocaleDateString('pt-BR'); }
+function pct1(n){ return (Math.min(1,Math.max(0,n))*100).toLocaleString('pt-BR',{maximumFractionDigits:1}); }
+
+// Monta o bloco "barra de loading" comparando tempo decorrido do contrato x % já consumido.
+function contractLoadingBlockHTML(key, pctUso, usoLabel){
+  const cfg = CONTRACT_DEADLINES[key];
+  if(!cfg) return '';
+  const { pctTime, daysLeft, end } = contractTimeProgress(cfg.end);
+  const alerta = pctUso > pctTime + 0.1; // consumindo mais rápido que o tempo decorrido do contrato
+  return `
+  <div class="card contract-block">
+    <div class="contract-head">
+      <div class="name">Contrato ${cfg.label}</div>
+      <div class="deadline">Vence em ${fmtDatePT(end)} · faltam ${daysLeft} dias</div>
+    </div>
+    <div class="contract-row">
+      <div class="lbl"><span>Tempo do contrato decorrido</span><span>${pct1(pctTime)}%</span></div>
+      <div class="loading-bar-bg"><div class="loading-bar-fill time" style="width:${pct1(pctTime)}%"></div></div>
+    </div>
+    <div class="contract-row">
+      <div class="lbl"><span>${usoLabel||'Consumido do contrato'}</span><span>${pct1(pctUso)}%</span></div>
+      <div class="loading-bar-bg"><div class="loading-bar-fill ${alerta?'alerta':'uso'}" style="width:${pct1(pctUso)}%"></div></div>
+    </div>
+    ${alerta? `<p style="font-size:12px;color:var(--vermelho);margin:8px 0 0;">⚠ O consumo está proporcionalmente mais adiantado do que o tempo restante do contrato.</p>` : ''}
+  </div>`;
+}
+
 // Caminho do arquivo de dados dentro do próprio repositório do GitHub Pages.
 // Troque este arquivo mensalmente para atualizar o dashboard (mantenha o mesmo nome e caminho).
 const DATA_FILE_PATH = './BI%20GC_Com%202026.xlsx';
@@ -318,6 +488,10 @@ function makeChart(canvasId, config){
   const el = document.getElementById(canvasId);
   if(!el) return;
   CHARTS[canvasId] = new Chart(el.getContext('2d'), config);
+  // Gráficos com crossfilter (onClick definido) mostram cursor de "mão" para indicar que são clicáveis.
+  // Observação: não usamos a opção onHover do Chart.js aqui de propósito — em combinação com os
+  // gráficos deste dashboard ela dispara um erro interno da biblioteca (Chart.js 4.4.1) ao passar o mouse.
+  el.style.cursor = (config.options && typeof config.options.onClick === 'function') ? 'pointer' : 'default';
 }
 
 /* ---------- Sheet helpers ---------- */
@@ -440,6 +614,55 @@ function monthAbbrPT(val){
   return '';
 }
 
+/* ---------- Normalização de UN ---------- */
+// A planilha usa grafias diferentes para a mesma Unidade de Negócio em abas
+// diferentes (ex.: "UN Corporativa" em Lexter/PortData/iM/Publicações vs.
+// "UN Corporativo" na aba CT, que é a fonte de verdade de pessoas). Este mapa
+// converte cada variante conhecida para o nome canônico (o usado na aba CT).
+// Ajuste/complete este mapa se aparecerem novas variações na planilha.
+const UN_CANONICAL_MAP = {
+  'un corporativa': 'UN Corporativo',
+  // A própria aba CT tem as duas grafias (25 pessoas em "UN Tributária", 8 em
+  // "UN Tributário"); adotamos a forma feminina, majoritária, como canônica.
+  'un tributário': 'UN Tributária',
+  'un contencioso, mediação & arbitragem': 'UN Contencioso',
+  'un contencioso, mediação e arbitragem': 'UN Contencioso',
+  'un infraestrutura e direito público': 'UN Infraestrutura',
+  'un trabalhista': 'UN Trabalhista e Sindical',
+  'un wc&c': 'UN Compliance/White Collar',
+  'un white collar & compliance': 'UN Compliance/White Collar',
+  'un digital, comex e pi': 'UN Digital, LGPD e Propriedade Intelectual',
+  'an wealth planning': 'UN Wealth',
+  'un seguros': 'UN Seguros Resseguros e Previdência Privada',
+  'un seguros, resseguros e previdência privada': 'UN Seguros Resseguros e Previdência Privada',
+  'comunicação': 'Comunicação Corporativa',
+  // Variações de grafia/abreviação da mesma área. "UN Bancário" fica de fora
+  // de propósito: na aba Relatório TS ele aparece com volume grande e distinto
+  // de "UN Financeiro & Mercado | Bancário" (206h vs 167h), então tratamos como
+  // duas frentes até confirmação de que são a mesma equipe.
+  'un financeiro, bancário & mercado': 'UN Financeiro & Mercado | Bancário',
+  'un financeiro, bancário e mercado de capitais': 'UN Financeiro & Mercado | Bancário',
+  'un mercap': 'UN Financeiro & Mercado | Bancário',
+  // Siglas usadas só na aba iM, mapeadas para o nome completo usado em CT.
+  'gc': 'Gestão de Conhecimento',
+  'pef': 'Planejamento Estratégico e Finanças',
+  'bd': 'Business Development',
+  'gg - dho': 'Gente e Gestão - DHO',
+  'gg - secretárias': 'Gente e Gestão - Secretárias',
+  'gg - facilites': 'Gente e Gestão - Facilites',
+  'gg - recepção': 'Gente e Gestão - Recepção',
+};
+function normalizeUN(raw){
+  const val = (raw===null||raw===undefined) ? '' : String(raw).trim();
+  if(!val) return 'Não informado';
+  const key = val.toLowerCase();
+  return UN_CANONICAL_MAP[key] || val;
+}
+// UNs de áreas administrativas/institucionais (não jurídicas), usadas para
+// excluir "Comunicação Corporativa" e "Tecnologia da Informação" dos gráficos
+// de investimento de horas da aba Timesheet Madrona Lab, a pedido da Deborah.
+const UN_EXCLUIDAS_TIMESHEET = ['Comunicação Corporativa', 'Tecnologia da Informação'];
+
 // Cruzamento pessoas x UN, a partir da aba CT (não exibida como aba de resultado)
 function getCTMap(){
   if(DATA.ctMap) return DATA.ctMap;
@@ -447,7 +670,7 @@ function getCTMap(){
   const map = {};
   ct.forEach(r=>{
     const nome = (r['NOME']||'').toString().trim().toLowerCase();
-    if(nome) map[nome] = r['UN'] || 'Não informado';
+    if(nome) map[nome] = normalizeUN(r['UN']);
   });
   DATA.ctMap = map;
   return map;
@@ -455,12 +678,95 @@ function getCTMap(){
 function unForName(name){
   const map = getCTMap();
   const key = (name||'').toString().trim().toLowerCase();
-  return map[key] || 'Não informado';
+  // Contas que não são de uma pessoa da aba CT (ex.: contas institucionais como
+  // "Gestão do Conhecimento" no Saga) caem aqui; rotulamos como "Administrativo"
+  // em vez de "Não informado", a pedido da Deborah.
+  return map[key] || 'Administrativo';
 }
 function normalizeName(name){
   return (name||'').toString().trim().replace(/\s+/g,' ').toLowerCase().replace(/\b\w/g, c=>c.toUpperCase());
 }
 
+/* =========================================================
+   CROSSFILTER — interatividade entre gráficos
+   =========================================================
+   Cada página/sub-página tem seu próprio estado de filtro (cfState),
+   guardado por nome de campo (ex.: 'UN', 'Caso Real'...). Clicar numa
+   barra ativa/desativa aquele valor; os demais gráficos da mesma página
+   que usam a mesma base de dados são refeitos já filtrados, e o próprio
+   gráfico clicado destaca a barra selecionada em vez de se filtrar.
+   ========================================================= */
+let CROSSFILTER = {};
+
+function cfState(pageKey){
+  if(!CROSSFILTER[pageKey]) CROSSFILTER[pageKey] = {};
+  return CROSSFILTER[pageKey];
+}
+function cfActive(pageKey, field){
+  return CROSSFILTER[pageKey] ? CROSSFILTER[pageKey][field] : undefined;
+}
+function cfToggle(pageKey, field, value, rerender){
+  const state = cfState(pageKey);
+  if(state[field] === value) delete state[field];
+  else state[field] = value;
+  rerender();
+}
+function cfClearAll(pageKey, rerender){
+  CROSSFILTER[pageKey] = {};
+  rerender();
+}
+// Aplica os filtros ativos da página às linhas, exceto o campo `excludeField`
+// (usado pelo próprio gráfico-fonte daquele campo, que deve continuar mostrando
+// todas as suas categorias, só destacando a selecionada).
+function cfApply(rows, pageKey, excludeField){
+  const state = CROSSFILTER[pageKey];
+  if(!state) return rows;
+  const keys = Object.keys(state).filter(k=>k!==excludeField);
+  if(!keys.length) return rows;
+  return rows.filter(r => keys.every(k => (r[k]===undefined||r[k]===null?'':String(r[k]).trim()) === state[k]));
+}
+function cfChipsHTML(pageKey, labelMap){
+  const state = CROSSFILTER[pageKey] || {};
+  const keys = Object.keys(state);
+  if(!keys.length) return '';
+  return `<div class="filter-chips">
+    ${keys.map(k=>`<span class="filter-chip">${(labelMap&&labelMap[k])||k}: ${state[k]} <button data-cf-clear="${k}">×</button></span>`).join('')}
+    <button class="filter-clear-all" data-cf-clear-all="1">Limpar filtros</button>
+  </div>`;
+}
+function cfBindChips(pageKey, containerSel, rerender){
+  document.querySelectorAll(`${containerSel} [data-cf-clear]`).forEach(btn=>{
+    btn.addEventListener('click', ()=>{ delete cfState(pageKey)[btn.dataset.cfClear]; rerender(); });
+  });
+  const clearAll = document.querySelector(`${containerSel} [data-cf-clear-all]`);
+  if(clearAll) clearAll.addEventListener('click', ()=> cfClearAll(pageKey, rerender));
+}
+// Cores das barras: quando há filtro ativo para este mesmo campo, destaca a
+// barra selecionada e esmaece as demais (sem removê-las do gráfico-fonte).
+function cfBarColors(labels, baseColor, activeValue){
+  if(activeValue===undefined || activeValue===null) return labels.map(()=>baseColor);
+  return labels.map(l => String(l).trim()===String(activeValue) ? baseColor : baseColor+'35');
+}
+// Igual ao cfBarColors, mas para gráficos de pizza/rosca onde cada categoria já
+// tem sua própria cor da paleta (mantém a cor, só esmaece as não selecionadas).
+function cfSliceColors(labels, colors, activeValue){
+  if(activeValue===undefined || activeValue===null) return labels.map((l,i)=>colors[i%colors.length]);
+  return labels.map((l,i)=> String(l).trim()===String(activeValue) ? colors[i%colors.length] : colors[i%colors.length]+'35');
+}
+// Handler de clique padrão do Chart.js: alterna o filtro da página pelo campo indicado.
+function cfOnClick(pageKey, field, rerender){
+  return function(evt, elements, chart){
+    if(!elements.length) return;
+    const idx = elements[0].index;
+    const label = chart.data.labels[idx];
+    // Importante: o próprio gráfico clicado é destruído e recriado dentro de `rerender()`
+    // (é assim que o dashboard atualiza os gráficos). Fazer isso de forma síncrona, ainda
+    // dentro do próprio onClick do Chart.js, corrompe o processamento interno do evento
+    // (a biblioteca continua notificando plugins do gráfico já destruído). Por isso adiamos
+    // a re-renderização para o próximo tick, depois que o Chart.js termina de processar o clique.
+    cfToggle(pageKey, field, String(label).trim(), ()=> setTimeout(rerender, 0));
+  };
+}
 /* ---------- Navigation ---------- */
 let ACTIVE_TAB = 'geral';
 let ACTIVE_SUB = { geral:'gc', ferramentas:'lexter' };
@@ -565,6 +871,7 @@ function getCT(){
   const ws = findSheet('CT');
   const rows = sheetToRows(ws);
   DATA.ct = rowsToObjects(rows);
+  DATA.ct.forEach(r=>{ r['UN'] = normalizeUN(r['UN']); });
   return DATA.ct;
 }
 function getPublicacoes(){
@@ -572,6 +879,7 @@ function getPublicacoes(){
   const ws = findSheet('Controle Publicações');
   const rows = sheetToRows(ws);
   DATA.pub = rowsToObjects(rows);
+  DATA.pub.forEach(r=>{ r['UN'] = normalizeUN(r['UN']); });
   return DATA.pub;
 }
 function getRedesSociais(){
@@ -621,6 +929,7 @@ function getLexter(){
   const ws = findSheet('Lexter');
   const rows = sheetToRows(ws);
   DATA.lexter = rowsToObjects(rows);
+  DATA.lexter.forEach(r=>{ r['UN'] = normalizeUN(r['UN']); });
   return DATA.lexter;
 }
 function getPortData(){
@@ -628,6 +937,7 @@ function getPortData(){
   const ws = findSheet('PortData');
   const rows = sheetToRows(ws);
   DATA.portdata = rowsToObjects(rows);
+  DATA.portdata.forEach(r=>{ r['UN'] = normalizeUN(r['UN']); });
   return DATA.portdata;
 }
 function getCopilot(){
@@ -649,6 +959,7 @@ function getIManage(){
   const ws = findSheet('iM');
   const rows = sheetToRows(ws);
   DATA.im = rowsToObjects(rows);
+  DATA.im.forEach(r=>{ r['UN'] = normalizeUN(r['UN']); });
   return DATA.im;
 }
 function getLabCoins(){
@@ -690,7 +1001,13 @@ function getTimesheet(){
   if(DATA.timesheet) return DATA.timesheet;
   const ws = findSheet('Relatório TS');
   const rows = sheetToRows(ws);
-  DATA.timesheet = rowsToObjects(rows);
+  let objs = rowsToObjects(rows);
+  objs.forEach(r=>{ r['Desc. Grupo Jurídico'] = normalizeUN(r['Desc. Grupo Jurídico']); });
+  // A pedido da Deborah: "Comunicação Corporativa" e "Tecnologia da Informação" não
+  // são frentes jurídicas de fato (poucos lançamentos, de natureza administrativa) e
+  // saem dos gráficos de investimento de horas do Timesheet Madrona Lab e da Visão Geral.
+  objs = objs.filter(r=> !UN_EXCLUIDAS_TIMESHEET.includes(r['Desc. Grupo Jurídico']));
+  DATA.timesheet = objs;
   return DATA.timesheet;
 }
 function computeDocuCertisignSummary(){
@@ -773,6 +1090,7 @@ function buildGCOverview(){
   const ts = getTimesheet();
   const meses = [...new Set(ts.map(r=>monthAbbrPT(r['Data'])))].filter(Boolean);
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
+  const unsDisponiveis = [...new Set(ts.map(r=>r['Desc. Grupo Jurídico']))].filter(Boolean).sort();
 
   return `
   <div class="hero">
@@ -792,13 +1110,27 @@ function buildGCOverview(){
     </div>
   </div>
 
-  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-    <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
-    <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
-      <option value="todos" ${GC_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
-      ${mesesOrdenados.map(m=>`<option value="${m}" ${GC_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
-    </select>
+  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
+      <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
+        <option value="todos" ${GC_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
+        ${mesesOrdenados.map(m=>`<option value="${m}" ${GC_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
+      </select>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <h3 style="margin:0; border:none; padding:0;">Unidade de Negócio</h3>
+      <select id="gcUnFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px; min-width:220px;">
+        <option value="todas">Todas as UNs</option>
+        ${unsDisponiveis.map(un=>`<option value="${un}">${un}</option>`).join('')}
+      </select>
+    </div>
   </div>
+
+  <div id="gcFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de Frente ou de UN (ou use o filtro acima) para atualizar os gráficos e o painel de produtos e serviços. Clique de novo, ou selecione "Todas as UNs", para limpar.</p>
+
+  <div id="gcProdutosPorUN"></div>
 
   <div class="card" style="margin-bottom:20px;">
     <h3>Investimento por frente (Madrona Lab), em horas</h3>
@@ -812,36 +1144,129 @@ function buildGCOverview(){
 }
 
 function renderGCOverviewCharts(){
-  const select = document.getElementById('gcMonthFilter');
-  if(select){
-    select.addEventListener('change', ()=>{
-      GC_MONTH_FILTER = select.value;
+  const monthSelect = document.getElementById('gcMonthFilter');
+  if(monthSelect){
+    monthSelect.addEventListener('change', ()=>{
+      GC_MONTH_FILTER = monthSelect.value;
+      renderGCStrategicCharts();
+    });
+  }
+  const unSelect = document.getElementById('gcUnFilter');
+  if(unSelect){
+    unSelect.addEventListener('change', ()=>{
+      if(unSelect.value==='todas') delete cfState(CF_GC)['Desc. Grupo Jurídico'];
+      else cfState(CF_GC)['Desc. Grupo Jurídico'] = unSelect.value;
       renderGCStrategicCharts();
     });
   }
   renderGCStrategicCharts();
 }
 
+const CF_GC = 'geral-gc';
 function renderGCStrategicCharts(){
   const tsAll = getTimesheet();
-  const ts = GC_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===GC_MONTH_FILTER);
+  const tsMonth = GC_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===GC_MONTH_FILTER);
+  const unSelecionada = cfActive(CF_GC,'Desc. Grupo Jurídico');
 
-  const frenteMap = groupSum(ts,'Caso Real', r=>num(r['Tempo Investido']));
+  // Mantém o dropdown de UN sincronizado com o filtro (que também pode ter sido
+  // ativado clicando numa barra), e atualiza o painel de produtos e serviços.
+  const unSelect = document.getElementById('gcUnFilter');
+  if(unSelect) unSelect.value = unSelecionada || 'todas';
+  const produtosEl = document.getElementById('gcProdutosPorUN');
+  if(produtosEl) produtosEl.innerHTML = buildProdutosPorUN(unSelecionada);
+
+  const chipsEl = document.getElementById('gcFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_GC, {'Caso Real':'Frente','Desc. Grupo Jurídico':'UN'});
+    cfBindChips(CF_GC, '#gcFilterChips', renderGCStrategicCharts);
+  }
+
+  const frenteRows = cfApply(tsMonth, CF_GC, 'Caso Real');
+  const frenteMap = groupSum(frenteRows,'Caso Real', r=>num(r['Tempo Investido']));
   const frenteEntries = sortedEntries(frenteMap);
-  makeChart('chGCFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chGCFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:cfBarColors(frenteEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_GC,'Caso Real')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_GC,'Caso Real',renderGCStrategicCharts)}});
 
-  const unMap = groupSum(ts,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
+  const unRows = cfApply(tsMonth, CF_GC, 'Desc. Grupo Jurídico');
+  const unMap = groupSum(unRows,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
   const unEntries = sortedEntries(unMap);
-  makeChart('chGCUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chGCUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_GC,'Desc. Grupo Jurídico')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_GC,'Desc. Grupo Jurídico',renderGCStrategicCharts)}});
 
+  const profRowsSrc = cfApply(tsMonth, CF_GC);
   const profSum = {}; const profCount = {};
-  ts.forEach(r=>{
+  profRowsSrc.forEach(r=>{
     const nome = normalizeName(r['Nome Prof. Rev.'])||'Não informado';
     profSum[nome] = (profSum[nome]||0) + num(r['Tempo Investido']);
     profCount[nome] = (profCount[nome]||0) + 1;
   });
   const profAvg = Object.keys(profSum).map(nome=>[nome, profSum[nome]/profCount[nome]]).sort((a,b)=>b[1]-a[1]).slice(0,20);
   makeChart('chGCProf',{ type:'bar', data:{ labels:profAvg.map(e=>e[0]), datasets:[{ label:'Média de horas por lançamento', data:profAvg.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+}
+
+/* ---------- Painel "produtos e serviços" por UN (complemento da Visão Geral) ---------- */
+// Mostra, para a UN selecionada no filtro, o quanto ela usou de cada produto/serviço
+// mapeado na planilha. Ferramentas sem coluna de UN própria (Copilot, Saga) usam o
+// cruzamento por pessoa (unForName, via aba CT). Itens sem informação de UN na
+// planilha (Academia Madrona, upMiner, Docusign/Certisign) aparecem com "—" e uma
+// nota, em vez de omitidos, para não sugerir zero uso quando o dado simplesmente
+// não existe nessa granularidade.
+function buildProdutosPorUN(un){
+  if(!un){
+    return `<div class="card" style="margin-bottom:20px; text-align:center; color:#888; padding:26px;">
+      Selecione uma UN no filtro acima (ou clique numa barra de UN) para ver o que ela utilizou em cada produto e serviço.
+    </div>`;
+  }
+  const lex = getLexter().filter(r=>r['UN']===un);
+  const pd = getPortData().filter(r=>r['UN']===un);
+  const im = getIManage().filter(r=>r['UN']===un);
+  const pub = getPublicacoes().filter(r=>r['UN']===un);
+  const cp = getCopilot().filter(r=>unForName(r['Nome'])===un);
+  const sg = getSaga().filter(r=>unForName(r['Nome'])===un);
+
+  const cards = [
+    { titulo:'Lexter', linhas:[
+      [fmtInt(lex.length), 'análises'],
+      [fmtInt(lex.reduce((s,r)=>s+num(r['DOCUMENTOS']),0)), 'documentos processados'],
+      [new Set(lex.map(r=>r['USUÁRIO'])).size, 'usuários'],
+    ]},
+    { titulo:'PortData', linhas:[
+      [fmtInt(pd.length), 'consultas'],
+      [fmtMoney(pd.reduce((s,r)=>s+num(r['VALOR']),0)), 'gasto total'],
+    ]},
+    { titulo:'Copilot', linhas:[
+      [fmtInt(cp.reduce((s,r)=>s+num(r['Prompts todos Apps']),0)), 'prompts (todos os apps)'],
+      [new Set(cp.map(r=>r['Nome'])).size, 'usuários'],
+    ]},
+    { titulo:'Saga', linhas:[
+      [fmtInt(sg.reduce((s,r)=>s+num(r['Enviado']),0)), 'mensagens enviadas'],
+      [new Set(sg.map(r=>r['Nome'])).size, 'usuários'],
+    ]},
+    { titulo:'iManage', linhas:[
+      [fmtInt(im.reduce((s,r)=>s+num(r['TOTAL']),0)), 'ações totais'],
+      [new Set(im.map(r=>r['NOME'])).size, 'usuários'],
+    ]},
+    { titulo:'Publicações', linhas:[
+      [fmtInt(pub.length), 'publicações'],
+    ]},
+    { titulo:'Academia Madrona / Treinamentos', linhas:[
+      ['N/D', 'planilha não registra participante por nome, só total por sessão'],
+    ]},
+    { titulo:'upMiner / Docusign / Certisign', linhas:[
+      ['N/D', 'uso registrado por área/ferramenta, não por UN, na planilha'],
+    ]},
+  ];
+
+  return `
+  <div class="card" style="margin-bottom:20px;">
+    <h3>O que a ${un} utilizou, por produto e serviço</h3>
+    <div class="kpi-grid">
+      ${cards.map(c=>`
+        <div class="kpi-card">
+          <div class="lbl" style="font-weight:700; color:var(--grafite); margin-bottom:6px;">${c.titulo}</div>
+          ${c.linhas.map(l=>`<div style="font-size:13px; margin-top:2px;"><b>${l[0]}</b> ${l[1]}</div>`).join('')}
+        </div>
+      `).join('')}
+    </div>
+  </div>`;
 }
 
 function computeMailingGrowth(){
@@ -881,6 +1306,8 @@ function buildCOMOverview(){
     </div>
   </div>
 
+  <div id="comFilterChips"></div>
+  <p class="chart-hint">Clique numa fatia de classificação ou numa barra de UN para filtrar o outro gráfico.</p>
   <div class="grid2">
     <div class="card"><h3>Publicações por classificação</h3><div class="chart-wrap"><canvas id="chCOMTipo"></canvas></div></div>
     <div class="card"><h3>Publicações por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chCOMUn"></canvas></div></div>
@@ -893,20 +1320,31 @@ function buildCOMOverview(){
   `;
 }
 
+const CF_COM = 'geral-com';
 function renderCOMOverviewCharts(){
-  const pub = getPublicacoes();
-  const tipoMap = groupSum(pub, 'Classificação', ()=>1);
+  const pubAll = getPublicacoes();
+
+  const chipsEl = document.getElementById('comFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_COM, {'Classificação':'Classificação','UN':'UN'});
+    cfBindChips(CF_COM, '#comFilterChips', renderCOMOverviewCharts);
+  }
+
+  const tipoRows = cfApply(pubAll, CF_COM, 'Classificação');
+  const tipoMap = groupSum(tipoRows, 'Classificação', ()=>1);
+  const tipoLabels = Object.keys(tipoMap);
   makeChart('chCOMTipo', {
     type:'doughnut',
-    data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]},
-    options:{ responsive:true, maintainAspectRatio:false }
+    data:{ labels:tipoLabels, datasets:[{ data:Object.values(tipoMap), backgroundColor:cfSliceColors(tipoLabels, PALETTE, cfActive(CF_COM,'Classificação')) }]},
+    options:{ responsive:true, maintainAspectRatio:false, onClick:cfOnClick(CF_COM,'Classificação',renderCOMOverviewCharts) }
   });
-  const unMap = groupSum(pub, 'UN', ()=>1);
+  const unRows = cfApply(pubAll, CF_COM, 'UN');
+  const unMap = groupSum(unRows, 'UN', ()=>1);
   const unEntries = sortedEntries(unMap).slice(0,10);
   makeChart('chCOMUn', {
     type:'bar',
-    data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]},
-    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false }
+    data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_COM,'UN')) }]},
+    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, onClick:cfOnClick(CF_COM,'UN',renderCOMOverviewCharts) }
   });
 
   const redes = getRedesSociais();
@@ -942,6 +1380,8 @@ function renderCOMOverviewCharts(){
 function pagePublicacoesHTML(){
   return `
   <div class="kpi-grid" id="pubKpis"></div>
+  <div id="pubFilterChips"></div>
+  <p class="chart-hint">Clique numa fatia de classificação ou numa barra de UN para filtrar os demais gráficos e a tabela.</p>
   <div class="grid2">
     <div class="card"><h3>Publicações por classificação</h3><div class="chart-wrap"><canvas id="chPubClass"></canvas></div></div>
     <div class="card"><h3>Publicações por mês</h3><div class="chart-wrap"><canvas id="chPubMes"></canvas></div></div>
@@ -956,21 +1396,32 @@ function pagePublicacoesHTML(){
   </div>
   `;
 }
+const CF_PUB = 'publicacoes';
 function afterRenderPublicacoes(){
-  const pub = getPublicacoes();
+  const pubAll = getPublicacoes();
   const redes = getRedesSociais();
-  const totalViews = pub.reduce((s,r)=>s+num(r['Visualizações']),0);
+  const totalViews = pubAll.reduce((s,r)=>s+num(r['Visualizações']),0);
   document.getElementById('pubKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(pub.length)}</div><div class="lbl">Total de publicações</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(pubAll.length)}</div><div class="lbl">Total de publicações</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalViews)}</div><div class="lbl">Visualizações totais (LinkedIn)</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pub,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pub,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteúdo</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteúdo</div></div>
     ${monthValueCard(redes,'Site - Visualizações','Visualização Site')}
     ${monthGrowthCard(redes,'Site - Visualizações','Crescimento Site')}
   `;
-  const classMap = groupSum(pub,'Classificação',()=>1);
-  makeChart('chPubClass',{ type:'pie', data:{ labels:Object.keys(classMap), datasets:[{ data:Object.values(classMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
 
+  const chipsEl = document.getElementById('pubFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_PUB, {'Classificação':'Classificação','UN':'UN'});
+    cfBindChips(CF_PUB, '#pubFilterChips', afterRenderPublicacoes);
+  }
+
+  const classRows = cfApply(pubAll, CF_PUB, 'Classificação');
+  const classMap = groupSum(classRows,'Classificação',()=>1);
+  const classLabels = Object.keys(classMap);
+  makeChart('chPubClass',{ type:'pie', data:{ labels:classLabels, datasets:[{ data:Object.values(classMap), backgroundColor:cfSliceColors(classLabels, PALETTE, cfActive(CF_PUB,'Classificação')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'Classificação',afterRenderPublicacoes)}});
+
+  const pub = cfApply(pubAll, CF_PUB); // pub filtrado por classificação/UN, para mês e tabela
   const mesMap = {};
   pub.forEach(r=>{
     const d = excelDateToJS(r['Data']);
@@ -980,9 +1431,10 @@ function afterRenderPublicacoes(){
   const mesLabels = MESES_ORDER.filter(m=>mesMap[m]!==undefined);
   makeChart('chPubMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Publicações', data:mesLabels.map(m=>mesMap[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
 
-  const unMap = groupSum(pub,'UN',()=>1);
+  const unRows = cfApply(pubAll, CF_PUB, 'UN');
+  const unMap = groupSum(unRows,'UN',()=>1);
   const unEntries = sortedEntries(unMap);
-  makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[3-1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PUB,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'UN',afterRenderPublicacoes)}});
 
   const labelsRedes = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mês']);
   makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
@@ -1072,6 +1524,8 @@ function afterRenderRedes(){
 function pageAcademiaMadronaHTML(){
   return `
   <div class="kpi-grid" id="acadMadKpis"></div>
+  <div id="acadMadFilterChips"></div>
+  <p class="chart-hint">Clique num pilar para filtrar as sessões exibidas ao lado.</p>
   <div class="grid2">
     <div class="card"><h3>Participantes vs. meta por sessão</h3><div class="chart-wrap tall"><canvas id="chAcadMadPart"></canvas></div></div>
     <div class="card"><h3>Sessões por pilar</h3><div class="chart-wrap"><canvas id="chAcadMadPilar"></canvas></div></div>
@@ -1081,23 +1535,34 @@ function pageAcademiaMadronaHTML(){
   </div>
   `;
 }
+const CF_ACADMAD = 'academiamadrona';
 function afterRenderAcademiaMadrona(){
-  const academia = getAcademia();
+  const academiaAll = getAcademia();
   const treinIm = getTreinamentoIM();
-  const totalPart = academia.reduce((s,r)=>s+num(r['PARTICIPANTES']),0);
-  const totalMeta = academia.reduce((s,r)=>s+num(r['META']),0);
+  const totalPart = academiaAll.reduce((s,r)=>s+num(r['PARTICIPANTES']),0);
+  const totalMeta = academiaAll.reduce((s,r)=>s+num(r['META']),0);
   document.getElementById('acadMadKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(academia.length)}</div><div class="lbl">Sessões Academia Madrona</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(academiaAll.length)}</div><div class="lbl">Sessões Academia Madrona</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalPart)}</div><div class="lbl">Total de participantes</div></div>
     <div class="kpi-card"><div class="val">${totalMeta? fmtPct(totalPart/totalMeta):'-'}</div><div class="lbl">Atingimento vs. meta</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(treinIm.length)}</div><div class="lbl">Treinamentos iManage realizados</div></div>
   `;
+
+  const chipsEl = document.getElementById('acadMadFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_ACADMAD, {'PILAR':'Pilar'});
+    cfBindChips(CF_ACADMAD, '#acadMadFilterChips', afterRenderAcademiaMadrona);
+  }
+
+  const academia = cfApply(academiaAll, CF_ACADMAD);
   makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TÍTULO']), datasets:[
       { label:'Participantes', data:academia.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Meta', data:academia.map(r=>num(r['META'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
-  const pilarMap = groupSum(academia,'PILAR',()=>1);
-  makeChart('chAcadMadPilar',{ type:'doughnut', data:{ labels:Object.keys(pilarMap), datasets:[{ data:Object.values(pilarMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+  const pilarRows = cfApply(academiaAll, CF_ACADMAD, 'PILAR');
+  const pilarMap = groupSum(pilarRows,'PILAR',()=>1);
+  const pilarLabels = Object.keys(pilarMap);
+  makeChart('chAcadMadPilar',{ type:'doughnut', data:{ labels:pilarLabels, datasets:[{ data:Object.values(pilarMap), backgroundColor:cfSliceColors(pilarLabels, PALETTE, cfActive(CF_ACADMAD,'PILAR')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_ACADMAD,'PILAR',afterRenderAcademiaMadrona)}});
 
   makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TÍTULO']; }), datasets:[
       { label:'Participantes', data:treinIm.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
@@ -1146,6 +1611,8 @@ function afterRenderAcademia(){
 function pageLexJurisHTML(){
   return `
   <div class="kpi-grid" id="ljKpis"></div>
+  <div id="ljFilterChips"></div>
+  <p class="chart-hint">Clique numa fatia ou barra para filtrar os demais gráficos e a tabela abaixo.</p>
   <div class="grid2">
     <div class="card"><h3>Lex ou Juris</h3><div class="chart-wrap"><canvas id="chLJTipo"></canvas></div></div>
     <div class="card"><h3>Por UN</h3><div class="chart-wrap"><canvas id="chLJUn"></canvas></div></div>
@@ -1157,20 +1624,37 @@ function pageLexJurisHTML(){
   </div>
   `;
 }
+const CF_LJ = 'lexjuris';
 function afterRenderLexJuris(){
-  const lj = getLexJuris();
+  const ljAll = getLexJuris();
   document.getElementById('ljKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(lj.length)}</div><div class="lbl">Total de análises</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lj,'UN 1',()=>1)).length}</div><div class="lbl">UNs envolvidas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lj,'Responsável pela análise',()=>1)).length}</div><div class="lbl">Responsáveis envolvidos</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(ljAll.length)}</div><div class="lbl">Total de análises</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(ljAll,'UN 1',()=>1)).length}</div><div class="lbl">UNs envolvidas</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(ljAll,'Responsável pela análise',()=>1)).length}</div><div class="lbl">Responsáveis envolvidos</div></div>
   `;
-  const tipoMap = groupSum(lj,'Lex ou Juris',()=>1);
-  makeChart('chLJTipo',{ type:'pie', data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
-  const unMap = groupSum(lj,'UN 1',()=>1);
-  makeChart('chLJUn',{ type:'pie', data:{ labels:Object.keys(unMap), datasets:[{ data:Object.values(unMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
-  const ativMap = groupSum(lj,'Atividade',()=>1);
+
+  const chipsEl = document.getElementById('ljFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_LJ, {'Lex ou Juris':'Tipo','UN 1':'UN','Atividade':'Atividade'});
+    cfBindChips(CF_LJ, '#ljFilterChips', afterRenderLexJuris);
+  }
+
+  const tipoRows = cfApply(ljAll, CF_LJ, 'Lex ou Juris');
+  const tipoMap = groupSum(tipoRows,'Lex ou Juris',()=>1);
+  const tipoLabels = Object.keys(tipoMap);
+  makeChart('chLJTipo',{ type:'pie', data:{ labels:tipoLabels, datasets:[{ data:Object.values(tipoMap), backgroundColor:cfSliceColors(tipoLabels, PALETTE, cfActive(CF_LJ,'Lex ou Juris')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LJ,'Lex ou Juris',afterRenderLexJuris)}});
+
+  const unRows = cfApply(ljAll, CF_LJ, 'UN 1');
+  const unMap = groupSum(unRows,'UN 1',()=>1);
+  const unLabels = Object.keys(unMap);
+  makeChart('chLJUn',{ type:'pie', data:{ labels:unLabels, datasets:[{ data:Object.values(unMap), backgroundColor:cfSliceColors(unLabels, PALETTE, cfActive(CF_LJ,'UN 1')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LJ,'UN 1',afterRenderLexJuris)}});
+
+  const ativRows = cfApply(ljAll, CF_LJ, 'Atividade');
+  const ativMap = groupSum(ativRows,'Atividade',()=>1);
   const ativEntries = sortedEntries(ativMap);
-  makeChart('chLJAtividade',{ type:'bar', data:{ labels:ativEntries.map(e=>e[0]), datasets:[{ label:'Reportes', data:ativEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chLJAtividade',{ type:'bar', data:{ labels:ativEntries.map(e=>e[0]), datasets:[{ label:'Reportes', data:ativEntries.map(e=>e[1]), backgroundColor:cfBarColors(ativEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_LJ,'Atividade')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_LJ,'Atividade',afterRenderLexJuris)}});
+
+  const lj = cfApply(ljAll, CF_LJ);
   document.getElementById('tblLJ').innerHTML = `
     <tr><th>UN</th><th>Responsável</th><th>Tema</th></tr>
     ${lj.map(r=>`<tr><td>${r['UN 1']||''}</td><td>${r['Responsável pela análise']||''}</td><td>${r['Tema']||''}</td></tr>`).join('')}
@@ -1195,6 +1679,8 @@ function pageTimesheetHTML(){
     </select>
   </div>
   <div class="kpi-grid" id="tsKpis"></div>
+  <div id="tsFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de UN ou de Frente: os outros gráficos refletem a seleção (ex.: clique em "UN Corporativo" e veja em qual frente ela mais se dedicou). Clique de novo para limpar.</p>
   <div class="grid2">
     <div class="card"><h3>Investimento por frente, em horas</h3><div class="chart-wrap tall"><canvas id="chTsFrente"></canvas></div></div>
     <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chTsUn"></canvas></div></div>
@@ -1206,6 +1692,7 @@ function pageTimesheetHTML(){
   <div class="card"><h3>Participação proporcional por Unidade de Negócio (% de pessoas da UN que lançaram horas)</h3><div class="chart-wrap tall"><canvas id="chTsPart"></canvas></div></div>
   `;
 }
+const CF_TS = 'timesheet';
 function afterRenderTimesheet(){
   const select = document.getElementById('tsMonthFilter');
   if(select){
@@ -1218,7 +1705,15 @@ function afterRenderTimesheet(){
 }
 function afterRenderTimesheetData(){
   const tsAll = getTimesheet();
-  const ts = TS_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===TS_MONTH_FILTER);
+  const tsMonth = TS_MONTH_FILTER==='todos' ? tsAll : tsAll.filter(r=>monthAbbrPT(r['Data'])===TS_MONTH_FILTER);
+
+  const chipsEl = document.getElementById('tsFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_TS, {'Caso Real':'Frente','Desc. Grupo Jurídico':'UN'});
+    cfBindChips(CF_TS, '#tsFilterChips', afterRenderTimesheetData);
+  }
+
+  const ts = cfApply(tsMonth, CF_TS); // linhas totalmente filtradas, para KPIs, profissionais e participação
   const totalHoras = ts.reduce((s,r)=>s+num(r['Tempo Investido']),0);
   const profissionaisUnicos = new Set(ts.map(r=>normalizeName(r['Nome Prof. Rev.'])).filter(Boolean));
   document.getElementById('tsKpis').innerHTML = `
@@ -1226,14 +1721,23 @@ function afterRenderTimesheetData(){
     <div class="kpi-card"><div class="val">${Object.keys(groupSum(ts,'Caso Real',()=>1)).length}</div><div class="lbl">Frentes ativas</div></div>
     <div class="kpi-card"><div class="val">${profissionaisUnicos.size}</div><div class="lbl">Profissionais envolvidos</div></div>
   `;
-  const frenteMap = groupSum(ts,'Caso Real', r=>num(r['Tempo Investido']));
+
+  // Investimento por frente: mostra sempre todas as frentes (destacando a selecionada),
+  // mas já considerando o filtro de UN, se houver.
+  const frenteRows = cfApply(tsMonth, CF_TS, 'Caso Real');
+  const frenteMap = groupSum(frenteRows,'Caso Real', r=>num(r['Tempo Investido']));
   const frenteEntries = sortedEntries(frenteMap);
-  makeChart('chTsFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  makeChart('chTsFrente',{ type:'bar', data:{ labels:frenteEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:frenteEntries.map(e=>e[1]), backgroundColor:cfBarColors(frenteEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_TS,'Caso Real')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_TS,'Caso Real',afterRenderTimesheetData)}});
 
-  const unMap = groupSum(ts,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
+  // Investimento por UN: mostra sempre todas as UNs (destacando a selecionada),
+  // já considerando o filtro de frente, se houver.
+  const unRows = cfApply(tsMonth, CF_TS, 'Desc. Grupo Jurídico');
+  const unMap = groupSum(unRows,'Desc. Grupo Jurídico', r=>num(r['Tempo Investido']));
   const unEntries = sortedEntries(unMap);
-  makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_TS,'Desc. Grupo Jurídico')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_TS,'Desc. Grupo Jurídico',afterRenderTimesheetData)}});
 
+  // Tendência mensal: propositalmente sempre com o ano completo e sem os filtros de UN/Frente,
+  // para servir de referência de contexto (não "some" quando se seleciona uma barra).
   const mesMap = {};
   tsAll.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
   const mesLabels = MES_ABBR_ORDER.filter(m=>mesMap[m]!==undefined);
@@ -1307,6 +1811,7 @@ function buildDocuCertiHTML(){
     return `<div class="empty-state"><h2>Sem dados de Docusign e Certisign na planilha</h2><p>Adicione a aba "Docusign & Certisign" em BI_GC_Com_2026.xlsx com os campos ENVELOPES CONTRATADOS, ENVELOPES DISPONIVEIS e ENVELOPES USADOS para cada ferramenta.</p></div>`;
   }
   return `
+  <div id="dcContractBlock"></div>
   <div class="kpi-grid" id="dcKpis"></div>
   <div class="grid2">
     <div class="card"><h3>Envelopes por ferramenta</h3><div class="chart-wrap"><canvas id="chDcFerramenta"></canvas></div></div>
@@ -1319,6 +1824,11 @@ function renderDocuCertiCharts(){
   if(!dc) return;
   const pctCert = dc.certisign.contratados ? dc.certisign.disponiveis/dc.certisign.contratados : 0;
   const pctDocu = dc.docusign.contratados ? dc.docusign.disponiveis/dc.docusign.contratados : 0;
+  const blockEl = document.getElementById('dcContractBlock');
+  if(blockEl){
+    const pctUsoDocu = dc.docusign.contratados ? dc.docusign.usados/dc.docusign.contratados : 0;
+    blockEl.innerHTML = contractLoadingBlockHTML('docusign', pctUsoDocu, 'Envelopes consumidos do contrato');
+  }
   document.getElementById('dcKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtPct(pctCert)}</div><div class="lbl">Envelopes restantes, Certisign (${fmtInt(dc.certisign.contratados)} contratados)</div></div>
     <div class="kpi-card"><div class="val">${fmtPct(pctDocu)}</div><div class="lbl">Envelopes restantes, Docusign (${fmtInt(dc.docusign.contratados)} contratados)</div></div>
@@ -1349,59 +1859,175 @@ function renderBibliotecasCharts(){
 function buildLexterHTML(){
   return `
   <div class="kpi-grid" id="lexKpis"></div>
+  <div class="insight-grid" id="lexInsights"></div>
+  <div class="grid2">
+    <div class="card"><h3>Evolução de uso mensal</h3><div class="chart-wrap"><canvas id="chLexMes"></canvas></div></div>
+    <div class="card"><h3>Usuários ativos por mês</h3><div class="chart-wrap"><canvas id="chLexUsersMes"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-bottom:20px;">
+    <h3>Adoção por Unidade de Negócio</h3>
+    <p class="chart-hint" style="margin-top:-6px;">% de pessoas da UN (aba CT) que já geraram ao menos uma análise no Lexter.</p>
+    <div id="lexAdopt"></div>
+  </div>
+  <div id="lexFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de UN ou de usuário para filtrar o outro gráfico.</p>
   <div class="grid2">
     <div class="card"><h3>Análises por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chLexUn"></canvas></div></div>
     <div class="card"><h3>Top usuários (por análises)</h3><div class="chart-wrap"><canvas id="chLexUsers"></canvas></div></div>
   </div>
   `;
 }
+const CF_LEX = 'lexter';
 function renderLexterCharts(){
-  const lex = getLexter();
-  const totalDoc = lex.reduce((s,r)=>s+num(r['DOCUMENTOS']),0);
-  const totalResp = lex.reduce((s,r)=>s+num(r['RESPOSTAS']),0);
+  const lexAll = getLexter();
+  const totalDoc = lexAll.reduce((s,r)=>s+num(r['DOCUMENTOS']),0);
+  const totalResp = lexAll.reduce((s,r)=>s+num(r['RESPOSTAS']),0);
+  const usuariosUnicos = [...new Set(lexAll.map(r=>(r['USUÁRIO']||'').toString().trim().toLowerCase()).filter(Boolean))];
   document.getElementById('lexKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(lex.length)}</div><div class="lbl">Total de análises</div></div>
-    <div class="kpi-card"><div class="val">${fmtInt(totalDoc)}</div><div class="lbl">Documentos processados</div></div>
-    <div class="kpi-card"><div class="val">${fmtInt(totalResp)}</div><div class="lbl">Créditos/respostas geradas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(lex,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+    <div class="kpi-card azul"><div class="val">${fmtInt(lexAll.length)}</div><div class="lbl">Total de análises</div></div>
+    <div class="kpi-card grafite"><div class="val">${fmtInt(totalDoc)}</div><div class="lbl">Documentos processados</div></div>
+    <div class="kpi-card amarelo"><div class="val">${fmtInt(totalResp)}</div><div class="lbl">Créditos/respostas geradas</div></div>
+    <div class="kpi-card verde"><div class="val">${usuariosUnicos.length}</div><div class="lbl">Usuários ativos</div></div>
   `;
-  const unMap = groupSum(lex,'UN',()=>1);
+
+  /* ---- Evolução mensal (análises e usuários distintos por mês) ---- */
+  const mesAnaliseMap = {}; const mesUsersMap = {};
+  lexAll.forEach(r=>{
+    const m = monthAbbrPT(r['DATA']);
+    if(!m) return;
+    mesAnaliseMap[m] = (mesAnaliseMap[m]||0) + 1;
+    if(!mesUsersMap[m]) mesUsersMap[m] = new Set();
+    mesUsersMap[m].add((r['USUÁRIO']||'').toString().trim().toLowerCase());
+  });
+  const mesLabels = MES_ABBR_ORDER.filter(m=>mesAnaliseMap[m]!==undefined);
+  makeChart('chLexMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Análises', data:mesLabels.map(m=>mesAnaliseMap[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chLexUsersMes',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Usuários ativos', data:mesLabels.map(m=>mesUsersMap[m].size), borderColor:PALETTE[2], backgroundColor:PALETTE[2]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  /* ---- Adoção por UN: % de pessoas da UN (aba CT) que já usaram o Lexter ----
+     Comparamos contra TODAS as unidades jurídicas/GC da aba CT (não só as que
+     já aparecem no Lexter), para que uma UN com 0% de adoção — o gap mais
+     relevante estrategicamente — apareça na lista em vez de ser omitida. */
+  const headcountByUN = groupSum(getCT(), 'UN', ()=>1);
+  const usersByUN = {};
+  lexAll.forEach(r=>{
+    const un = r['UN']; const user = (r['USUÁRIO']||'').toString().trim().toLowerCase();
+    if(!un || !user) return;
+    if(!usersByUN[un]) usersByUN[un] = new Set();
+    usersByUN[un].add(user);
+  });
+  const isUnidadeAlvo = un => /^UN /.test(un) || un==='Gestão de Conhecimento';
+  const adoptEntries = Object.keys(headcountByUN)
+    .filter(isUnidadeAlvo)
+    .map(un=>({ un, ativos: usersByUN[un] ? usersByUN[un].size : 0, total:headcountByUN[un], pct:(usersByUN[un]?usersByUN[un].size:0)/headcountByUN[un] }))
+    .sort((a,b)=>b.pct-a.pct);
+  const adoptEl = document.getElementById('lexAdopt');
+  if(adoptEl){
+    adoptEl.innerHTML = adoptEntries.map(e=>`
+      <div class="adopt-row">
+        <div class="lbl"><span>${e.un}</span><span><b>${fmtPct(e.pct)}</b> (${e.ativos}/${e.total})</span></div>
+        <div class="adopt-bar-bg"><div class="adopt-bar-fill ${e.pct<0.15?'baixa':'alta'}" style="width:${Math.min(100,e.pct*100)}%"></div></div>
+      </div>`).join('');
+  }
+
+  /* ---- Cards de insight (leitura estratégica) ---- */
+  const insightsEl = document.getElementById('lexInsights');
+  if(insightsEl && mesLabels.length){
+    const mesTop = mesLabels.reduce((best,m)=> mesAnaliseMap[m]>mesAnaliseMap[best]?m:best, mesLabels[0]);
+    const primeirosMeses = mesLabels.slice(0, Math.min(2,mesLabels.length));
+    const baseMedia = primeirosMeses.reduce((s,m)=>s+mesAnaliseMap[m],0)/primeirosMeses.length;
+    const crescimento = baseMedia>0 ? mesAnaliseMap[mesTop]/baseMedia : null;
+    const unDoMesTop = groupSum(lexAll.filter(r=>monthAbbrPT(r['DATA'])===mesTop), 'UN', ()=>1);
+    const unDestaqueMesTop = sortedEntries(unDoMesTop)[0];
+
+    // Várias UNs podem estar empatadas em 0% de adoção; nesse caso o card
+    // deve listar todas, em vez de apontar uma UN qualquer como "a pior".
+    const semAdocao = adoptEntries.filter(e=>e.pct===0);
+    const piorAdocao = adoptEntries.length ? adoptEntries[adoptEntries.length-1] : null;
+
+    const userTotals = sortedEntries(groupSum(lexAll,'USUÁRIO',()=>1));
+    const top10Count = userTotals.slice(0,10).reduce((s,e)=>s+e[1],0);
+    const pctTop10 = lexAll.length ? top10Count/lexAll.length : 0;
+
+    const cards = [];
+    cards.push({ cls:'positivo', icone:'✅', titulo:`Pico de uso: ${mesTop}`,
+      texto:`${mesTop} registrou ${fmtInt(mesAnaliseMap[mesTop])} análises${crescimento? `, crescimento de ${crescimento.toFixed(1)}x vs. os meses iniciais`:''}${unDestaqueMesTop? `, com destaque para ${unDestaqueMesTop[0]}`:''}.` });
+    if(semAdocao.length>=2){
+      cards.push({ cls:'alerta', icone:'⚠', titulo:`${semAdocao.length} unidades sem nenhuma adoção`,
+        texto:`${semAdocao.map(e=>e.un).join(', ')} ainda não geraram nenhuma análise no Lexter (0 de ${semAdocao.reduce((s,e)=>s+e.total,0)} pessoas ao todo).` });
+    } else if(piorAdocao){
+      cards.push({ cls:'alerta', icone:'⚠', titulo:`Menor adoção: ${piorAdocao.un}`,
+        texto:`Apenas ${fmtPct(piorAdocao.pct)} das pessoas dessa UN (${piorAdocao.ativos} de ${piorAdocao.total}) já geraram alguma análise no Lexter.` });
+    }
+    cards.push({ cls:'atencao', icone:'📊', titulo:'Uso concentrado em poucos',
+      texto:`Os top 10 usuários representam ${fmtPct(pctTop10)} de todas as análises geradas. Meta: ampliar a base de usuários engajados.` });
+    insightsEl.innerHTML = cards.map(c=>`
+      <div class="insight-card ${c.cls}">
+        <div class="titulo">${c.icone} ${c.titulo}</div>
+        <div class="texto">${c.texto}</div>
+      </div>`).join('');
+  }
+
+  const chipsEl = document.getElementById('lexFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_LEX, {'UN':'UN','USUÁRIO':'Usuário'});
+    cfBindChips(CF_LEX, '#lexFilterChips', renderLexterCharts);
+  }
+
+  const unRows = cfApply(lexAll, CF_LEX, 'UN');
+  const unMap = groupSum(unRows,'UN',()=>1);
   const unEntries = sortedEntries(unMap);
-  makeChart('chLexUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
-  const userMap = groupSum(lex,'USUÁRIO',()=>1);
+  makeChart('chLexUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_LEX,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LEX,'UN',renderLexterCharts)}});
+
+  const userRows = cfApply(lexAll, CF_LEX, 'USUÁRIO');
+  const userMap = groupSum(userRows,'USUÁRIO',()=>1);
   const userEntries = sortedEntries(userMap).slice(0,15);
-  makeChart('chLexUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  makeChart('chLexUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_LEX,'USUÁRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LEX,'USUÁRIO',renderLexterCharts)}});
 }
 
 function buildPortDataHTML(){
   return `
   <div class="kpi-grid" id="pdKpis"></div>
+  <div id="pdFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de UN ou de usuário para filtrar o outro gráfico.</p>
   <div class="grid2">
     <div class="card"><h3>Gasto por Unidade de Negócio</h3><div class="chart-wrap"><canvas id="chPdUn"></canvas></div></div>
     <div class="card"><h3>Top usuários (por consultas)</h3><div class="chart-wrap"><canvas id="chPdUsers"></canvas></div></div>
   </div>
   `;
 }
+const CF_PD = 'portdata';
 function renderPortDataCharts(){
-  const pd = getPortData();
-  const totalValor = pd.reduce((s,r)=>s+num(r['VALOR']),0);
+  const pdAll = getPortData();
+  const totalValor = pdAll.reduce((s,r)=>s+num(r['VALOR']),0);
   document.getElementById('pdKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(pd.length)}</div><div class="lbl">Total de consultas</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(pdAll.length)}</div><div class="lbl">Total de consultas</div></div>
     <div class="kpi-card"><div class="val">${fmtMoney(totalValor)}</div><div class="lbl">Gasto total</div></div>
-    <div class="kpi-card"><div class="val">${pd.length? fmtMoney(totalValor/pd.length):'-'}</div><div class="lbl">Ticket médio</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pd,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+    <div class="kpi-card"><div class="val">${pdAll.length? fmtMoney(totalValor/pdAll.length):'-'}</div><div class="lbl">Ticket médio</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pdAll,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
   `;
-  const unMap = groupSum(pd,'UN', r=>num(r['VALOR']));
+
+  const chipsEl = document.getElementById('pdFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_PD, {'UN':'UN','USUÁRIO':'Usuário'});
+    cfBindChips(CF_PD, '#pdFilterChips', renderPortDataCharts);
+  }
+
+  const unRows = cfApply(pdAll, CF_PD, 'UN');
+  const unMap = groupSum(unRows,'UN', r=>num(r['VALOR']));
   const unEntries = sortedEntries(unMap);
-  makeChart('chPdUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Gasto (R$)', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[2] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
-  const userMap = groupSum(pd,'USUÁRIO',()=>1);
+  makeChart('chPdUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Gasto (R$)', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PD,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PD,'UN',renderPortDataCharts)}});
+
+  const userRows = cfApply(pdAll, CF_PD, 'USUÁRIO');
+  const userMap = groupSum(userRows,'USUÁRIO',()=>1);
   const userEntries = sortedEntries(userMap).slice(0,15);
-  makeChart('chPdUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Consultas', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+  makeChart('chPdUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Consultas', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[3], cfActive(CF_PD,'USUÁRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PD,'USUÁRIO',renderPortDataCharts)}});
 }
 
 function buildCopilotHTML(){
   return `
   <div class="kpi-grid" id="cpKpis"></div>
+  <div id="cpFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de usuário ou de UN para filtrar os demais gráficos.</p>
   <div class="grid2">
     <div class="card"><h3>Top usuários por prompts</h3><div class="chart-wrap"><canvas id="chCpUsers"></canvas></div></div>
     <div class="card"><h3>Copilot work vs. web</h3><div class="chart-wrap"><canvas id="chCpWorkWeb"></canvas></div></div>
@@ -1409,67 +2035,101 @@ function buildCopilotHTML(){
   <div class="card"><h3>Prompts por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chCpUn"></canvas></div></div>
   `;
 }
+const CF_CP = 'copilot';
 function renderCopilotCharts(){
-  const cp = getCopilot();
-  const totalPrompts = cp.reduce((s,r)=>s+num(r['Prompts todos Apps']),0);
-  const totalWork = cp.reduce((s,r)=>s+num(r['Prompts Copilot (work)']),0);
-  const totalWeb = cp.reduce((s,r)=>s+num(r['Prompts Copilot (web)']),0);
+  const cpAll = getCopilot();
+  cpAll.forEach(r=>{ if(r._UN===undefined) r._UN = unForName(r['Nome']); });
+  const totalPrompts = cpAll.reduce((s,r)=>s+num(r['Prompts todos Apps']),0);
+  const totalWork = cpAll.reduce((s,r)=>s+num(r['Prompts Copilot (work)']),0);
+  const totalWeb = cpAll.reduce((s,r)=>s+num(r['Prompts Copilot (web)']),0);
   document.getElementById('cpKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtInt(totalPrompts)}</div><div class="lbl">Prompts totais (todos os apps)</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalWork)}</div><div class="lbl">Prompts Copilot work</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalWeb)}</div><div class="lbl">Prompts Copilot web</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(cp,'Nome',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(cpAll,'Nome',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
   `;
-  const userMap = groupSum(cp,'Nome', r=>num(r['Prompts todos Apps']));
+
+  const chipsEl = document.getElementById('cpFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_CP, {'Nome':'Usuário','_UN':'UN'});
+    cfBindChips(CF_CP, '#cpFilterChips', renderCopilotCharts);
+  }
+
+  const userRows = cfApply(cpAll, CF_CP, 'Nome');
+  const userMap = groupSum(userRows,'Nome', r=>num(r['Prompts todos Apps']));
   const userEntries = sortedEntries(userMap).slice(0,15);
-  makeChart('chCpUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:userEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
-  const topUsers = userEntries.slice(0,10).map(e=>e[0]);
-  const workMap = groupSum(cp,'Nome', r=>num(r['Prompts Copilot (work)']));
-  const webMap = groupSum(cp,'Nome', r=>num(r['Prompts Copilot (web)']));
+  makeChart('chCpUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_CP,'Nome')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_CP,'Nome',renderCopilotCharts)}});
+
+  const wwRows = cfApply(cpAll, CF_CP);
+  const topUsers = sortedEntries(groupSum(wwRows,'Nome', r=>num(r['Prompts todos Apps']))).slice(0,10).map(e=>e[0]);
+  const workMap = groupSum(wwRows,'Nome', r=>num(r['Prompts Copilot (work)']));
+  const webMap = groupSum(wwRows,'Nome', r=>num(r['Prompts Copilot (web)']));
   makeChart('chCpWorkWeb',{ type:'bar', data:{ labels:topUsers, datasets:[
       { label:'Work', data:topUsers.map(u=>workMap[u]||0), backgroundColor:PALETTE[0] },
       { label:'Web', data:topUsers.map(u=>webMap[u]||0), backgroundColor:PALETTE[1] }
     ]}, options:{responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}}});
 
+  const unRows = cfApply(cpAll, CF_CP, '_UN');
   const unMap = {};
-  cp.forEach(r=>{ const un = unForName(r['Nome']); unMap[un] = (unMap[un]||0) + num(r['Prompts todos Apps']); });
+  unRows.forEach(r=>{ unMap[r._UN] = (unMap[r._UN]||0) + num(r['Prompts todos Apps']); });
   const unEntries = sortedEntries(unMap);
-  makeChart('chCpUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[2] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chCpUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Prompts', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_CP,'_UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_CP,'_UN',renderCopilotCharts)}});
 }
 
 function buildSagaHTML(){
   return `
   <div class="kpi-grid" id="sgKpis"></div>
+  <div id="sgFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de usuário ou de UN para filtrar os demais gráficos.</p>
   <div class="grid2">
-    <div class="card"><h3>Mensagens enviadas por usuário (top 15)</h3><div class="chart-wrap"><canvas id="chSgMsg"></canvas></div></div>
+    <div class="card"><h3>Mensagens por mês de acesso, por usuário (top 15)</h3><p class="chart-hint" style="margin:-6px 0 10px;">Normalizado pelo tempo de adesão, para não favorecer quem entrou há mais tempo.</p><div class="chart-wrap"><canvas id="chSgMsg"></canvas></div></div>
     <div class="card"><h3>Projetos totais vs. compartilhados (top 15)</h3><div class="chart-wrap"><canvas id="chSgProj"></canvas></div></div>
   </div>
   <div class="card"><h3>Mensagens por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chSgUn"></canvas></div></div>
   `;
 }
+const CF_SG = 'saga';
 function renderSagaCharts(){
-  const sg = getSaga();
-  const totalMsg = sg.reduce((s,r)=>s+num(r['Enviado']),0);
-  const totalProj = sg.reduce((s,r)=>s+num(r['Total Projetos']),0);
-  const totalCompl = sg.reduce((s,r)=>s+num(r['Projetos Comp.']),0);
+  const sgAll = getSaga();
+  sgAll.forEach(r=>{
+    if(r._UN===undefined) r._UN = unForName(r['Nome']);
+    if(r._taxaMensal===undefined){
+      // Mensagens por mês desde a adesão (30 dias), para comparar de forma justa
+      // quem entrou há pouco tempo com quem já usa a ferramenta há mais tempo.
+      const dias = Math.max(num(r['Dias de uso']), 1);
+      r._taxaMensal = num(r['Enviado']) / dias * 30;
+    }
+  });
+  const totalMsg = sgAll.reduce((s,r)=>s+num(r['Enviado']),0);
+  const totalProj = sgAll.reduce((s,r)=>s+num(r['Total Projetos']),0);
+  const totalCompl = sgAll.reduce((s,r)=>s+num(r['Projetos Comp.']),0);
   document.getElementById('sgKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtInt(totalMsg)}</div><div class="lbl">Mensagens enviadas</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalProj)}</div><div class="lbl">Projetos totais</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalCompl)}</div><div class="lbl">Projetos compartilhados</div></div>
     <div class="kpi-card"><div class="val">${totalProj? fmtPct(totalCompl/totalProj):'-'}</div><div class="lbl">Taxa de compartilhamento</div></div>
   `;
-  const sorted = [...sg].sort((a,b)=>num(b['Enviado'])-num(a['Enviado'])).slice(0,15);
-  makeChart('chSgMsg',{ type:'bar', data:{ labels:sorted.map(r=>r['Nome']), datasets:[{ label:'Mensagens', data:sorted.map(r=>num(r['Enviado'])), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
-  const sorted2 = [...sg].sort((a,b)=>num(b['Total Projetos'])-num(a['Total Projetos'])).slice(0,15);
+
+  const chipsEl = document.getElementById('sgFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_SG, {'Nome':'Usuário','_UN':'UN'});
+    cfBindChips(CF_SG, '#sgFilterChips', renderSagaCharts);
+  }
+
+  const nomeRows = cfApply(sgAll, CF_SG, 'Nome');
+  const sorted = [...nomeRows].sort((a,b)=>b._taxaMensal-a._taxaMensal).slice(0,15);
+  makeChart('chSgMsg',{ type:'bar', data:{ labels:sorted.map(r=>r['Nome']), datasets:[{ label:'Mensagens/mês', data:sorted.map(r=>Math.round(r._taxaMensal*10)/10), backgroundColor:cfBarColors(sorted.map(r=>r['Nome']), PALETTE[0], cfActive(CF_SG,'Nome')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_SG,'Nome',renderSagaCharts), plugins:{tooltip:{callbacks:{label:ctx=>{ const r = sorted[ctx.dataIndex]; return `${ctx.parsed.x} mensagens/mês (${fmtInt(num(r['Enviado']))} no total, desde ${excelDateToJS(r['Criado'])?fmtDatePT(excelDateToJS(r['Criado'])):'-'})`; }}}}}});
+  const sorted2 = [...nomeRows].sort((a,b)=>num(b['Total Projetos'])-num(a['Total Projetos'])).slice(0,15);
   makeChart('chSgProj',{ type:'bar', data:{ labels:sorted2.map(r=>r['Nome']), datasets:[
       { label:'Total', data:sorted2.map(r=>num(r['Total Projetos'])), backgroundColor:PALETTE[4] },
       { label:'Compartilhados', data:sorted2.map(r=>num(r['Projetos Comp.'])), backgroundColor:PALETTE[2] }
-    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_SG,'Nome',renderSagaCharts)}});
 
+  const unRows = cfApply(sgAll, CF_SG, '_UN');
   const unMap = {};
-  sg.forEach(r=>{ const un = unForName(r['Nome']); unMap[un] = (unMap[un]||0) + num(r['Enviado']); });
+  unRows.forEach(r=>{ unMap[r._UN] = (unMap[r._UN]||0) + num(r['Enviado']); });
   const unEntries = sortedEntries(unMap);
-  makeChart('chSgUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Mensagens', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[3] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chSgUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Mensagens', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[3], cfActive(CF_SG,'_UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_SG,'_UN',renderSagaCharts)}});
 }
 
 let IM_MONTH_FILTER = 'todos';
@@ -1487,6 +2147,8 @@ function buildImanageHTML(){
     </select>
   </div>
   <div class="kpi-grid" id="imKpis"></div>
+  <div id="imFilterChips"></div>
+  <p class="chart-hint">Clique numa posição, usuário ou UN para filtrar os demais gráficos.</p>
   <div class="grid2">
     <div class="card"><h3>Distribuição por posição</h3><div class="chart-wrap"><canvas id="chImPos"></canvas></div></div>
     <div class="card"><h3>O que mais produziram (volume por tipo de ação)</h3><div class="chart-wrap"><canvas id="chImProd"></canvas></div></div>
@@ -1495,6 +2157,7 @@ function buildImanageHTML(){
   <div class="card"><h3>Total de ações por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chImUn"></canvas></div></div>
   `;
 }
+const CF_IM = 'imanage';
 function renderImanageCharts(){
   const select = document.getElementById('imMonthFilter');
   if(select){
@@ -1506,8 +2169,17 @@ function renderImanageCharts(){
   renderImanageChartsData();
 }
 function renderImanageChartsData(){
-  const imAll = getIManage();
-  const im = IM_MONTH_FILTER==='todos' ? imAll : imAll.filter(r=>monthAbbrPT(r['MÊS'])===IM_MONTH_FILTER);
+  const imAllMeses = getIManage();
+  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIÇÃO']); });
+  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(r['MÊS'])===IM_MONTH_FILTER);
+
+  const chipsEl = document.getElementById('imFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_IM, {'_POS':'Posição','NOME':'Usuário','UN':'UN'});
+    cfBindChips(CF_IM, '#imFilterChips', renderImanageChartsData);
+  }
+
+  const im = cfApply(imMonth, CF_IM);
   const totalAcoes = im.reduce((s,r)=>s+num(r['TOTAL']),0);
   const totalDoc = im.reduce((s,r)=>s+num(r['DOC. CRIADO']),0);
   const totalVer = im.reduce((s,r)=>s+num(r['V. CRIADA']),0);
@@ -1520,61 +2192,80 @@ function renderImanageChartsData(){
     <div class="kpi-card"><div class="val">${fmtInt(totalEmail)}</div><div class="lbl">E-mails arquivados</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalExp)}</div><div class="lbl">Exportações</div></div>
   `;
+  const posRows = cfApply(imMonth, CF_IM, '_POS');
   const posMap = {};
-  im.forEach(r=>{ const cat = classifyPosicao(r['POSIÇÃO']); posMap[cat] = (posMap[cat]||0) + num(r['TOTAL']); });
+  posRows.forEach(r=>{ posMap[r._POS] = (posMap[r._POS]||0) + num(r['TOTAL']); });
   const posOrder = ['Estagiário','Júnior','Pleno','Sênior','Sócio','ADM'];
   const posLabels = posOrder.filter(p=>posMap[p]!==undefined);
-  makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
+  makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:cfSliceColors(posLabels, PALETTE, cfActive(CF_IM,'_POS')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_IM,'_POS',renderImanageChartsData)}});
 
   const paletteProd = [PALETTE[5],PALETTE[3],PALETTE[4],PALETTE[1]];
   makeChart('chImProd',{ type:'bar', data:{ labels:['Documentos criados','Versões criadas','E-mails arquivados','Exportações'], datasets:[{ label:'Volume', data:[totalDoc,totalVer,totalEmail,totalExp], backgroundColor:paletteProd }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
 
-  const userMap = groupSum(im,'NOME', r=>num(r['TOTAL']));
+  const nomeRows = cfApply(imMonth, CF_IM, 'NOME');
+  const userMap = groupSum(nomeRows,'NOME', r=>num(r['TOTAL']));
   const topUsers = sortedEntries(userMap).slice(0,10).map(e=>e[0]);
-  const byUserDoc = groupSum(im,'NOME', r=>num(r['DOC. CRIADO']));
-  const byUserVer = groupSum(im,'NOME', r=>num(r['V. CRIADA']));
-  const byUserEmail = groupSum(im,'NOME', r=>num(r['EMAIL ARQ.']));
-  const byUserExp = groupSum(im,'NOME', r=>num(r['EXP.']));
+  const byUserDoc = groupSum(nomeRows,'NOME', r=>num(r['DOC. CRIADO']));
+  const byUserVer = groupSum(nomeRows,'NOME', r=>num(r['V. CRIADA']));
+  const byUserEmail = groupSum(nomeRows,'NOME', r=>num(r['EMAIL ARQ.']));
+  const byUserExp = groupSum(nomeRows,'NOME', r=>num(r['EXP.']));
   makeChart('chImTopUsers',{ type:'bar', data:{ labels:topUsers, datasets:[
       { label:'Documentos criados', data:topUsers.map(u=>byUserDoc[u]||0), backgroundColor:PALETTE[0] },
       { label:'Versões criadas', data:topUsers.map(u=>byUserVer[u]||0), backgroundColor:PALETTE[1] },
       { label:'E-mails arquivados', data:topUsers.map(u=>byUserEmail[u]||0), backgroundColor:PALETTE[2] },
       { label:'Exportações', data:topUsers.map(u=>byUserExp[u]||0), backgroundColor:PALETTE[3] }
-    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}}});
+    ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, scales:{x:{stacked:true},y:{stacked:true}}, onClick:cfOnClick(CF_IM,'NOME',renderImanageChartsData)}});
 
-  const unMap = groupSum(im,'UN', r=>num(r['TOTAL']));
+  const unRows = cfApply(imMonth, CF_IM, 'UN');
+  const unMap = groupSum(unRows,'UN', r=>num(r['TOTAL']));
   const unEntries = sortedEntries(unMap);
-  makeChart('chImUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Total de ações', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[0] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chImUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Total de ações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_IM,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_IM,'UN',renderImanageChartsData)}});
 }
 
 function buildUpMinerHTML(){
   return `
+  <div id="upContractBlock"></div>
   <div class="kpi-grid" id="upKpis"></div>
+  <div id="upFilterChips"></div>
+  <p class="chart-hint">Clique em BD ou CT para ver só aquela área no uso mensal.</p>
   <div class="grid2">
     <div class="card"><h3>Uso por área</h3><div class="chart-wrap"><canvas id="chUpArea"></canvas></div></div>
     <div class="card"><h3>Uso mensal</h3><div class="chart-wrap"><canvas id="chUpMes"></canvas></div></div>
   </div>
   `;
 }
+const CF_UP = 'upminer';
 function renderUpMinerCharts(){
   const upAll = getUpMiner();
   const up = upAll.filter(r=>['BD','CT'].includes((r['ÁREA']||'').toString().trim().toUpperCase()));
   const summary = computeUpMinerSummary();
+
+  document.getElementById('upContractBlock').innerHTML = contractLoadingBlockHTML('upminer', summary.pctBD+summary.pctCT, 'Créditos consumidos do contrato');
+
   document.getElementById('upKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtMoney(summary.totalUsado)}</div><div class="lbl">Total consumido</div></div>
     <div class="kpi-card"><div class="val">${fmtMoney(summary.totalBD)}</div><div class="lbl">Consumido por BD</div></div>
     <div class="kpi-card"><div class="val">${fmtMoney(summary.totalCT)}</div><div class="lbl">Consumido por CT</div></div>
     <div class="kpi-card"><div class="val">${fmtPct(summary.pctRestante)}</div><div class="lbl">Restante do contrato</div></div>
   `;
-  const areaMap = { BD: summary.totalBD, CT: summary.totalCT };
-  makeChart('chUpArea',{ type:'doughnut', data:{ labels:Object.keys(areaMap), datasets:[{ data:Object.values(areaMap), backgroundColor:[PALETTE[0],PALETTE[1]] }]}, options:{responsive:true,maintainAspectRatio:false}});
 
-  const areas = ['BD','CT'];
+  const chipsEl = document.getElementById('upFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_UP, {'ÁREA':'Área'});
+    cfBindChips(CF_UP, '#upFilterChips', renderUpMinerCharts);
+  }
+
+  const areaMap = { BD: summary.totalBD, CT: summary.totalCT };
+  const areaLabels = Object.keys(areaMap);
+  makeChart('chUpArea',{ type:'doughnut', data:{ labels:areaLabels, datasets:[{ data:Object.values(areaMap), backgroundColor:cfSliceColors(areaLabels, [PALETTE[0],PALETTE[1]], cfActive(CF_UP,'ÁREA')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_UP,'ÁREA',renderUpMinerCharts)}});
+
+  const activeArea = cfActive(CF_UP,'ÁREA');
+  const areas = activeArea ? [activeArea] : ['BD','CT'];
   const meses = [...new Set(up.map(r=>r['MÊS']))];
   const mesesOrdenados = MESES_ORDER.map(m=> meses.find(x=>(x||'').toString().toLowerCase()===m)).filter(Boolean);
   const finalMeses = mesesOrdenados.length ? mesesOrdenados : meses;
-  makeChart('chUpMes',{ type:'bar', data:{ labels:finalMeses, datasets: areas.map((a,i)=>({
-      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ÁREA']||'').toString().trim().toUpperCase()===a && r['MÊS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: [PALETTE[0],PALETTE[1]][i]
+  makeChart('chUpMes',{ type:'bar', data:{ labels:finalMeses, datasets: areas.map((a)=>({
+      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ÁREA']||'').toString().trim().toUpperCase()===a && r['MÊS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: a==='BD'?PALETTE[0]:PALETTE[1]
     })) }, options:{responsive:true,maintainAspectRatio:false}});
 }
 
@@ -1630,6 +2321,8 @@ function afterRenderLabCoins(){
 function pageAquisicoesHTML(){
   return `
   <div class="kpi-grid" id="aqKpis"></div>
+  <div id="aqFilterChips"></div>
+  <p class="chart-hint">Clique em tipo, localidade ou UN para filtrar os demais gráficos e a tabela.</p>
   <div class="grid2">
     <div class="card"><h3>Volume por mês</h3><div class="chart-wrap"><canvas id="chAqMes"></canvas></div></div>
     <div class="card"><h3>Valor por mês (R$)</h3><div class="chart-wrap"><canvas id="chAqValor"></canvas></div></div>
@@ -1642,38 +2335,56 @@ function pageAquisicoesHTML(){
   <div class="card"><h3>Registros</h3><div class="table-scroll"><table class="data-table" id="tblAq"></table></div></div>
   `;
 }
+const CF_AQ = 'aquisicoes';
 function afterRenderAquisicoes(){
-  const aq = getAquisicoes();
-  const totalValor = aq.reduce((s,r)=>s+num(r['VALOR']),0);
+  const aqAll = getAquisicoes();
+  aqAll.forEach(r=>{
+    if(r._LOC===undefined){
+      const raw = (r['LOCALIDADE']||'').toString().trim();
+      r._LOC = (!raw || raw==='Não informado') ? 'Digital' : raw;
+    }
+  });
+  const totalValor = aqAll.reduce((s,r)=>s+num(r['VALOR']),0);
   document.getElementById('aqKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(aq.length)}</div><div class="lbl">Total de aquisições</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(aqAll.length)}</div><div class="lbl">Total de aquisições</div></div>
     <div class="kpi-card"><div class="val">${fmtMoney(totalValor)}</div><div class="lbl">Valor total investido</div></div>
-    <div class="kpi-card"><div class="val">${aq.length? fmtMoney(totalValor/aq.length):'-'}</div><div class="lbl">Ticket médio</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(aq,'TIPO',()=>1)).length}</div><div class="lbl">Tipos de material</div></div>
+    <div class="kpi-card"><div class="val">${aqAll.length? fmtMoney(totalValor/aqAll.length):'-'}</div><div class="lbl">Ticket médio</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(aqAll,'TIPO',()=>1)).length}</div><div class="lbl">Tipos de material</div></div>
   `;
+
+  const chipsEl = document.getElementById('aqFilterChips');
+  if(chipsEl){
+    chipsEl.innerHTML = cfChipsHTML(CF_AQ, {'TIPO':'Tipo','_LOC':'Localidade','UN/AN':'UN'});
+    cfBindChips(CF_AQ, '#aqFilterChips', afterRenderAquisicoes);
+  }
+
+  const aq = cfApply(aqAll, CF_AQ); // filtrado por tipo/localidade/UN, para mês, valor e tabela
   const mesMapCount = {}; const mesMapValor = {};
   aq.forEach(r=>{ const m=(r['MÊS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
   const mesLabels = MESES_ORDER.filter(m=>mesMapCount[m]!==undefined);
   makeChart('chAqMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Aquisições', data:mesLabels.map(m=>mesMapCount[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chAqValor',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Valor (R$)', data:mesLabels.map(m=>mesMapValor[m]), borderColor:PALETTE[3], backgroundColor:PALETTE[3]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
 
-  const tipoMap = groupSum(aq,'TIPO',()=>1);
-  makeChart('chAqTipo',{ type:'doughnut', data:{ labels:Object.keys(tipoMap), datasets:[{ data:Object.values(tipoMap), backgroundColor:PALETTE }]}, options:{responsive:true,maintainAspectRatio:false}});
-  const locMapRaw = groupSum(aq,'LOCALIDADE',()=>1);
+  const tipoRows = cfApply(aqAll, CF_AQ, 'TIPO');
+  const tipoMap = groupSum(tipoRows,'TIPO',()=>1);
+  const tipoLabels = Object.keys(tipoMap);
+  makeChart('chAqTipo',{ type:'doughnut', data:{ labels:tipoLabels, datasets:[{ data:Object.values(tipoMap), backgroundColor:cfSliceColors(tipoLabels, PALETTE, cfActive(CF_AQ,'TIPO')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_AQ,'TIPO',afterRenderAquisicoes)}});
+
+  const locRows = cfApply(aqAll, CF_AQ, '_LOC');
   const locMap = {};
-  Object.entries(locMapRaw).forEach(([k,v])=>{
-    const label = (!k || k==='Não informado') ? 'Digital' : k;
-    locMap[label] = (locMap[label]||0) + v;
-  });
+  locRows.forEach(r=>{ locMap[r._LOC] = (locMap[r._LOC]||0) + 1; });
   const locLabels = Object.keys(locMap);
   const otherColors = PALETTE.filter(c=>c!==PALETTE[2]);
   let oi = 0;
-  const locColors = locLabels.map(l=> l==='Digital' ? PALETTE[2] : otherColors[(oi++)%otherColors.length]);
-  makeChart('chAqLoc',{ type:'pie', data:{ labels:locLabels, datasets:[{ data:Object.values(locMap), backgroundColor:locColors }]}, options:{responsive:true,maintainAspectRatio:false}});
+  const locBaseColors = locLabels.map(l=> l==='Digital' ? PALETTE[2] : otherColors[(oi++)%otherColors.length]);
+  const activeLoc = cfActive(CF_AQ,'_LOC');
+  const locColors = locLabels.map((l,i)=> (activeLoc===undefined || l===activeLoc) ? locBaseColors[i] : locBaseColors[i]+'35');
+  makeChart('chAqLoc',{ type:'pie', data:{ labels:locLabels, datasets:[{ data:Object.values(locMap), backgroundColor:locColors }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_AQ,'_LOC',afterRenderAquisicoes)}});
 
-  const unMap = groupSum(aq,'UN/AN',()=>1);
+  const unRows = cfApply(aqAll, CF_AQ, 'UN/AN');
+  const unMap = groupSum(unRows,'UN/AN',()=>1);
   const unEntries = sortedEntries(unMap);
-  makeChart('chAqUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Aquisições', data:unEntries.map(e=>e[1]), backgroundColor:PALETTE[4] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+  makeChart('chAqUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Aquisições', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[4], cfActive(CF_AQ,'UN/AN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_AQ,'UN/AN',afterRenderAquisicoes)}});
 
   document.getElementById('tblAq').innerHTML = `
     <tr><th>Mês</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
