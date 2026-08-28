@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+"<html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard GC & Comunicação | Madrona Advogados</title>
+<title>Dashboard GC &amp; Comunicação | Madrona Advogados</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -185,7 +183,7 @@ main{
 .kpi-card.amarelo{ border-left-color:#e0b400; }
 .kpi-card.grafite{ border-left-color:var(--grafite); }
 
-/* ---------- Cards de insight (leitura estratégica, não só número bruto) ---------- */
+/* ---------- Cards de insight (leitura estratégica, não só nãºmero bruto) ---------- */
 .insight-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:22px; }
 .insight-card{
   background:var(--card);
@@ -320,7 +318,7 @@ footer{
 }
 .chart-hint{ font-size:11px; color:var(--cinza); margin:-10px 0 12px; }
 
-/* ---------- Card de referência (ex.: link para dashboard externo) ---------- */
+/* ---------- Card de referãªncia (ex.: link para dashboard externo) ---------- */
 .ref-card{
   background:#0a3a5c;
   color:#fff;
@@ -380,6 +378,298 @@ footer{
 .loading-bar-fill.uso{ background-color: var(--azul); }
 .loading-bar-fill.alerta{ background-color: var(--vermelho); }
 @keyframes loadingMove{ from{ background-position:0 0; } to{ background-position:24px 0; } }
+
+
+  :root {
+    --azul: #00b2ff;
+    --grafite: #444444;
+    --cinza: #b2bab9;
+    --vermelho: #fc745c;
+    --verde: #d0ffc9;
+    --amarelo: #fff6d3;
+    --fundo: #f7f8f8;
+    --branco: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--grafite);
+  }
+
+  #ts-gc-tab {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  .tsgc-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 3px solid var(--azul);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+
+  .tsgc-header h1 {
+    margin: 0 0 6px 0;
+    font-size: 26px;
+    letter-spacing: 0.3px;
+    color: var(--grafite);
+  }
+
+  .tsgc-header p {
+    margin: 0;
+    color: #6b7170;
+    font-size: 14px;
+  }
+
+  .tsgc-filtro {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tsgc-filtro label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--grafite);
+  }
+
+  .tsgc-filtro select {
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: 1.5px solid var(--cinza);
+    background: var(--branco);
+    color: var(--grafite);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .tsgc-destaque {
+    background: var(--grafite);
+    color: var(--branco);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tsgc-destaque strong {
+    color: var(--azul);
+  }
+
+  .tsgc-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .tsgc-kpi {
+    background: var(--branco);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border: 1px solid #e7e9e9;
+    border-left: 5px solid var(--azul);
+  }
+
+  .tsgc-kpi .valor {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--grafite);
+  }
+
+  .tsgc-kpi .rotulo {
+    font-size: 12.5px;
+    color: #6b7170;
+    margin-top: 2px;
+  }
+
+  .tsgc-secao {
+    background: var(--branco);
+    border-radius: 14px;
+    border: 1px solid #e7e9e9;
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+
+  .tsgc-secao h2 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    color: var(--grafite);
+  }
+
+  .tsgc-secao .tsgc-sub {
+    margin: 0 0 18px 0;
+    font-size: 13px;
+    color: #6b7170;
+  }
+
+  .tsgc-dica {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #6b7170;
+    background: var(--fundo);
+    border: 1px dashed var(--cinza);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+
+  #chart-equipe-wrap {
+    position: relative;
+    height: 400px;
+    margin: 16px 0;
+  }
+
+  .tsgc-pessoa-chart {
+    position: relative;
+    height: 250px;
+    margin-top: 12px;
+  }
+
+  #chart-equipe-wrap {
+    position: relative;
+    height: 460px;
+  }
+
+  .tsgc-pessoas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 20px;
+  }
+
+  .tsgc-pessoa-card {
+    border: 1px solid #e7e9e9;
+    border-radius: 12px;
+    padding: 18px 18px 8px;
+    background: var(--branco);
+  }
+
+  .tsgc-pessoa-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .tsgc-pessoa-nome {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--grafite);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .tsgc-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--azul);
+    color: var(--branco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .tsgc-pessoa-chart {
+    position: relative;
+    height: 300px;
+  }
+
+  .tsgc-glossario {
+    margin-top: 4px;
+  }
+
+  .tsgc-glossario summary {
+    cursor: pointer;
+    list-style: none;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--grafite);
+    padding: 12px 16px;
+    border: 1px solid #e7e9e9;
+    border-radius: 10px;
+    background: var(--branco);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tsgc-glossario summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tsgc-glossario summary::before {
+    content: '▸';
+    color: var(--azul);
+    font-size: 11px;
+    transition: transform 0.15s ease;
+  }
+
+  .tsgc-glossario[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .tsgc-glossario summary:hover {
+    border-color: var(--azul);
+  }
+
+  .tsgc-glossario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px 22px;
+    padding: 18px 16px 6px;
+  }
+
+  .tsgc-glossario-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tsgc-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.15);
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .tsgc-glossario-item strong {
+    font-size: 12.5px;
+    color: var(--grafite);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .tsgc-glossario-item p {
+    margin: 0;
+    font-size: 12px;
+    color: #6b7170;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 640px) {
+    .tsgc-header { flex-direction: column; align-items: flex-start; }
+    #chart-equipe-wrap { height: 520px; }
+  }
+
 </style>
 </head>
 <body>
@@ -391,23 +681,106 @@ footer{
   </div>
   <div class="upload-area">
     <div>
-      <div id="fileStatus">Carregando planilha...</div>
-      <div id="lastUpdate"></div>
+      <div id="fileStatus">Dados atualizados automaticamente</div>
+      <div id="lastUpdate">Atualizado em 28/08/2026, 16:58:34</div>
     </div>
     <button class="upload-btn" onclick="document.getElementById('fileInput').click()">Carregar outra planilha</button>
     <input type="file" id="fileInput" accept=".xlsx" style="display:none">
   </div>
 </header>
 
-<nav class="tabs" id="mainTabs"></nav>
+<nav class="tabs" id="mainTabs"><button data-tab="geral" class="active">Visão Geral</button><button data-tab="publicacoes" class="">Publicações</button><button data-tab="redes" class="">Redes &amp; Mailing</button><button data-tab="academiamadrona" class="">Academia e Treinamentos</button><button data-tab="academia" class="">Grupos de Estudos e RT</button><button data-tab="lexjuris" class="">Lex &amp; Juris</button><button data-tab="timesheet" class="">TS Madrona Lab</button><button data-tab="tsgc" class="">TS GC</button><button data-tab="ferramentas" class="">Ferramentas</button><button data-tab="labcoins" class="">Lab Coins</button><button data-tab="aquisicoes" class="">Aquisições</button></nav>
 
-<main id="mainContent"></main>
+<main id="mainContent">
+    <div class="subtabs"><button data-sub="gc" class="active">Gestão do Conhecimento</button><button data-sub="com" class="">Comunicação</button></div>
+    <div id="geral-gc" class="subpage active">
+  <div class="hero">
+    <div class="hero-title">Gestão do Conhecimento 2026</div>
+    <div class="hero-grid">
+      <div><div class="hero-num">18</div><div class="hero-lbl">Sessões Academia Madrona</div></div>
+      <div><div class="hero-num">12</div><div class="hero-lbl">Encontros Grupos de Estudos</div></div>
+      <div><div class="hero-num">21</div><div class="hero-lbl">Pesquisas realizadas</div></div>
+      <div><div class="hero-num">15</div><div class="hero-lbl">Aquisições de material</div></div>
+      <div><div class="hero-num">10</div><div class="hero-lbl">Treinamentos iManage</div></div>
+      <div><div class="hero-num">108</div><div class="hero-lbl">Scouts realizados</div></div>
+      <div><div class="hero-num">16</div><div class="hero-lbl">Reportes Lex e Juris 3.0</div></div>
+      <div><div class="hero-num">0</div><div class="hero-lbl">Lab Coins distribuídos</div></div>
+      <div><div class="hero-num">55,8%</div><div class="hero-lbl">Consumo contrato upMiner</div></div>
+      <div><div class="hero-num">63,9%</div><div class="hero-lbl">Consumo Certisign</div></div>
+      <div><div class="hero-num">35,8%</div><div class="hero-lbl">Consumo Docusign</div></div>
+    </div>
+  </div>
+
+  <div style="background: linear-gradient(135deg, #00b2ff 0%, #444444 100%); border-radius: 8px; padding: 28px; margin-bottom: 24px; color: white;">
+    <div style="margin-bottom: 14px;">
+      <div style="font-size: 12px; letter-spacing: 0.5px; color: rgba(255,255,255,0.8); text-transform: uppercase;">Atividades de Gestão do Conhecimento - Agosto 2026</div>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px;">
+      <div>
+        <div style="font-size: 28px; font-weight: 600; margin-bottom: 4px;">468,97h</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9);">Total de horas alocadas</div>
+      </div>
+      <div>
+        <div style="font-size: 28px; font-weight: 600; margin-bottom: 4px;">6</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9);">Pessoas na equipe</div>
+      </div>
+      <div>
+        <div style="font-size: 28px; font-weight: 600; margin-bottom: 4px;">35,5%</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9);">Inovação e Eficiência (maior)</div>
+      </div>
+      <div>
+        <div style="font-size: 28px; font-weight: 600; margin-bottom: 4px;">0,0%</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.9);">Madrona Lab Coins (menor)</div>
+      </div>
+    </div>
+    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 12px; color: rgba(255,255,255,0.8);">
+      Visualize detalhes completos, gráficos por pessoa e categorias na aba <strong>TS GC</strong>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <h3 style="margin:0; border:none; padding:0;">Filtro de mãªs (Madrona Lab)</h3>
+      <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
+        <option value="todos" selected="">Todos os meses</option>
+        <option value="Jan">Jan</option><option value="Fev">Fev</option><option value="Mar">Mar</option><option value="Abr">Abr</option><option value="Mai">Mai</option><option value="Jun">Jun</option><option value="Jul">Jul</option>
+      </select>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <h3 style="margin:0; border:none; padding:0;">Unidade de Negócio</h3>
+      <select id="gcUnFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px; min-width:220px;">
+        <option value="todas">Todas as UNs</option>
+        <option value="UN Ambiental">UN Ambiental</option><option value="UN Bancário">UN Bancário</option><option value="UN Compliance/White Collar">UN Compliance/White Collar</option><option value="UN Concorrencial">UN Concorrencial</option><option value="UN Contencioso">UN Contencioso</option><option value="UN Corporativo">UN Corporativo</option><option value="UN Digital, LGPD e Propriedade Intelectual">UN Digital, LGPD e Propriedade Intelectual</option><option value="UN Financeiro &amp; Mercado | Bancário">UN Financeiro &amp; Mercado | Bancário</option><option value="UN Imobiliário">UN Imobiliário</option><option value="UN Infraestrutura">UN Infraestrutura</option><option value="UN Seguros Resseguros e Previdãªncia Privada">UN Seguros Resseguros e Previdãªncia Privada</option><option value="UN Trabalhista e Sindical">UN Trabalhista e Sindical</option><option value="UN Tributária">UN Tributária</option><option value="UN Wealth">UN Wealth</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="gcFilterChips"></div>
+  <p class="chart-hint">Clique numa barra de Frente ou de UN (ou use o filtro acima) para atualizar os gráficos e o painel de produtos e serviços. Clique de novo, ou selecione "Todas as UNs", para limpar.</p>
+
+  <div id="gcProdutosPorUN"><div class="card" style="margin-bottom:20px; text-align:center; color:#888; padding:26px;">
+      Selecione uma UN no filtro acima (ou clique numa barra de UN) para ver o que ela utilizou em cada produto e serviço.
+    </div></div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <h3>Investimento por frente (Madrona Lab), em horas</h3>
+    <div class="chart-wrap tall"><canvas id="chGCFrente" width="0" height="360" style="display: block; box-sizing: border-box; height: 360px; width: 0px; cursor: pointer;"></canvas></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCUn" width="300" height="360" style="display: block; box-sizing: border-box; height: 360px; width: 300px; cursor: pointer;"></canvas></div></div>
+    <div class="card"><h3>Média geral por profissionais da UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCProf" width="300" height="360" style="display: block; box-sizing: border-box; height: 360px; width: 300px; cursor: default;"></canvas></div></div>
+  </div>
+  </div>
+    <div id="geral-com" class="subpage "></div>
+  
+
+  </main>
 
 <footer>Dashboard interno GC &amp; Comunicação, Madrona Advogados. Atualize a planilha mensalmente para manter os indicadores em dia.</footer>
 
 <script>
 /* =========================================================
-   DASHBOARD GC & COMUNICAÇÃO - MADRONA ADVOGADOS
+   DASHBOARD GC & COMUNICAããO - MADRONA ADVOGADOS
    ========================================================= */
 
 const PALETTE = ['#00b2ff','#fc745c','#8fd694','#fff6d3','#b2bab9','#444444','#7fd1ff','#ffb3a3'];
@@ -445,7 +818,7 @@ function contractLoadingBlockHTML(key, pctUso, usoLabel){
   <div class="card contract-block">
     <div class="contract-head">
       <div class="name">Contrato ${cfg.label}</div>
-      <div class="deadline">Vence em ${fmtDatePT(end)} · faltam ${daysLeft} dias</div>
+      <div class="deadline">Vence em ${fmtDatePT(end)}  · faltam ${daysLeft} dias</div>
     </div>
     <div class="contract-row">
       <div class="lbl"><span>Tempo do contrato decorrido</span><span>${pct1(pctTime)}%</span></div>
@@ -455,7 +828,7 @@ function contractLoadingBlockHTML(key, pctUso, usoLabel){
       <div class="lbl"><span>${usoLabel||'Consumido do contrato'}</span><span>${pct1(pctUso)}%</span></div>
       <div class="loading-bar-bg"><div class="loading-bar-fill ${alerta?'alerta':'uso'}" style="width:${pct1(pctUso)}%"></div></div>
     </div>
-    ${alerta? `<p style="font-size:12px;color:var(--vermelho);margin:8px 0 0;">⚠ O consumo está proporcionalmente mais adiantado do que o tempo restante do contrato.</p>` : ''}
+    ${alerta? `<p style="font-size:12px;color:var(--vermelho);margin:8px 0 0;">â  O consumo está proporcionalmente mais adiantado do que o tempo restante do contrato.</p>` : ''}
   </div>`;
 }
 
@@ -470,7 +843,8 @@ const TABS = [
   { id:'academiamadrona', label:'Academia e Treinamentos' },
   { id:'academia', label:'Grupos de Estudos e RT' },
   { id:'lexjuris', label:'Lex & Juris' },
-  { id:'timesheet', label:'Timesheet Madrona Lab' },
+  { id:'timesheet', label:'TS Madrona Lab' },
+  { id:'tsgc', label:'TS GC' },
   { id:'ferramentas', label:'Ferramentas' },
   { id:'labcoins', label:'Lab Coins' },
   { id:'aquisicoes', label:'Aquisições' },
@@ -489,7 +863,7 @@ function makeChart(canvasId, config){
   if(!el) return;
   CHARTS[canvasId] = new Chart(el.getContext('2d'), config);
   // Gráficos com crossfilter (onClick definido) mostram cursor de "mão" para indicar que são clicáveis.
-  // Observação: não usamos a opção onHover do Chart.js aqui de propósito — em combinação com os
+  // Observação: não usamos a opção onHover do Chart.js aqui de propósito â em combinação com os
   // gráficos deste dashboard ela dispara um erro interno da biblioteca (Chart.js 4.4.1) ao passar o mouse.
   el.style.cursor = (config.options && typeof config.options.onClick === 'function') ? 'pointer' : 'default';
 }
@@ -573,7 +947,7 @@ function sortedEntries(map, desc=true){
   return Object.entries(map).sort((a,b)=> desc ? b[1]-a[1] : a[1]-b[1]);
 }
 
-// Retorna { row, index } do último registro com valor não nulo/indefinido no campo informado
+// Retorna { row, index } do ãºltimo registro com valor não nulo/indefinido no campo informado
 function latestValid(rows, field){
   for(let i=rows.length-1;i>=0;i--){
     const v = rows[i][field];
@@ -597,9 +971,9 @@ function classifyPosicao(pos){
   const p = (pos||'').toString().toLowerCase();
   if(p.includes('estagi')) return 'Estagiário';
   if(p.includes('sócio') || p.includes('socio')) return 'Sócio';
-  if(p.includes('sênior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sênior';
+  if(p.includes('sãªnior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sãªnior';
   if(p.includes('pleno')) return 'Pleno';
-  if(p.includes('júnior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Júnior';
+  if(p.includes('jãºnior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Jãºnior';
   return 'ADM';
 }
 
@@ -618,23 +992,23 @@ function monthAbbrPT(val){
 // A planilha usa grafias diferentes para a mesma Unidade de Negócio em abas
 // diferentes (ex.: "UN Corporativa" em Lexter/PortData/iM/Publicações vs.
 // "UN Corporativo" na aba CT, que é a fonte de verdade de pessoas). Este mapa
-// converte cada variante conhecida para o nome canônico (o usado na aba CT).
+// converte cada variante conhecida para o nome canã´nico (o usado na aba CT).
 // Ajuste/complete este mapa se aparecerem novas variações na planilha.
 const UN_CANONICAL_MAP = {
   'un corporativa': 'UN Corporativo',
   // A própria aba CT tem as duas grafias (25 pessoas em "UN Tributária", 8 em
-  // "UN Tributário"); adotamos a forma feminina, majoritária, como canônica.
+  // "UN Tributário"); adotamos a forma feminina, majoritária, como canã´nica.
   'un tributário': 'UN Tributária',
   'un contencioso, mediação & arbitragem': 'UN Contencioso',
   'un contencioso, mediação e arbitragem': 'UN Contencioso',
-  'un infraestrutura e direito público': 'UN Infraestrutura',
+  'un infraestrutura e direito pãºblico': 'UN Infraestrutura',
   'un trabalhista': 'UN Trabalhista e Sindical',
   'un wc&c': 'UN Compliance/White Collar',
   'un white collar & compliance': 'UN Compliance/White Collar',
   'un digital, comex e pi': 'UN Digital, LGPD e Propriedade Intelectual',
   'an wealth planning': 'UN Wealth',
-  'un seguros': 'UN Seguros Resseguros e Previdência Privada',
-  'un seguros, resseguros e previdência privada': 'UN Seguros Resseguros e Previdência Privada',
+  'un seguros': 'UN Seguros Resseguros e Previdãªncia Privada',
+  'un seguros, resseguros e previdãªncia privada': 'UN Seguros Resseguros e Previdãªncia Privada',
   'comunicação': 'Comunicação Corporativa',
   // Variações de grafia/abreviação da mesma área. "UN Bancário" fica de fora
   // de propósito: na aba Relatório TS ele aparece com volume grande e distinto
@@ -660,7 +1034,7 @@ function normalizeUN(raw){
 }
 // UNs de áreas administrativas/institucionais (não jurídicas), usadas para
 // excluir "Comunicação Corporativa" e "Tecnologia da Informação" dos gráficos
-// de investimento de horas da aba Timesheet Madrona Lab, a pedido da Deborah.
+// de investimento de horas da aba TS Madrona Lab, a pedido da Deborah.
 const UN_EXCLUIDAS_TIMESHEET = ['Comunicação Corporativa', 'Tecnologia da Informação'];
 
 // Cruzamento pessoas x UN, a partir da aba CT (não exibida como aba de resultado)
@@ -688,7 +1062,7 @@ function normalizeName(name){
 }
 
 /* =========================================================
-   CROSSFILTER — interatividade entre gráficos
+   CROSSFILTER â interatividade entre gráficos
    =========================================================
    Cada página/sub-página tem seu próprio estado de filtro (cfState),
    guardado por nome de campo (ex.: 'UN', 'Caso Real'...). Clicar numa
@@ -715,7 +1089,7 @@ function cfClearAll(pageKey, rerender){
   CROSSFILTER[pageKey] = {};
   rerender();
 }
-// Aplica os filtros ativos da página às linhas, exceto o campo `excludeField`
+// Aplica os filtros ativos da página ã s linhas, exceto o campo `excludeField`
 // (usado pelo próprio gráfico-fonte daquele campo, que deve continuar mostrando
 // todas as suas categorias, só destacando a selecionada).
 function cfApply(rows, pageKey, excludeField){
@@ -730,7 +1104,7 @@ function cfChipsHTML(pageKey, labelMap){
   const keys = Object.keys(state);
   if(!keys.length) return '';
   return `<div class="filter-chips">
-    ${keys.map(k=>`<span class="filter-chip">${(labelMap&&labelMap[k])||k}: ${state[k]} <button data-cf-clear="${k}">×</button></span>`).join('')}
+    ${keys.map(k=>`<span class="filter-chip">${(labelMap&&labelMap[k])||k}: ${state[k]} <button data-cf-clear="${k}">ã</button></span>`).join('')}
     <button class="filter-clear-all" data-cf-clear-all="1">Limpar filtros</button>
   </div>`;
 }
@@ -742,7 +1116,7 @@ function cfBindChips(pageKey, containerSel, rerender){
   if(clearAll) clearAll.addEventListener('click', ()=> cfClearAll(pageKey, rerender));
 }
 // Cores das barras: quando há filtro ativo para este mesmo campo, destaca a
-// barra selecionada e esmaece as demais (sem removê-las do gráfico-fonte).
+// barra selecionada e esmaece as demais (sem removãª-las do gráfico-fonte).
 function cfBarColors(labels, baseColor, activeValue){
   if(activeValue===undefined || activeValue===null) return labels.map(()=>baseColor);
   return labels.map(l => String(l).trim()===String(activeValue) ? baseColor : baseColor+'35');
@@ -788,7 +1162,8 @@ function emptyState(msg){
 function renderAll(){
   renderTabsNav();
   const main = document.getElementById('mainContent');
-  if(!WORKBOOK){
+  // TS GC não precisa da planilha Excel — tem dados próprios embutidos
+  if(!WORKBOOK && ACTIVE_TAB !== 'tsgc'){
     main.innerHTML = emptyState('Aguardando o carregamento automático da planilha de dados.');
     return;
   }
@@ -800,6 +1175,191 @@ function renderAll(){
     case 'academia': main.innerHTML = pageAcademiaHTML(); afterRenderAcademia(); break;
     case 'lexjuris': main.innerHTML = pageLexJurisHTML(); afterRenderLexJuris(); break;
     case 'timesheet': main.innerHTML = pageTimesheetHTML(); afterRenderTimesheet(); break;
+    case 'tsgc': {
+      main.innerHTML = `
+        <div id="ts-gc-tab">
+          <div class="tsgc-header">
+            <div>
+              <h1>Atividades de GC</h1>
+              <p>Equipe de Gestão do Conhecimento. Visão gerencial do tempo dedicado a cada frente de atuação.</p>
+            </div>
+            <div class="tsgc-filtro">
+              <label for="tsgc-mes">Mês</label>
+              <select id="tsgc-mes"></select>
+            </div>
+          </div>
+          <div class="tsgc-destaque" id="tsgc-destaque"></div>
+          <div class="tsgc-kpis" id="tsgc-kpis"></div>
+          <div class="tsgc-secao">
+            <h2>Visão Geral da Equipe</h2>
+            <p class="tsgc-sub">Percentual do tempo total da equipe investido em cada categoria no mês selecionado.</p>
+            <div id="chart-equipe-wrap" style="position:relative;height:400px;">
+              <canvas id="chart-equipe"></canvas>
+            </div>
+            <div class="tsgc-dica">Clique em uma barra para destacar a categoria em todos os gráficos individuais. Clique novamente para limpar o destaque.</div>
+          </div>
+          <div class="tsgc-secao">
+            <h2>Investimento de Tempo por Pessoa</h2>
+            <p class="tsgc-sub">Percentual do tempo de cada pessoa dedicado a cada categoria no mês selecionado.</p>
+            <div class="tsgc-pessoas-grid" id="tsgc-pessoas-grid"></div>
+          </div>
+          <details class="tsgc-glossario">
+            <summary>O que entra em cada categoria</summary>
+            <div class="tsgc-glossario-grid">
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#00b2ff"></span><div><strong>Monitoramento Legislativo e Jurisprudencial</strong><p>Acompanhamento legislativo, análise do DOU e do legislativo, Madrona Lex e Juris.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#fc745c"></span><div><strong>Curadoria e Distribuição de Conteúdo</strong><p>Curadoria de notícias, envio de clippings, Mailchimp, Madrona Scout, GC Indica, curadoria de jurisprudência.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#d0ffc9"></span><div><strong>Atendimento e Relacionamento Interno</strong><p>Ligação com cliente interno, atendimento para identificar demandas, atendimentos de livros, entre outros.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#444444"></span><div><strong>Gestão Administrativa e Financeira</strong><p>Financeiro, gestão de contratos, planejamento estratégico e orçamento, Excel Dashboard, lançamento de pagamentos, atualização de planilha orçamentária, provisão de gastos.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b2bab9"></span><div><strong>Academia Madrona</strong><p>Tudo relacionado ao projeto Academia Madrona, incluindo treinamentos de Lexter, Portdata e Imanage refresh.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#fff6d3"></span><div><strong>Madrona Research</strong><p>Reunião Madrona Research e tudo relacionado ao projeto.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#0080b8"></span><div><strong>Pesquisa e Conhecimento</strong><p>Pesquisa, compra de materiais (livros e revistas), atendimento de sócios para eventos, tratamento de livros da biblioteca.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b55442"></span><div><strong>Inovação e Eficiência</strong><p>Inovação, projetos de melhoria de processos, upMiner, iManage, Turivius, Saga, Inspira, Registradores, testes de ferramentas, prospecção e relacionamento com fornecedores, tratamento de dados.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#96b891"></span><div><strong>Suporte TI</strong><p>Suporte a demandas de tecnologia da equipe.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#313131"></span><div><strong>Demandas operacionais</strong><p>Revisão TS. Também reúne o que era lançado como Administrativo na planilha original.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#808685"></span><div><strong>Madrona Lab Coins</strong><p>Tudo relacionado ao projeto Madrona Lab Coins.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b8b198"></span><div><strong>Gestão de Equipes</strong><p>Reuniões one a one, alinhamentos, conversas sobre projetos, apoio na execução de projetos.</p></div></div>
+              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#59cdff"></span><div><strong>Gestão de Recortes</strong><p>Recortes, planilha de recortes, controle de publicações.</p></div></div>
+            </div>
+          </details>
+        </div>
+      `;
+      // Inicializar TS GC inline
+      setTimeout(() => {
+        const selectMes = document.getElementById('tsgc-mes');
+        if (!selectMes || !TSGC_DATA) {
+          console.error('Elementos TS GC não encontrados');
+          return;
+        }
+        // Popular seletor de mês
+        TSGC_DATA.months.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m;
+          opt.textContent = m;
+          selectMes.appendChild(opt);
+        });
+        selectMes.value = TSGC_DATA.months[0];
+        // Renderizar conteúdo
+        const mes = selectMes.value;
+        const mesData = TSGC_DATA.byMonth[mes];
+        if (mesData) {
+          // Renderizar destaque
+          const destaqueEl = document.getElementById('tsgc-destaque');
+          const cats = TSGC_DATA.categories;
+          const catTop = cats.reduce((a,b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+          destaqueEl.innerHTML = `Maior investimento de tempo da equipe em ${mes}: <strong>${catTop}</strong>, com ${mesData.equipe.percentuais[catTop]}% do tempo total.`;
+
+          // Renderizar KPIs
+          const kpisEl = document.getElementById('tsgc-kpis');
+          kpisEl.innerHTML = '';
+          const pessoasCount = Object.keys(mesData.pessoas).length;
+          const catMenor = cats.filter(c => mesData.equipe.percentuais[c] > 0).reduce((a,b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
+          [
+            {valor: pessoasCount, rotulo: 'Pessoas na equipe'},
+            {valor: mesData.equipe.percentuais[catTop] + '%', rotulo: 'Maior investimento: ' + catTop},
+            {valor: mesData.equipe.percentuais[catMenor] + '%', rotulo: 'Menor investimento: ' + catMenor}
+          ].forEach(kpi => {
+            const div = document.createElement('div');
+            div.className = 'tsgc-kpi';
+            div.innerHTML = `<div class="valor">${kpi.valor}</div><div class="rotulo">${kpi.rotulo}</div>`;
+            kpisEl.appendChild(div);
+          });
+
+          // Renderizar gráfico da equipe
+          const canvasEquipe = document.getElementById('chart-equipe');
+          if (canvasEquipe) {
+            const catsUsadas = cats.filter(c => mesData.equipe.horas[c] > 0).sort((a,b) => mesData.equipe.percentuais[b] - mesData.equipe.percentuais[a]);
+            const percentuais = catsUsadas.map(c => mesData.equipe.percentuais[c]);
+            new Chart(canvasEquipe, {
+              type: 'bar',
+              data: {
+                labels: catsUsadas,
+                datasets: [{
+                  label: '% do tempo da equipe',
+                  data: percentuais,
+                  backgroundColor: catsUsadas.map(c => TSGC_DATA.palette[c]),
+                  borderColor: TSGC_DATA.brand.grafite,
+                  borderWidth: 1.5,
+                  borderRadius: 4
+                }]
+              },
+              options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {display: false},
+                  tooltip: {
+                    backgroundColor: TSGC_DATA.brand.grafite,
+                    callbacks: {label: (item) => `${item.formattedValue}% do tempo da equipe`}
+                  }
+                },
+                scales: {
+                  x: {beginAtZero: true, max: 100, ticks: {callback: v => v + '%'}, grid: {color: '#eceeee'}},
+                  y: {grid: {display: false}, ticks: {color: TSGC_DATA.brand.grafite, font: {size: 12}}}
+                }
+              }
+            });
+          }
+
+          // Renderizar gráficos por pessoa
+          const gridEl = document.getElementById('tsgc-pessoas-grid');
+          gridEl.innerHTML = '';
+          TSGC_DATA.people.forEach(pessoa => {
+            const pdata = mesData.pessoas[pessoa];
+            if (!pdata) return;
+            const card = document.createElement('div');
+            card.className = 'tsgc-pessoa-card';
+            const iniciais = pessoa.trim().split(/\s+/).map(p => p[0]).slice(0,2).join('').toUpperCase();
+            card.innerHTML = `
+              <div class="tsgc-pessoa-topo">
+                <div class="tsgc-pessoa-nome">
+                  <span class="tsgc-avatar">${iniciais}</span> ${pessoa}
+                </div>
+              </div>
+              <div class="tsgc-pessoa-chart">
+                <canvas id="chart-pessoa-${pessoa.replace(/\s+/g,'_')}"></canvas>
+              </div>
+            `;
+            gridEl.appendChild(card);
+            const canvasPessoa = card.querySelector('canvas');
+            const catsUsadas = cats.filter(c => pdata.horas[c] > 0).sort((a,b) => pdata.percentuais[b] - pdata.percentuais[a]);
+            if (catsUsadas.length > 0) {
+              new Chart(canvasPessoa, {
+                type: 'bar',
+                data: {
+                  labels: catsUsadas,
+                  datasets: [{
+                    label: '% do tempo de ' + pessoa,
+                    data: catsUsadas.map(c => pdata.percentuais[c]),
+                    backgroundColor: catsUsadas.map(c => TSGC_DATA.palette[c]),
+                    borderColor: TSGC_DATA.brand.grafite,
+                    borderWidth: 1.5,
+                    borderRadius: 4
+                  }]
+                },
+                options: {
+                  indexAxis: 'y',
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {display: false},
+                    tooltip: {
+                      backgroundColor: TSGC_DATA.brand.grafite,
+                      callbacks: {label: (item) => `${item.formattedValue}% do tempo de ${pessoa}`}
+                    }
+                  },
+                  scales: {
+                    x: {beginAtZero: true, max: 100, ticks: {callback: v => v + '%'}, grid: {color: '#eceeee'}},
+                    y: {grid: {display: false}, ticks: {color: TSGC_DATA.brand.grafite, font: {size: 11}}}
+                  }
+                }
+              });
+            }
+          });
+        }
+      }, 100);
+      break;
+    }
     case 'ferramentas': main.innerHTML = pageFerramentasHTML(); afterRenderFerramentas(); break;
     case 'labcoins': main.innerHTML = pageLabCoinsHTML(); afterRenderLabCoins(); break;
     case 'aquisicoes': main.innerHTML = pageAquisicoesHTML(); afterRenderAquisicoes(); break;
@@ -1005,7 +1565,7 @@ function getTimesheet(){
   objs.forEach(r=>{ r['Desc. Grupo Jurídico'] = normalizeUN(r['Desc. Grupo Jurídico']); });
   // A pedido da Deborah: "Comunicação Corporativa" e "Tecnologia da Informação" não
   // são frentes jurídicas de fato (poucos lançamentos, de natureza administrativa) e
-  // saem dos gráficos de investimento de horas do Timesheet Madrona Lab e da Visão Geral.
+  // saem dos gráficos de investimento de horas do TS Madrona Lab e da Visão Geral.
   objs = objs.filter(r=> !UN_EXCLUIDAS_TIMESHEET.includes(r['Desc. Grupo Jurídico']));
   DATA.timesheet = objs;
   return DATA.timesheet;
@@ -1041,7 +1601,7 @@ function getBibliotecas(){
 
 
 /* =========================================================
-   PÁGINA: VISÃO GERAL (GC / COM)
+   PãGINA: VISãO GERAL (GC / COM)
    ========================================================= */
 function pageGeralHTML(){
   return `
@@ -1064,8 +1624,8 @@ function afterRenderGeral(){
 
 function computeUpMinerSummary(){
   const rows = getUpMiner();
-  const totalBD = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='BD').reduce((s,r)=>s+num(r['TOTAL']),0);
-  const totalCT = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='CT').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalBD = rows.filter(r=>(r['ãREA']||'').toString().trim().toUpperCase()==='BD').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalCT = rows.filter(r=>(r['ãREA']||'').toString().trim().toUpperCase()==='CT').reduce((s,r)=>s+num(r['TOTAL']),0);
   const totalUsado = totalBD + totalCT;
   const pctBD = UPMINER_CONTRACT_TOTAL ? totalBD/UPMINER_CONTRACT_TOTAL : 0;
   const pctCT = UPMINER_CONTRACT_TOTAL ? totalCT/UPMINER_CONTRACT_TOTAL : 0;
@@ -1112,7 +1672,7 @@ function buildGCOverview(){
 
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
     <div style="display:flex; align-items:center; gap:12px;">
-      <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
+      <h3 style="margin:0; border:none; padding:0;">Filtro de mãªs (Madrona Lab)</h3>
       <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
         <option value="todos" ${GC_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
         ${mesesOrdenados.map(m=>`<option value="${m}" ${GC_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
@@ -1206,7 +1766,7 @@ function renderGCStrategicCharts(){
 // Mostra, para a UN selecionada no filtro, o quanto ela usou de cada produto/serviço
 // mapeado na planilha. Ferramentas sem coluna de UN própria (Copilot, Saga) usam o
 // cruzamento por pessoa (unForName, via aba CT). Itens sem informação de UN na
-// planilha (Academia Madrona, upMiner, Docusign/Certisign) aparecem com "—" e uma
+// planilha (Academia Madrona, upMiner, Docusign/Certisign) aparecem com "â" e uma
 // nota, em vez de omitidos, para não sugerir zero uso quando o dado simplesmente
 // não existe nessa granularidade.
 function buildProdutosPorUN(un){
@@ -1226,7 +1786,7 @@ function buildProdutosPorUN(un){
     { titulo:'Lexter', linhas:[
       [fmtInt(lex.length), 'análises'],
       [fmtInt(lex.reduce((s,r)=>s+num(r['DOCUMENTOS']),0)), 'documentos processados'],
-      [new Set(lex.map(r=>r['USUÁRIO'])).size, 'usuários'],
+      [new Set(lex.map(r=>r['USUãRIO'])).size, 'usuários'],
     ]},
     { titulo:'PortData', linhas:[
       [fmtInt(pd.length), 'consultas'],
@@ -1348,7 +1908,7 @@ function renderCOMOverviewCharts(){
   });
 
   const redes = getRedesSociais();
-  const labels = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short'}) : r['Mês']);
+  const labels = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short'}) : r['Mãªs']);
   makeChart('chCOMLinkedin', {
     type:'line',
     data:{ labels, datasets:[{ label:'Seguidores LinkedIn', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]},
@@ -1375,7 +1935,7 @@ function renderCOMOverviewCharts(){
 }
 
 /* =========================================================
-   PÁGINA: PUBLICAÇÕES
+   PãGINA: PUBLICAããES
    ========================================================= */
 function pagePublicacoesHTML(){
   return `
@@ -1384,12 +1944,12 @@ function pagePublicacoesHTML(){
   <p class="chart-hint">Clique numa fatia de classificação ou numa barra de UN para filtrar os demais gráficos e a tabela.</p>
   <div class="grid2">
     <div class="card"><h3>Publicações por classificação</h3><div class="chart-wrap"><canvas id="chPubClass"></canvas></div></div>
-    <div class="card"><h3>Publicações por mês</h3><div class="chart-wrap"><canvas id="chPubMes"></canvas></div></div>
+    <div class="card"><h3>Publicações por mãªs</h3><div class="chart-wrap"><canvas id="chPubMes"></canvas></div></div>
   </div>
   <div class="card"><h3>Top Unidades de Negócio</h3><div class="chart-wrap tall"><canvas id="chPubUn"></canvas></div></div>
   <div class="card"><h3>Site, visualizações e usuários</h3><div class="chart-wrap"><canvas id="chRSite"></canvas></div></div>
   <div class="card">
-    <h3>Últimas publicações</h3>
+    <h3>ãltimas publicações</h3>
     <div class="table-scroll">
       <table class="data-table" id="tblPub"></table>
     </div>
@@ -1405,7 +1965,7 @@ function afterRenderPublicacoes(){
     <div class="kpi-card"><div class="val">${fmtInt(pubAll.length)}</div><div class="lbl">Total de publicações</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalViews)}</div><div class="lbl">Visualizações totais (LinkedIn)</div></div>
     <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteúdo</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteãºdo</div></div>
     ${monthValueCard(redes,'Site - Visualizações','Visualização Site')}
     ${monthGrowthCard(redes,'Site - Visualizações','Crescimento Site')}
   `;
@@ -1421,7 +1981,7 @@ function afterRenderPublicacoes(){
   const classLabels = Object.keys(classMap);
   makeChart('chPubClass',{ type:'pie', data:{ labels:classLabels, datasets:[{ data:Object.values(classMap), backgroundColor:cfSliceColors(classLabels, PALETTE, cfActive(CF_PUB,'Classificação')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'Classificação',afterRenderPublicacoes)}});
 
-  const pub = cfApply(pubAll, CF_PUB); // pub filtrado por classificação/UN, para mês e tabela
+  const pub = cfApply(pubAll, CF_PUB); // pub filtrado por classificação/UN, para mãªs e tabela
   const mesMap = {};
   pub.forEach(r=>{
     const d = excelDateToJS(r['Data']);
@@ -1436,7 +1996,7 @@ function afterRenderPublicacoes(){
   const unEntries = sortedEntries(unMap);
   makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PUB,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'UN',afterRenderPublicacoes)}});
 
-  const labelsRedes = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mês']);
+  const labelsRedes = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mãªs']);
   makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
       { label:'Visualizações', data:redes.map(r=>num(r['Site - Visualizações'])), backgroundColor:PALETTE[0] },
       { label:'Usuários', data:redes.map(r=>num(r['Site - Usuários'])), backgroundColor:PALETTE[2] }
@@ -1456,20 +2016,20 @@ function afterRenderPublicacoes(){
 }
 
 /* =========================================================
-   PÁGINA: REDES & MAILING
+   PãGINA: REDES & MAILING
    ========================================================= */
 function pageRedesHTML(){
   return `
   <div class="kpi-grid" id="redesKpis"></div>
   <div class="grid2">
     <div class="card"><h3>Intranet, visualizações da página</h3><div class="chart-wrap"><canvas id="chRIntranet"></canvas></div></div>
-    <div class="card"><h3>LinkedIn, seguidores por mês</h3><div class="chart-wrap"><canvas id="chRLinkedin"></canvas></div></div>
+    <div class="card"><h3>LinkedIn, seguidores por mãªs</h3><div class="chart-wrap"><canvas id="chRLinkedin"></canvas></div></div>
   </div>
   <div class="grid2">
-    <div class="card"><h3>Instagram, seguidores por mês</h3><div class="chart-wrap"><canvas id="chRInsta"></canvas></div></div>
+    <div class="card"><h3>Instagram, seguidores por mãªs</h3><div class="chart-wrap"><canvas id="chRInsta"></canvas></div></div>
   </div>
   <div class="card">
-    <h3>Mailing por área jurídica (mês a mês)</h3>
+    <h3>Mailing por área jurídica (mãªs a mãªs)</h3>
     <div class="table-scroll"><table class="data-table" id="tblMail"></table></div>
   </div>
   `;
@@ -1479,18 +2039,18 @@ function monthGrowthCard(rows, field, label){
   const latest = latestValid(rows, field);
   if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
   const prev = previousValid(rows, latest.index, field);
-  const mesNome = monthNamePT(excelDateToJS(latest.row['Mês']));
+  const mesNome = monthNamePT(excelDateToJS(latest.row['Mãªs']));
   if(!prev){
-    return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}, crescimento no mês: ${mesNome}</div></div>`;
+    return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}, crescimento no mãªs: ${mesNome}</div></div>`;
   }
   const pct = (num(latest.row[field]) - num(prev.row[field])) / num(prev.row[field]);
-  return `<div class="kpi-card"><div class="val">${pct>=0?'+':''}${fmtPct(pct)}</div><div class="lbl">${label}, crescimento no mês: ${mesNome}</div></div>`;
+  return `<div class="kpi-card"><div class="val">${pct>=0?'+':''}${fmtPct(pct)}</div><div class="lbl">${label}, crescimento no mãªs: ${mesNome}</div></div>`;
 }
 
 function monthValueCard(rows, field, label){
   const latest = latestValid(rows, field);
   if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
-  const mesNome = monthNamePT(excelDateToJS(latest.row['Mês']));
+  const mesNome = monthNamePT(excelDateToJS(latest.row['Mãªs']));
   return `<div class="kpi-card"><div class="val">${fmtInt(num(latest.row[field]))}</div><div class="lbl">${label}: ${mesNome}</div></div>`;
 }
 
@@ -1506,20 +2066,20 @@ function afterRenderRedes(){
     ${monthGrowthCard(redes,'LinkedIn - Seguidores','Crescimento LinkedIn')}
     ${monthGrowthCard(redes,'Insta - Seguidores','Crescimento Instagram')}
   `;
-  const labels = redes.map(r=> r['Mês'] instanceof Date ? r['Mês'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mês']);
+  const labels = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mãªs']);
   makeChart('chRLinkedin',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRInsta',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRIntranet',{ type:'line', data:{ labels, datasets:[{ label:'Visualizações Intranet', data:redes.map(r=>num(r['Intranet - Visualizações da página'])), borderColor:PALETTE[5], backgroundColor:PALETTE[5]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
 
   const monthCols = mail.length ? Object.keys(mail[0]).filter(k=>k!=='Area') : [];
   document.getElementById('tblMail').innerHTML = `
-    <tr><th>Área</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
+    <tr><th>ãrea</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
     ${mail.map(r=>`<tr><td>${r['Area']}</td>${monthCols.map(m=>`<td>${r[m]!==null&&r[m]!==undefined?fmtInt(num(r[m])):''}</td>`).join('')}</tr>`).join('')}
   `;
 }
 
 /* =========================================================
-   PÁGINA: ACADEMIA E TREINAMENTOS
+   PãGINA: ACADEMIA E TREINAMENTOS
    ========================================================= */
 function pageAcademiaMadronaHTML(){
   return `
@@ -1555,7 +2115,7 @@ function afterRenderAcademiaMadrona(){
   }
 
   const academia = cfApply(academiaAll, CF_ACADMAD);
-  makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TÍTULO']), datasets:[
+  makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TãTULO']), datasets:[
       { label:'Participantes', data:academia.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Meta', data:academia.map(r=>num(r['META'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
@@ -1564,14 +2124,14 @@ function afterRenderAcademiaMadrona(){
   const pilarLabels = Object.keys(pilarMap);
   makeChart('chAcadMadPilar',{ type:'doughnut', data:{ labels:pilarLabels, datasets:[{ data:Object.values(pilarMap), backgroundColor:cfSliceColors(pilarLabels, PALETTE, cfActive(CF_ACADMAD,'PILAR')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_ACADMAD,'PILAR',afterRenderAcademiaMadrona)}});
 
-  makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TÍTULO']; }), datasets:[
+  makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TãTULO']; }), datasets:[
       { label:'Participantes', data:treinIm.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Convidados', data:treinIm.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[2] }
     ]}, options:{responsive:true,maintainAspectRatio:false}});
 }
 
 /* =========================================================
-   PÁGINA: GRUPOS DE ESTUDOS E RT
+   PãGINA: GRUPOS DE ESTUDOS E RT
    ========================================================= */
 function pageAcademiaHTML(){
   return `
@@ -1591,7 +2151,7 @@ function afterRenderAcademia(){
 
   const byTitulo = {};
   grupos.forEach(r=>{
-    const t = r['TÍTULO']||'Outro';
+    const t = r['TãTULO']||'Outro';
     if(!byTitulo[t]) byTitulo[t] = {presenc:0,n:0};
     byTitulo[t].presenc += num(r['% presença']);
     byTitulo[t].n++;
@@ -1599,14 +2159,14 @@ function afterRenderAcademia(){
   const gLabels = Object.keys(byTitulo);
   makeChart('chAcadGrupos',{ type:'bar', data:{ labels:gLabels, datasets:[{ label:'Presença média', data:gLabels.map(k=>byTitulo[k].presenc/byTitulo[k].n), backgroundColor:PALETTE[1] }]}, options:{responsive:true,maintainAspectRatio:false, scales:{y:{ticks:{callback:v=>fmtPct(v)}}}}});
 
-  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TÍTULO']), datasets:[
+  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TãTULO']), datasets:[
       { label:'Participantes', data:grupos.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Convidados', data:grupos.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
 }
 
 /* =========================================================
-   PÁGINA: LEX & JURIS
+   PãGINA: LEX & JURIS
    ========================================================= */
 function pageLexJurisHTML(){
   return `
@@ -1662,7 +2222,7 @@ function afterRenderLexJuris(){
 }
 
 /* =========================================================
-   PÁGINA: TIMESHEET MADRONA LAB
+   PãGINA: TIMESHEET MADRONA LAB
    ========================================================= */
 let TS_MONTH_FILTER = 'todos';
 
@@ -1672,7 +2232,7 @@ function pageTimesheetHTML(){
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-    <h3 style="margin:0; border:none; padding:0;">Filtro de mês</h3>
+    <h3 style="margin:0; border:none; padding:0;">Filtro de mãªs</h3>
     <select id="tsMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
       <option value="todos" ${TS_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
       ${mesesOrdenados.map(m=>`<option value="${m}" ${TS_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
@@ -1686,7 +2246,7 @@ function pageTimesheetHTML(){
     <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chTsUn"></canvas></div></div>
   </div>
   <div class="grid2">
-    <div class="card"><h3>Investimento por mês, em horas${TS_MONTH_FILTER!=='todos'?' (sempre mostra o ano todo, para dar contexto de tendência)':''}</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
+    <div class="card"><h3>Investimento por mãªs, em horas${TS_MONTH_FILTER!=='todos'?' (sempre mostra o ano todo, para dar contexto de tendãªncia)':''}</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
     <div class="card"><h3>Top 15 profissionais por horas investidas</h3><div class="chart-wrap tall"><canvas id="chTsProf"></canvas></div></div>
   </div>
   <div class="card"><h3>Participação proporcional por Unidade de Negócio (% de pessoas da UN que lançaram horas)</h3><div class="chart-wrap tall"><canvas id="chTsPart"></canvas></div></div>
@@ -1736,8 +2296,8 @@ function afterRenderTimesheetData(){
   const unEntries = sortedEntries(unMap);
   makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_TS,'Desc. Grupo Jurídico')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_TS,'Desc. Grupo Jurídico',afterRenderTimesheetData)}});
 
-  // Tendência mensal: propositalmente sempre com o ano completo e sem os filtros de UN/Frente,
-  // para servir de referência de contexto (não "some" quando se seleciona uma barra).
+  // Tendãªncia mensal: propositalmente sempre com o ano completo e sem os filtros de UN/Frente,
+  // para servir de referãªncia de contexto (não "some" quando se seleciona uma barra).
   const mesMap = {};
   tsAll.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
   const mesLabels = MES_ABBR_ORDER.filter(m=>mesMap[m]!==undefined);
@@ -1767,7 +2327,7 @@ function afterRenderTimesheetData(){
 }
 
 /* =========================================================
-   PÁGINA: FERRAMENTAS
+   PãGINA: FERRAMENTAS
    ========================================================= */
 function pageFerramentasHTML(){
   const subs = [
@@ -1846,7 +2406,7 @@ function renderDocuCertiCharts(){
 function buildBibliotecasHTML(){
   return `
   <div class="kpi-grid" id="bibKpis"></div>
-  <p style="font-size:12px;color:#999;margin-top:-8px;">Planilha em revisão: os números de uso mensal ainda não estão disponíveis.</p>
+  <p style="font-size:12px;color:#999;margin-top:-8px;">Planilha em revisão: os nãºmeros de uso mensal ainda não estão disponíveis.</p>
   `;
 }
 function renderBibliotecasCharts(){
@@ -1862,7 +2422,7 @@ function buildLexterHTML(){
   <div class="insight-grid" id="lexInsights"></div>
   <div class="grid2">
     <div class="card"><h3>Evolução de uso mensal</h3><div class="chart-wrap"><canvas id="chLexMes"></canvas></div></div>
-    <div class="card"><h3>Usuários ativos por mês</h3><div class="chart-wrap"><canvas id="chLexUsersMes"></canvas></div></div>
+    <div class="card"><h3>Usuários ativos por mãªs</h3><div class="chart-wrap"><canvas id="chLexUsersMes"></canvas></div></div>
   </div>
   <div class="card" style="margin-bottom:20px;">
     <h3>Adoção por Unidade de Negócio</h3>
@@ -1882,7 +2442,7 @@ function renderLexterCharts(){
   const lexAll = getLexter();
   const totalDoc = lexAll.reduce((s,r)=>s+num(r['DOCUMENTOS']),0);
   const totalResp = lexAll.reduce((s,r)=>s+num(r['RESPOSTAS']),0);
-  const usuariosUnicos = [...new Set(lexAll.map(r=>(r['USUÁRIO']||'').toString().trim().toLowerCase()).filter(Boolean))];
+  const usuariosUnicos = [...new Set(lexAll.map(r=>(r['USUãRIO']||'').toString().trim().toLowerCase()).filter(Boolean))];
   document.getElementById('lexKpis').innerHTML = `
     <div class="kpi-card azul"><div class="val">${fmtInt(lexAll.length)}</div><div class="lbl">Total de análises</div></div>
     <div class="kpi-card grafite"><div class="val">${fmtInt(totalDoc)}</div><div class="lbl">Documentos processados</div></div>
@@ -1890,14 +2450,14 @@ function renderLexterCharts(){
     <div class="kpi-card verde"><div class="val">${usuariosUnicos.length}</div><div class="lbl">Usuários ativos</div></div>
   `;
 
-  /* ---- Evolução mensal (análises e usuários distintos por mês) ---- */
+  /* ---- Evolução mensal (análises e usuários distintos por mãªs) ---- */
   const mesAnaliseMap = {}; const mesUsersMap = {};
   lexAll.forEach(r=>{
     const m = monthAbbrPT(r['DATA']);
     if(!m) return;
     mesAnaliseMap[m] = (mesAnaliseMap[m]||0) + 1;
     if(!mesUsersMap[m]) mesUsersMap[m] = new Set();
-    mesUsersMap[m].add((r['USUÁRIO']||'').toString().trim().toLowerCase());
+    mesUsersMap[m].add((r['USUãRIO']||'').toString().trim().toLowerCase());
   });
   const mesLabels = MES_ABBR_ORDER.filter(m=>mesAnaliseMap[m]!==undefined);
   makeChart('chLexMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Análises', data:mesLabels.map(m=>mesAnaliseMap[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
@@ -1905,12 +2465,12 @@ function renderLexterCharts(){
 
   /* ---- Adoção por UN: % de pessoas da UN (aba CT) que já usaram o Lexter ----
      Comparamos contra TODAS as unidades jurídicas/GC da aba CT (não só as que
-     já aparecem no Lexter), para que uma UN com 0% de adoção — o gap mais
-     relevante estrategicamente — apareça na lista em vez de ser omitida. */
+     já aparecem no Lexter), para que uma UN com 0% de adoção â o gap mais
+     relevante estrategicamente â apareça na lista em vez de ser omitida. */
   const headcountByUN = groupSum(getCT(), 'UN', ()=>1);
   const usersByUN = {};
   lexAll.forEach(r=>{
-    const un = r['UN']; const user = (r['USUÁRIO']||'').toString().trim().toLowerCase();
+    const un = r['UN']; const user = (r['USUãRIO']||'').toString().trim().toLowerCase();
     if(!un || !user) return;
     if(!usersByUN[un]) usersByUN[un] = new Set();
     usersByUN[un].add(user);
@@ -1944,21 +2504,21 @@ function renderLexterCharts(){
     const semAdocao = adoptEntries.filter(e=>e.pct===0);
     const piorAdocao = adoptEntries.length ? adoptEntries[adoptEntries.length-1] : null;
 
-    const userTotals = sortedEntries(groupSum(lexAll,'USUÁRIO',()=>1));
+    const userTotals = sortedEntries(groupSum(lexAll,'USUãRIO',()=>1));
     const top10Count = userTotals.slice(0,10).reduce((s,e)=>s+e[1],0);
     const pctTop10 = lexAll.length ? top10Count/lexAll.length : 0;
 
     const cards = [];
-    cards.push({ cls:'positivo', icone:'✅', titulo:`Pico de uso: ${mesTop}`,
+    cards.push({ cls:'positivo', icone:'â', titulo:`Pico de uso: ${mesTop}`,
       texto:`${mesTop} registrou ${fmtInt(mesAnaliseMap[mesTop])} análises${crescimento? `, crescimento de ${crescimento.toFixed(1)}x vs. os meses iniciais`:''}${unDestaqueMesTop? `, com destaque para ${unDestaqueMesTop[0]}`:''}.` });
     if(semAdocao.length>=2){
-      cards.push({ cls:'alerta', icone:'⚠', titulo:`${semAdocao.length} unidades sem nenhuma adoção`,
+      cards.push({ cls:'alerta', icone:'â ', titulo:`${semAdocao.length} unidades sem nenhuma adoção`,
         texto:`${semAdocao.map(e=>e.un).join(', ')} ainda não geraram nenhuma análise no Lexter (0 de ${semAdocao.reduce((s,e)=>s+e.total,0)} pessoas ao todo).` });
     } else if(piorAdocao){
-      cards.push({ cls:'alerta', icone:'⚠', titulo:`Menor adoção: ${piorAdocao.un}`,
+      cards.push({ cls:'alerta', icone:'â ', titulo:`Menor adoção: ${piorAdocao.un}`,
         texto:`Apenas ${fmtPct(piorAdocao.pct)} das pessoas dessa UN (${piorAdocao.ativos} de ${piorAdocao.total}) já geraram alguma análise no Lexter.` });
     }
-    cards.push({ cls:'atencao', icone:'📊', titulo:'Uso concentrado em poucos',
+    cards.push({ cls:'atencao', icone:'ð', titulo:'Uso concentrado em poucos',
       texto:`Os top 10 usuários representam ${fmtPct(pctTop10)} de todas as análises geradas. Meta: ampliar a base de usuários engajados.` });
     insightsEl.innerHTML = cards.map(c=>`
       <div class="insight-card ${c.cls}">
@@ -1969,7 +2529,7 @@ function renderLexterCharts(){
 
   const chipsEl = document.getElementById('lexFilterChips');
   if(chipsEl){
-    chipsEl.innerHTML = cfChipsHTML(CF_LEX, {'UN':'UN','USUÁRIO':'Usuário'});
+    chipsEl.innerHTML = cfChipsHTML(CF_LEX, {'UN':'UN','USUãRIO':'Usuário'});
     cfBindChips(CF_LEX, '#lexFilterChips', renderLexterCharts);
   }
 
@@ -1978,10 +2538,10 @@ function renderLexterCharts(){
   const unEntries = sortedEntries(unMap);
   makeChart('chLexUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[0], cfActive(CF_LEX,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LEX,'UN',renderLexterCharts)}});
 
-  const userRows = cfApply(lexAll, CF_LEX, 'USUÁRIO');
-  const userMap = groupSum(userRows,'USUÁRIO',()=>1);
+  const userRows = cfApply(lexAll, CF_LEX, 'USUãRIO');
+  const userMap = groupSum(userRows,'USUãRIO',()=>1);
   const userEntries = sortedEntries(userMap).slice(0,15);
-  makeChart('chLexUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_LEX,'USUÁRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LEX,'USUÁRIO',renderLexterCharts)}});
+  makeChart('chLexUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Análises', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_LEX,'USUãRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_LEX,'USUãRIO',renderLexterCharts)}});
 }
 
 function buildPortDataHTML(){
@@ -2003,12 +2563,12 @@ function renderPortDataCharts(){
     <div class="kpi-card"><div class="val">${fmtInt(pdAll.length)}</div><div class="lbl">Total de consultas</div></div>
     <div class="kpi-card"><div class="val">${fmtMoney(totalValor)}</div><div class="lbl">Gasto total</div></div>
     <div class="kpi-card"><div class="val">${pdAll.length? fmtMoney(totalValor/pdAll.length):'-'}</div><div class="lbl">Ticket médio</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pdAll,'USUÁRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pdAll,'USUãRIO',()=>1)).length}</div><div class="lbl">Usuários ativos</div></div>
   `;
 
   const chipsEl = document.getElementById('pdFilterChips');
   if(chipsEl){
-    chipsEl.innerHTML = cfChipsHTML(CF_PD, {'UN':'UN','USUÁRIO':'Usuário'});
+    chipsEl.innerHTML = cfChipsHTML(CF_PD, {'UN':'UN','USUãRIO':'Usuário'});
     cfBindChips(CF_PD, '#pdFilterChips', renderPortDataCharts);
   }
 
@@ -2017,10 +2577,10 @@ function renderPortDataCharts(){
   const unEntries = sortedEntries(unMap);
   makeChart('chPdUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Gasto (R$)', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PD,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PD,'UN',renderPortDataCharts)}});
 
-  const userRows = cfApply(pdAll, CF_PD, 'USUÁRIO');
-  const userMap = groupSum(userRows,'USUÁRIO',()=>1);
+  const userRows = cfApply(pdAll, CF_PD, 'USUãRIO');
+  const userMap = groupSum(userRows,'USUãRIO',()=>1);
   const userEntries = sortedEntries(userMap).slice(0,15);
-  makeChart('chPdUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Consultas', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[3], cfActive(CF_PD,'USUÁRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PD,'USUÁRIO',renderPortDataCharts)}});
+  makeChart('chPdUsers',{ type:'bar', data:{ labels:userEntries.map(e=>e[0]), datasets:[{ label:'Consultas', data:userEntries.map(e=>e[1]), backgroundColor:cfBarColors(userEntries.map(e=>e[0]), PALETTE[3], cfActive(CF_PD,'USUãRIO')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PD,'USUãRIO',renderPortDataCharts)}});
 }
 
 function buildCopilotHTML(){
@@ -2082,7 +2642,7 @@ function buildSagaHTML(){
   <div id="sgFilterChips"></div>
   <p class="chart-hint">Clique numa barra de usuário ou de UN para filtrar os demais gráficos.</p>
   <div class="grid2">
-    <div class="card"><h3>Mensagens por mês de acesso, por usuário (top 15)</h3><p class="chart-hint" style="margin:-6px 0 10px;">Normalizado pelo tempo de adesão, para não favorecer quem entrou há mais tempo.</p><div class="chart-wrap"><canvas id="chSgMsg"></canvas></div></div>
+    <div class="card"><h3>Mensagens por mãªs de acesso, por usuário (top 15)</h3><p class="chart-hint" style="margin:-6px 0 10px;">Normalizado pelo tempo de adesão, para não favorecer quem entrou há mais tempo.</p><div class="chart-wrap"><canvas id="chSgMsg"></canvas></div></div>
     <div class="card"><h3>Projetos totais vs. compartilhados (top 15)</h3><div class="chart-wrap"><canvas id="chSgProj"></canvas></div></div>
   </div>
   <div class="card"><h3>Mensagens por Unidade de Negócio</h3><div class="chart-wrap tall"><canvas id="chSgUn"></canvas></div></div>
@@ -2094,7 +2654,7 @@ function renderSagaCharts(){
   sgAll.forEach(r=>{
     if(r._UN===undefined) r._UN = unForName(r['Nome']);
     if(r._taxaMensal===undefined){
-      // Mensagens por mês desde a adesão (30 dias), para comparar de forma justa
+      // Mensagens por mãªs desde a adesão (30 dias), para comparar de forma justa
       // quem entrou há pouco tempo com quem já usa a ferramenta há mais tempo.
       const dias = Math.max(num(r['Dias de uso']), 1);
       r._taxaMensal = num(r['Enviado']) / dias * 30;
@@ -2118,7 +2678,7 @@ function renderSagaCharts(){
 
   const nomeRows = cfApply(sgAll, CF_SG, 'Nome');
   const sorted = [...nomeRows].sort((a,b)=>b._taxaMensal-a._taxaMensal).slice(0,15);
-  makeChart('chSgMsg',{ type:'bar', data:{ labels:sorted.map(r=>r['Nome']), datasets:[{ label:'Mensagens/mês', data:sorted.map(r=>Math.round(r._taxaMensal*10)/10), backgroundColor:cfBarColors(sorted.map(r=>r['Nome']), PALETTE[0], cfActive(CF_SG,'Nome')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_SG,'Nome',renderSagaCharts), plugins:{tooltip:{callbacks:{label:ctx=>{ const r = sorted[ctx.dataIndex]; return `${ctx.parsed.x} mensagens/mês (${fmtInt(num(r['Enviado']))} no total, desde ${excelDateToJS(r['Criado'])?fmtDatePT(excelDateToJS(r['Criado'])):'-'})`; }}}}}});
+  makeChart('chSgMsg',{ type:'bar', data:{ labels:sorted.map(r=>r['Nome']), datasets:[{ label:'Mensagens/mãªs', data:sorted.map(r=>Math.round(r._taxaMensal*10)/10), backgroundColor:cfBarColors(sorted.map(r=>r['Nome']), PALETTE[0], cfActive(CF_SG,'Nome')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_SG,'Nome',renderSagaCharts), plugins:{tooltip:{callbacks:{label:ctx=>{ const r = sorted[ctx.dataIndex]; return `${ctx.parsed.x} mensagens/mãªs (${fmtInt(num(r['Enviado']))} no total, desde ${excelDateToJS(r['Criado'])?fmtDatePT(excelDateToJS(r['Criado'])):'-'})`; }}}}}});
   const sorted2 = [...nomeRows].sort((a,b)=>num(b['Total Projetos'])-num(a['Total Projetos'])).slice(0,15);
   makeChart('chSgProj',{ type:'bar', data:{ labels:sorted2.map(r=>r['Nome']), datasets:[
       { label:'Total', data:sorted2.map(r=>num(r['Total Projetos'])), backgroundColor:PALETTE[4] },
@@ -2136,11 +2696,11 @@ let IM_MONTH_FILTER = 'todos';
 
 function buildImanageHTML(){
   const imAll = getIManage();
-  const meses = [...new Set(imAll.map(r=>monthAbbrPT(r['MÊS'])))].filter(Boolean);
+  const meses = [...new Set(imAll.map(r=>monthAbbrPT(r['MãS'])))].filter(Boolean);
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-    <h3 style="margin:0; border:none; padding:0;">Filtro de mês</h3>
+    <h3 style="margin:0; border:none; padding:0;">Filtro de mãªs</h3>
     <select id="imMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
       <option value="todos" ${IM_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
       ${mesesOrdenados.map(m=>`<option value="${m}" ${IM_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
@@ -2170,8 +2730,8 @@ function renderImanageCharts(){
 }
 function renderImanageChartsData(){
   const imAllMeses = getIManage();
-  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIÇÃO']); });
-  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(r['MÊS'])===IM_MONTH_FILTER);
+  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIããO']); });
+  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(r['MãS'])===IM_MONTH_FILTER);
 
   const chipsEl = document.getElementById('imFilterChips');
   if(chipsEl){
@@ -2195,7 +2755,7 @@ function renderImanageChartsData(){
   const posRows = cfApply(imMonth, CF_IM, '_POS');
   const posMap = {};
   posRows.forEach(r=>{ posMap[r._POS] = (posMap[r._POS]||0) + num(r['TOTAL']); });
-  const posOrder = ['Estagiário','Júnior','Pleno','Sênior','Sócio','ADM'];
+  const posOrder = ['Estagiário','Jãºnior','Pleno','Sãªnior','Sócio','ADM'];
   const posLabels = posOrder.filter(p=>posMap[p]!==undefined);
   makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:cfSliceColors(posLabels, PALETTE, cfActive(CF_IM,'_POS')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_IM,'_POS',renderImanageChartsData)}});
 
@@ -2237,7 +2797,7 @@ function buildUpMinerHTML(){
 const CF_UP = 'upminer';
 function renderUpMinerCharts(){
   const upAll = getUpMiner();
-  const up = upAll.filter(r=>['BD','CT'].includes((r['ÁREA']||'').toString().trim().toUpperCase()));
+  const up = upAll.filter(r=>['BD','CT'].includes((r['ãREA']||'').toString().trim().toUpperCase()));
   const summary = computeUpMinerSummary();
 
   document.getElementById('upContractBlock').innerHTML = contractLoadingBlockHTML('upminer', summary.pctBD+summary.pctCT, 'Créditos consumidos do contrato');
@@ -2251,26 +2811,26 @@ function renderUpMinerCharts(){
 
   const chipsEl = document.getElementById('upFilterChips');
   if(chipsEl){
-    chipsEl.innerHTML = cfChipsHTML(CF_UP, {'ÁREA':'Área'});
+    chipsEl.innerHTML = cfChipsHTML(CF_UP, {'ãREA':'ãrea'});
     cfBindChips(CF_UP, '#upFilterChips', renderUpMinerCharts);
   }
 
   const areaMap = { BD: summary.totalBD, CT: summary.totalCT };
   const areaLabels = Object.keys(areaMap);
-  makeChart('chUpArea',{ type:'doughnut', data:{ labels:areaLabels, datasets:[{ data:Object.values(areaMap), backgroundColor:cfSliceColors(areaLabels, [PALETTE[0],PALETTE[1]], cfActive(CF_UP,'ÁREA')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_UP,'ÁREA',renderUpMinerCharts)}});
+  makeChart('chUpArea',{ type:'doughnut', data:{ labels:areaLabels, datasets:[{ data:Object.values(areaMap), backgroundColor:cfSliceColors(areaLabels, [PALETTE[0],PALETTE[1]], cfActive(CF_UP,'ãREA')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_UP,'ãREA',renderUpMinerCharts)}});
 
-  const activeArea = cfActive(CF_UP,'ÁREA');
+  const activeArea = cfActive(CF_UP,'ãREA');
   const areas = activeArea ? [activeArea] : ['BD','CT'];
-  const meses = [...new Set(up.map(r=>r['MÊS']))];
+  const meses = [...new Set(up.map(r=>r['MãS']))];
   const mesesOrdenados = MESES_ORDER.map(m=> meses.find(x=>(x||'').toString().toLowerCase()===m)).filter(Boolean);
   const finalMeses = mesesOrdenados.length ? mesesOrdenados : meses;
   makeChart('chUpMes',{ type:'bar', data:{ labels:finalMeses, datasets: areas.map((a)=>({
-      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ÁREA']||'').toString().trim().toUpperCase()===a && r['MÊS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: a==='BD'?PALETTE[0]:PALETTE[1]
+      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ãREA']||'').toString().trim().toUpperCase()===a && r['MãS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: a==='BD'?PALETTE[0]:PALETTE[1]
     })) }, options:{responsive:true,maintainAspectRatio:false}});
 }
 
 /* =========================================================
-   PÁGINA: LAB COINS (Madrona Star)
+   PãGINA: LAB COINS (Madrona Star)
    ========================================================= */
 function computeLabCoinsSummary(){
   const rows = getLabCoins();
@@ -2281,8 +2841,8 @@ function computeLabCoinsSummary(){
   const idxEnt = colIndex(header,'Entregável');
   const idxCoins = colIndex(header,'LAB COINS');
   const idxOrc = colIndex(header,'Orçamento total');
-  const idxPremioEsp = colIndex(header,'Prêmio especial');
-  const idxPremioMes = colIndex(header,'Prêmios mensais');
+  const idxPremioEsp = colIndex(header,'Prãªmio especial');
+  const idxPremioMes = colIndex(header,'Prãªmios mensais');
 
   const items = [];
   for(let i=1;i<rows.length;i++){
@@ -2312,11 +2872,11 @@ function pageLabCoinsHTML(){
   return `<div class="empty-state"><h2>Aba em revisão</h2><p>A planilha de Lab Coins está sendo revista pelo time. Assim que o novo modelo for consolidado, os indicadores voltam a aparecer aqui.</p></div>`;
 }
 function afterRenderLabCoins(){
-  // Conteúdo zerado propositalmente: a planilha de Lab Coins está sendo revista.
+  // Conteãºdo zerado propositalmente: a planilha de Lab Coins está sendo revista.
 }
 
 /* =========================================================
-   PÁGINA: AQUISIÇÕES
+   PãGINA: AQUISIããES
    ========================================================= */
 function pageAquisicoesHTML(){
   return `
@@ -2324,8 +2884,8 @@ function pageAquisicoesHTML(){
   <div id="aqFilterChips"></div>
   <p class="chart-hint">Clique em tipo, localidade ou UN para filtrar os demais gráficos e a tabela.</p>
   <div class="grid2">
-    <div class="card"><h3>Volume por mês</h3><div class="chart-wrap"><canvas id="chAqMes"></canvas></div></div>
-    <div class="card"><h3>Valor por mês (R$)</h3><div class="chart-wrap"><canvas id="chAqValor"></canvas></div></div>
+    <div class="card"><h3>Volume por mãªs</h3><div class="chart-wrap"><canvas id="chAqMes"></canvas></div></div>
+    <div class="card"><h3>Valor por mãªs (R$)</h3><div class="chart-wrap"><canvas id="chAqValor"></canvas></div></div>
   </div>
   <div class="grid2">
     <div class="card"><h3>Por tipo de material</h3><div class="chart-wrap"><canvas id="chAqTipo"></canvas></div></div>
@@ -2358,9 +2918,9 @@ function afterRenderAquisicoes(){
     cfBindChips(CF_AQ, '#aqFilterChips', afterRenderAquisicoes);
   }
 
-  const aq = cfApply(aqAll, CF_AQ); // filtrado por tipo/localidade/UN, para mês, valor e tabela
+  const aq = cfApply(aqAll, CF_AQ); // filtrado por tipo/localidade/UN, para mãªs, valor e tabela
   const mesMapCount = {}; const mesMapValor = {};
-  aq.forEach(r=>{ const m=(r['MÊS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
+  aq.forEach(r=>{ const m=(r['MãS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
   const mesLabels = MESES_ORDER.filter(m=>mesMapCount[m]!==undefined);
   makeChart('chAqMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Aquisições', data:mesLabels.map(m=>mesMapCount[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chAqValor',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Valor (R$)', data:mesLabels.map(m=>mesMapValor[m]), borderColor:PALETTE[3], backgroundColor:PALETTE[3]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
@@ -2387,11 +2947,288 @@ function afterRenderAquisicoes(){
   makeChart('chAqUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Aquisições', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[4], cfActive(CF_AQ,'UN/AN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_AQ,'UN/AN',afterRenderAquisicoes)}});
 
   document.getElementById('tblAq').innerHTML = `
-    <tr><th>Mês</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
-    ${aq.slice(0,80).map(r=>`<tr><td>${r['MÊS']||''}</td><td>${r['TÍTULO']||''}</td><td>${r['UN/AN']||''}</td><td>${r['TIPO']||''}</td><td>${r['VALOR']?fmtMoney(num(r['VALOR'])):''}</td><td>${r['LOCALIDADE']||''}</td></tr>`).join('')}
+    <tr><th>Mãªs</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
+    ${aq.slice(0,80).map(r=>`<tr><td>${r['MãS']||''}</td><td>${r['TãTULO']||''}</td><td>${r['UN/AN']||''}</td><td>${r['TIPO']||''}</td><td>${r['VALOR']?fmtMoney(num(r['VALOR'])):''}</td><td>${r['LOCALIDADE']||''}</td></tr>`).join('')}
   `;
 }
 
 </script>
-</body>
-</html>
+
+
+
+<script>
+const TSGC_DATA = {"months": ["Agosto"], "people": ["Amanda", "Andrezza", "Clarissa", "Deborah", "Filipi", "Raquel"], "categories": ["Monitoramento Legislativo e Jurisprudencial", "Curadoria e Distribuição de Conteúdo", "Atendimento e Relacionamento Interno", "Gestão Administrativa e Financeira", "Academia Madrona", "Madrona Research", "Pesquisa e Conhecimento", "Inovação e Eficiência", "Suporte TI", "Demandas operacionais", "Madrona Lab Coins", "Gestão de Equipes", "Gestão de Recortes"], "palette": {"Monitoramento Legislativo e Jurisprudencial": "#00b2ff", "Curadoria e Distribuição de Conteúdo": "#fc745c", "Atendimento e Relacionamento Interno": "#d0ffc9", "Gestão Administrativa e Financeira": "#444444", "Academia Madrona": "#b2bab9", "Madrona Research": "#fff6d3", "Pesquisa e Conhecimento": "#0080b8", "Inovação e Eficiência": "#b55442", "Suporte TI": "#96b891", "Demandas operacionais": "#313131", "Madrona Lab Coins": "#808685", "Gestão de Equipes": "#b8b198", "Gestão de Recortes": "#59cdff"}, "brand": {"azul": "#00b2ff", "grafite": "#444444", "cinza": "#b2bab9", "vermelho": "#fc745c", "verde": "#d0ffc9", "amarelo": "#fff6d3"}, "byMonth": {"Agosto": {"equipe": {"total_horas": 468.97, "horas": {"Monitoramento Legislativo e Jurisprudencial": 8.0, "Curadoria e Distribuição de Conteúdo": 99.95, "Atendimento e Relacionamento Interno": 28.0, "Gestão Administrativa e Financeira": 23.08, "Academia Madrona": 59.92, "Madrona Research": 0.75, "Pesquisa e Conhecimento": 2.68, "Inovação e Eficiência": 166.5, "Suporte TI": 4.67, "Demandas operacionais": 17.83, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 44.25, "Gestão de Recortes": 13.33}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 1.71, "Curadoria e Distribuição de Conteúdo": 21.31, "Atendimento e Relacionamento Interno": 5.97, "Gestão Administrativa e Financeira": 4.92, "Academia Madrona": 12.78, "Madrona Research": 0.16, "Pesquisa e Conhecimento": 0.57, "Inovação e Eficiência": 35.5, "Suporte TI": 1.0, "Demandas operacionais": 3.8, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 9.44, "Gestão de Recortes": 2.84}}, "pessoas": {"Amanda": {"total_horas": 68.42, "horas": {"Monitoramento Legislativo e Jurisprudencial": 1.33, "Curadoria e Distribuição de Conteúdo": 63.58, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 0.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 0.0, "Suporte TI": 0.0, "Demandas operacionais": 3.5, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 1.95, "Curadoria e Distribuição de Conteúdo": 92.94, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 0.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 0.0, "Suporte TI": 0.0, "Demandas operacionais": 5.12, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.0, "Gestão de Recortes": 0.0}}, "Andrezza": {"total_horas": 30.58, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 8.25, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 1.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 5.58, "Suporte TI": 0.67, "Demandas operacionais": 1.58, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.17, "Gestão de Recortes": 13.33}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 26.98, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 3.27, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 18.26, "Suporte TI": 2.18, "Demandas operacionais": 5.18, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.55, "Gestão de Recortes": 43.6}}, "Clarissa": {"total_horas": 132.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 11.0, "Academia Madrona": 21.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 64.0, "Suporte TI": 0.0, "Demandas operacionais": 11.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 25.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 8.33, "Academia Madrona": 15.91, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 48.48, "Suporte TI": 0.0, "Demandas operacionais": 8.33, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 18.94, "Gestão de Recortes": 0.0}}, "Deborah": {"total_horas": 52.97, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 19.78, "Atendimento e Relacionamento Interno": 4.0, "Gestão Administrativa e Financeira": 12.08, "Academia Madrona": 5.75, "Madrona Research": 0.75, "Pesquisa e Conhecimento": 0.52, "Inovação e Eficiência": 3.25, "Suporte TI": 4.0, "Demandas operacionais": 1.75, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 1.08, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 37.35, "Atendimento e Relacionamento Interno": 7.55, "Gestão Administrativa e Financeira": 22.81, "Academia Madrona": 10.86, "Madrona Research": 1.42, "Pesquisa e Conhecimento": 0.98, "Inovação e Eficiência": 6.14, "Suporte TI": 7.55, "Demandas operacionais": 3.3, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 2.05, "Gestão de Recortes": 0.0}}, "Filipi": {"total_horas": 61.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 6.67, "Curadoria e Distribuição de Conteúdo": 8.33, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 4.17, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 2.17, "Inovação e Eficiência": 37.67, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 2.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 10.93, "Curadoria e Distribuição de Conteúdo": 13.66, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 6.83, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 3.55, "Inovação e Eficiência": 61.75, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 3.28, "Gestão de Recortes": 0.0}}, "Raquel": {"total_horas": 124.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 24.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 28.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 56.0, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 16.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 19.35, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 22.58, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 45.16, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 12.9, "Gestão de Recortes": 0.0}}}}}};
+
+window.initTSGC = null; // será definida depois
+
+(function () {
+  const categorias = TSGC_DATA.categories;
+  const palette = TSGC_DATA.categories.map(c => TSGC_DATA.palette[c]);
+  const grafite = TSGC_DATA.brand.grafite;
+
+  const selectMes = document.getElementById('tsgc-mes');
+  if (!selectMes) {
+    // Não é a primeira vez que o script roda (conteúdo do painel foi removido do DOM)
+    return;
+  }
+  
+  TSGC_DATA.months.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m;
+    selectMes.appendChild(opt);
+  });
+
+  let chartEquipe = null;
+  const chartsPessoas = {};
+  let categoriaDestacadaNome = null;
+
+  function corComOpacidade(hex, alpha) {
+    const h = hex.replace('#', '');
+    const r = parseInt(h.substring(0, 2), 16);
+    const g = parseInt(h.substring(2, 4), 16);
+    const b = parseInt(h.substring(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function coresComDestaque(catsUsadas) {
+    return catsUsadas.map(c => {
+      const corBase = TSGC_DATA.palette[c];
+      if (categoriaDestacadaNome === null || categoriaDestacadaNome === c) {
+        return corBase;
+      }
+      return corComOpacidade(corBase, 0.18);
+    });
+  }
+
+  function iniciais(nome) {
+    return nome.trim().split(/\s+/).map(p => p[0]).slice(0, 2).join('').toUpperCase();
+  }
+
+  function renderDestaque(mesData) {
+    const wrap = document.getElementById('tsgc-destaque');
+    if (!wrap) return;
+    const categoriaTop = categorias.reduce((a, b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+    const pct = mesData.equipe.percentuais[categoriaTop];
+    wrap.innerHTML = `Maior investimento de tempo da equipe em ${selectMes.value}: <strong>${categoriaTop}</strong>, com ${pct}% do tempo total.`;
+  }
+
+  function renderKpis(mesData) {
+    const wrap = document.getElementById('tsgc-kpis');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    const pessoasCount = Object.keys(mesData.pessoas).length;
+    const categoriaTop = categorias.reduce((a, b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+    const categoriasAtivas = categorias.filter(c => mesData.equipe.percentuais[c] > 0);
+    const categoriaMenor = categoriasAtivas.reduce((a, b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
+    const kpis = [
+      { valor: pessoasCount, rotulo: 'Pessoas na equipe' },
+      { valor: mesData.equipe.percentuais[categoriaTop] + '%', rotulo: 'Maior investimento: ' + categoriaTop },
+      { valor: mesData.equipe.percentuais[categoriaMenor] + '%', rotulo: 'Menor investimento: ' + categoriaMenor },
+    ];
+    kpis.forEach(k => {
+      const div = document.createElement('div');
+      div.className = 'tsgc-kpi';
+      div.innerHTML = `<div class="valor">${k.valor}</div><div class="rotulo">${k.rotulo}</div>`;
+      wrap.appendChild(div);
+    });
+  }
+
+  function renderChartEquipe(mesData) {
+    const canvasEl = document.getElementById('chart-equipe');
+    if (!canvasEl) return;
+    const ctx = canvasEl.getContext('2d');
+    const catsUsadas = categorias
+      .filter(c => mesData.equipe.horas[c] > 0)
+      .sort((a, b) => mesData.equipe.percentuais[b] - mesData.equipe.percentuais[a]);
+    const percentuais = catsUsadas.map(c => mesData.equipe.percentuais[c]);
+    const labels = catsUsadas;
+    if (chartEquipe) chartEquipe.destroy();
+    chartEquipe = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '% do tempo da equipe',
+          data: percentuais,
+          backgroundColor: coresComDestaque(catsUsadas),
+          borderColor: grafite,
+          borderWidth: 1.5,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const idx = elements[0].index;
+            const nomeClicado = catsUsadas[idx];
+            categoriaDestacadaNome = (categoriaDestacadaNome === nomeClicado) ? null : nomeClicado;
+          } else {
+            categoriaDestacadaNome = null;
+          }
+          atualizarDestaque();
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: grafite,
+            callbacks: {
+              label: (item) => `${item.formattedValue}% do tempo da equipe`
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { callback: v => v + '%' },
+            grid: { color: '#eceeee' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: grafite, font: { size: 12 } }
+          }
+        }
+      }
+    });
+    chartEquipe.tsgcCats = catsUsadas;
+  }
+
+  function renderPessoas(mesData) {
+    const grid = document.getElementById('tsgc-pessoas-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    Object.keys(chartsPessoas).forEach(k => delete chartsPessoas[k]);
+    TSGC_DATA.people.forEach(pessoa => {
+      const pdata = mesData.pessoas[pessoa];
+      if (!pdata) return;
+      const card = document.createElement('div');
+      card.className = 'tsgc-pessoa-card';
+      card.innerHTML = `
+        <div class="tsgc-pessoa-topo">
+          <div class="tsgc-pessoa-nome">
+            <span class="tsgc-avatar">${iniciais(pessoa)}</span>
+            ${pessoa}
+          </div>
+        </div>
+        <div class="tsgc-pessoa-chart">
+          <canvas id="chart-pessoa-${pessoa.replace(/\s+/g, '_')}"></canvas>
+        </div>
+      `;
+      grid.appendChild(card);
+      const ctx = card.querySelector('canvas').getContext('2d');
+      const catsUsadas = categorias
+        .filter(c => pdata.horas[c] > 0)
+        .sort((a, b) => pdata.percentuais[b] - pdata.percentuais[a]);
+      const percentuais = catsUsadas.map(c => pdata.percentuais[c]);
+      const labels = catsUsadas;
+      const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '% do tempo de ' + pessoa,
+            data: percentuais,
+            backgroundColor: coresComDestaque(catsUsadas),
+            borderColor: grafite,
+            borderWidth: 1.5,
+            borderRadius: 4,
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: grafite,
+              callbacks: {
+                label: (item) => `${item.formattedValue}% do tempo de ${pessoa}`
+              }
+            }
+          },
+          scales: {
+            x: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: '#eceeee' } },
+            y: { grid: { display: false }, ticks: { color: grafite, font: { size: 11 } } }
+          }
+        }
+      });
+      chart.tsgcCats = catsUsadas;
+      chartsPessoas[pessoa] = chart;
+    });
+  }
+
+  function atualizarDestaque() {
+    if (chartEquipe) {
+      chartEquipe.data.datasets[0].backgroundColor = coresComDestaque(chartEquipe.tsgcCats);
+      chartEquipe.update();
+    }
+    Object.values(chartsPessoas).forEach(chart => {
+      chart.data.datasets[0].backgroundColor = coresComDestaque(chart.tsgcCats);
+      chart.update();
+    });
+  }
+
+  function renderTudo() {
+    const mes = selectMes.value;
+    const mesData = TSGC_DATA.byMonth[mes];
+    if (!mesData) return;
+    categoriaDestacadaNome = null;
+    renderDestaque(mesData);
+    renderKpis(mesData);
+    renderChartEquipe(mesData);
+    renderPessoas(mesData);
+  }
+
+  selectMes.addEventListener('change', renderTudo);
+
+  // Inicialização sob demanda — exportar para global
+  window.TSGC_INITIALIZED = false;
+  window.initTSGC = function() {
+    console.log('[TSGC] initTSGC chamada, INITIALIZED:', window.TSGC_INITIALIZED);
+    if (window.TSGC_INITIALIZED) {
+      console.log('[TSGC] Já foi inicializado, retornando');
+      return;
+    }
+    window.TSGC_INITIALIZED = true;
+    const selectEl = document.getElementById('tsgc-mes');
+    console.log('[TSGC] selectEl encontrado?', !!selectEl);
+    const destaquesEl = document.getElementById('tsgc-destaque');
+    console.log('[TSGC] destaque encontrado?', !!destaquesEl);
+    const kpisEl = document.getElementById('tsgc-kpis');
+    console.log('[TSGC] kpis encontrado?', !!kpisEl);
+    if (selectEl) {
+      selectEl.value = TSGC_DATA.months[0];
+      console.log('[TSGC] Chamando renderTudo()...');
+      renderTudo();
+      console.log('[TSGC] renderTudo() completo');
+    } else {
+      console.error('[TSGC] selectEl não encontrado!');
+    }
+  };
+  
+  const tsGcPanel = document.getElementById('tsgc-gc');
+  if (tsGcPanel && tsGcPanel.classList.contains('active')) {
+    setTimeout(initTSGC, 100);
+  }
+  
+  if (tsGcPanel) {
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'class' && tsGcPanel.classList.contains('active')) {
+          initTSGC();
+        }
+      });
+    });
+    observer.observe(tsGcPanel, { attributes: true });
+  }
+})();
+</script>
+
+</body></html>"
+
+(captured at origin https://gcmadrona.github.io)
