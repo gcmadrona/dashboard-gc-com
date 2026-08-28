@@ -1258,15 +1258,20 @@ function renderTabsNav(){
   nav.innerHTML = TABS.map(t=>
     `<button data-tab="${t.id}" class="${t.id===ACTIVE_TAB?'active':''}">${t.label}</button>`
   ).join('');
-  nav.querySelectorAll('button').forEach(btn=>{
-    btn.addEventListener('click', function(e){
-      console.log('[CLICK] Aba clicada:', this.dataset.tab);
-      ACTIVE_TAB = this.dataset.tab;
-      console.log('[CLICK] ACTIVE_TAB agora é:', ACTIVE_TAB);
-      renderAll();
-    });
-  });
 }
+
+// Event delegation para cliques nas abas
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-tab]');
+  if(btn && btn.parentElement.id === 'mainTabs') {
+    e.preventDefault();
+    const tabId = btn.dataset.tab;
+    console.log('[CLICK] Aba clicada:', tabId);
+    ACTIVE_TAB = tabId;
+    console.log('[CLICK] ACTIVE_TAB agora é:', ACTIVE_TAB);
+    renderAll();
+  }
+});
 
 function emptyState(msg){
   return `<div class="empty-state"><h2>Não foi possível carregar os dados</h2><p>${msg||''}</p></div>`;
