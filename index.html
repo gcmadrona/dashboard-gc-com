@@ -771,7 +771,89 @@ footer{
     <div class="card"><h3>Média geral por profissionais da UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCProf" width="300" height="360" style="display: block; box-sizing: border-box; height: 360px; width: 300px; cursor: default;"></canvas></div></div>
   </div>
   </div>
-    <div id="geral-com" class="subpage "></div>
+    <div id="geral-com" class="subpage "><!-- NOVAS ABAS COM - INSERIR EM <div id="geral-com"> -->
+
+<div class="subtabs" style="margin-bottom: 18px; border-bottom: 1px solid #eee; padding-bottom: 12px;">
+  <button data-com-sub="radar" class="active" style="background: var(--azul); color: #fff; border-color: var(--azul);">Radar Tributário</button>
+  <button data-com-sub="newsletter" style="">Newsletter LinkedIn</button>
+  <button data-com-sub="capital" style="">Capital Aberto</button>
+  <button data-com-sub="posts" style="">Posts Patrocinados</button>
+  <button data-com-sub="embaixadores" style="">Embaixadores</button>
+</div>
+
+<!-- SUB-ABA 1: RADAR TRIBUTÁRIO -->
+<div id="com-radar" class="com-subpage active">
+  <div class="kpi-grid">
+    <div class="kpi-card azul"><div class="val">44.08%</div><div class="lbl">Maior Taxa de Abertura</div></div>
+    <div class="kpi-card verde"><div class="val">1.78%</div><div class="lbl">Maior CTR</div></div>
+    <div class="kpi-card vermelho"><div class="val">4.119</div><div class="lbl">Total Visualizações</div></div>
+  </div>
+  <div class="card"><h3>Radar Tributário - Taxa de Abertura vs Clique</h3><div class="chart-wrap"><canvas id="chRadarTaxas"></canvas></div></div>
+  <div class="card"><h3>Visualizações ao Longo dos Meses</h3><div class="chart-wrap"><canvas id="chRadarViz"></canvas></div></div>
+  <div class="card" style="overflow-x: auto;"><h3>Detalhes Completos</h3><table style="width:100%; border-collapse:collapse; font-size:12px;"><tr style="background:#f5f5f5;"><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Mês</th><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Tema</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Taxa Abertura</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Taxa Clique</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Visualizações</th></tr><tbody id="tblRadarTributario"></tbody></table></div>
+</div>
+
+<!-- SUB-ABA 2: NEWSLETTER LINKEDIN -->
+<div id="com-newsletter" class="com-subpage">
+  <div style="background:#fff3cd; border:1px solid #ffc107; border-radius:6px; padding:16px; margin-bottom:20px; color:#856404; font-size:13px;">
+    <strong>⚠️ Em Planejamento:</strong> Dados ainda em coleta. Este é um relatório de planejamento e roadmap, não resultados finais.
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card azul"><div class="val">1.206</div><div class="lbl">Média Visualizações</div></div>
+    <div class="kpi-card verde"><div class="val">751</div><div class="lbl">Novos Assinantes Total</div></div>
+    <div class="kpi-card amarelo"><div class="val">7</div><div class="lbl">Edições Publicadas</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Visualizações e Novos Assinantes</h3><div class="chart-wrap"><canvas id="chNewsletterTrend"></canvas></div></div>
+    <div class="card"><h3>Distribuição por Área</h3><div class="chart-wrap"><canvas id="chNewsletterArea"></canvas></div></div>
+  </div>
+  <div class="card" style="overflow-x: auto;"><h3>Edições por Mês</h3><table style="width:100%; border-collapse:collapse; font-size:12px;"><tr style="background:#f5f5f5;"><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Mês</th><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Áreas Participantes</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Curtidas</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Visualizações</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Novos Assinantes</th></tr><tbody id="tblNewsletter"></tbody></table></div>
+</div>
+
+<!-- SUB-ABA 3: CAPITAL ABERTO -->
+<div id="com-capital" class="com-subpage">
+  <div class="kpi-grid">
+    <div class="kpi-card verde"><div class="val">1</div><div class="lbl">Publicados</div></div>
+    <div class="kpi-card amarelo"><div class="val">1</div><div class="lbl">Em Progresso</div></div>
+    <div class="kpi-card vermelho"><div class="val">4</div><div class="lbl">Pendentes</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Distribuição por Status</h3><div class="chart-wrap"><canvas id="chCapitalStatus"></canvas></div></div>
+    <div class="card"><h3>Frentes e Cronograma</h3><div class="chart-wrap"><canvas id="chCapitalTempo"></canvas></div></div>
+  </div>
+  <div class="card" style="overflow-x: auto;"><h3>Detalhes por Frente</h3><table style="width:100%; border-collapse:collapse; font-size:12px;"><tr style="background:#f5f5f5;"><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Mês</th><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Áreas</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Status</th><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Tema</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Visualizações</th></tr><tbody id="tblCapital"></tbody></table></div>
+</div>
+
+<!-- SUB-ABA 4: POSTS PATROCINADOS -->
+<div id="com-posts" class="com-subpage">
+  <div class="kpi-grid">
+    <div class="kpi-card azul"><div class="val">117.884</div><div class="lbl">Total Impressões</div></div>
+    <div class="kpi-card verde"><div class="val">1.817</div><div class="lbl">Total Cliques</div></div>
+    <div class="kpi-card amarelo"><div class="val">1.54%</div><div class="lbl">CTR Médio</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Impressões vs Cliques</h3><div class="chart-wrap"><canvas id="chPostsImpClick"></canvas></div></div>
+    <div class="card"><h3>CTR por Período</h3><div class="chart-wrap"><canvas id="chPostsCTR"></canvas></div></div>
+  </div>
+  <div class="card" style="overflow-x: auto;"><h3>Detalhes Completos</h3><table style="width:100%; border-collapse:collapse; font-size:12px;"><tr style="background:#f5f5f5;"><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Mês</th><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Áreas</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Status</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Impressões</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Cliques</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">CTR</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Leads</th></tr><tbody id="tblPosts"></tbody></table></div>
+</div>
+
+<!-- SUB-ABA 5: EMBAIXADORES -->
+<div id="com-embaixadores" class="com-subpage">
+  <div class="kpi-grid">
+    <div class="kpi-card azul"><div class="val">19</div><div class="lbl">Total de Embaixadores</div></div>
+    <div class="kpi-card verde"><div class="val">17</div><div class="lbl">Com Publicações</div></div>
+    <div class="kpi-card amarelo"><div class="val">89.5%</div><div class="lbl">Taxa de Adesão</div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Progresso: Planejado vs Realizado</h3><div class="chart-wrap"><canvas id="chEmbaProgresso"></canvas></div></div>
+    <div class="card"><h3>Embaixadores por Grupo</h3><div class="chart-wrap"><canvas id="chEmbaGrupo"></canvas></div></div>
+  </div>
+  <div class="card"><h3>Status Geral do Programa</h3><div class="chart-wrap"><canvas id="chEmbaStatus"></canvas></div></div>
+  <div class="card" style="overflow-x: auto;"><h3>Embaixadores Ativos</h3><table style="width:100%; border-collapse:collapse; font-size:12px;"><tr style="background:#f5f5f5;"><th style="padding:10px; text-align:left; border-bottom:1px solid #ddd;">Nome</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Grupo</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Total de Temas</th><th style="padding:10px; text-align:center; border-bottom:1px solid #ddd;">Publicados</th></tr><tbody id="tblEmbaixadores"></tbody></table></div>
+</div>
+
+  </div>
   
 
   </main>
@@ -3227,6 +3309,223 @@ window.initTSGC = null; // será definida depois
     observer.observe(tsGcPanel, { attributes: true });
   }
 })();
+
+
+// ===== DADOS DAS NOVAS ABAS DE COMUNICAÇÃO =====
+const COM_DATA = {
+  radar: [{"mes":"Jan/2026","tema":"Radar Tributário | Reforma Tributária e a contratação de planos de saúde para os","taxa_abertura":42.31,"taxa_clique":1.37,"visualizacoes":550},{"mes":"Oct/2026","tema":"Radar Tributário | Solução de Consulta RFB nº 10/26","taxa_abertura":44.08,"taxa_clique":1.78,"visualizacoes":492},{"mes":"Mar/2026","tema":"Radar Tributário | Decisão do STJ sobre descontos e bonificações no PIS/COFINS","taxa_abertura":41.44,"taxa_clique":1.2,"visualizacoes":474},{"mes":"Mar/2026","tema":"Radar Tributário | Honorários em execução fiscal: o que está em jogo no Tema 141","taxa_abertura":42.87,"taxa_clique":0.92,"visualizacoes":93},{"mes":"Apr/2026","tema":"Radar Tributário | IN RFB nº 2.314/2026: mais segurança jurídica quanto ao prazo","taxa_abertura":41.56,"taxa_clique":1.27,"visualizacoes":434},{"mes":"Jun/2026","tema":"Radar Tributário | PIS/Cofins em operações com materiais recicláveis (sucata): o","taxa_abertura":41.53,"taxa_clique":0.83,"visualizacoes":737},{"mes":"May/2026","tema":"Radar Tributário | Compensação como Matéria de Defesa em Embargos à Execução Fis","taxa_abertura":34.85,"taxa_clique":1.3,"visualizacoes":343},{"mes":"Jun/2026","tema":"Radar Tributário | Creditamento de ICMS sobre produtos intermediários: Vem aí um","taxa_abertura":35.47,"taxa_clique":1.72,"visualizacoes":549},{"mes":"Aug/2026","tema":"Radar Tributário | Distribuição de bonificações e lucros na ADI nº 5.161: como f","taxa_abertura":34.12,"taxa_clique":1.78,"visualizacoes":387}],
+  newsletter: [{"mes":"Janeiro","areas":"White Collar, Ambiental, Wealth","curtidas":23,"visualizacoes":923,"novos_assinantes":102},{"mes":"Fevereiro","areas":"Ambiental, Infraestrutura, White Collar","curtidas":20,"visualizacoes":1333,"novos_assinantes":81},{"mes":"Março","areas":"Proteção de Dados,  Propriedade Intelectual e Seguros","curtidas":17,"visualizacoes":1431,"novos_assinantes":172},{"mes":"Abril","areas":"Fundos de Investimento, Trabalhista, Proteção de Dados, Ambiental, Mercado de Capitais","curtidas":23,"visualizacoes":1114,"novos_assinantes":107},{"mes":"Maio","areas":"Ambiental, Trabalhista, Proteção de Dados, White Collar, Mercado de Capitais, Propriedade Intelectua","curtidas":22,"visualizacoes":1461,"novos_assinantes":152},{"mes":"Junho","areas":"Ambiental, Infraestrutura, Mercado de Capitais, Sportainment, ","curtidas":26,"visualizacoes":700,"novos_assinantes":106},{"mes":"Julho","areas":"Bancário, Ambiental, Trabalhista, Infraestrutura","curtidas":18,"visualizacoes":1401,"novos_assinantes":131}],
+  capital: [{"mes":"Julho","areas":"M&A e Concorrencial ","status":"Publicado","tema":"Separar M&A e concorrencial pode custar caro","visualizacoes":0},{"mes":"Agosto","areas":"Direito Público e Infraestrutura","status":"Entrevista marcada","tema":"","visualizacoes":0},{"mes":"Setembro","areas":"Tributário e Wealth","status":"Tema enviado para avaliação","tema":"","visualizacoes":0},{"mes":"Outubro","areas":"Propriedade Intelectual","status":"","tema":"","visualizacoes":0},{"mes":"Novembro","areas":"Contencioso, Mediação e Arbitragem","status":"","tema":"","visualizacoes":0},{"mes":"Dezembro","areas":"Mercado de Capitais, Fundos de Investimento e Bank","status":"","tema":"","visualizacoes":0}],
+  posts: [{"mes":"Junho","areas":"Propriedade Intelectual","status":"Realizado","objetivo":"Awarness","tema":"E-book marketing esportivo","impressoes":117884,"cliques":1817,"ctr":0.0154,"leads":0},{"mes":"Julho","areas":"Proteção de Dados","status":"Em apuração sobre o tema","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0},{"mes":"Agosto","areas":"Expansão Internacional","status":"Roteiro em aprovação","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0},{"mes":"Setembro","areas":"Ambiental","status":"","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0},{"mes":"Outubro","areas":"Seguros","status":"","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0},{"mes":"Novembro","areas":"Comércio Internacional","status":"","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0},{"mes":"Dezembro","areas":"Trabalhista ","status":"","objetivo":"","tema":"","impressoes":0,"cliques":0,"ctr":0,"leads":0}],
+  embaixadores: [{"nome":"Alice Dourado","grupo":"Sócio","total_temas":6,"publicados":1},{"nome":"André Martins","grupo":"Sócio","total_temas":4,"publicados":1},{"nome":"Bernardo Santos","grupo":"Sócio","total_temas":4,"publicados":0},{"nome":"Patricia Lima","grupo":"Sócio","total_temas":4,"publicados":1},{"nome":"Gustavo Maia","grupo":"Sócio","total_temas":4,"publicados":2},{"nome":"Rhasmye El Rafih","grupo":"Advogado","total_temas":4,"publicados":2},{"nome":"Julia Avelar","grupo":"Advogado","total_temas":4,"publicados":1},{"nome":"Marianna Morato","grupo":"Advogado","total_temas":4,"publicados":2},{"nome":"Clarissa Machado","grupo":"Adm","total_temas":4,"publicados":2},{"nome":"Filipi Pacheco","grupo":"Adm","total_temas":4,"publicados":1},{"nome":"Rosiane Pinho","grupo":"Adm","total_temas":4,"publicados":0},{"nome":"Danilo Mininel","grupo":"Sócio","total_temas":4,"publicados":1},{"nome":"Luciana Felisbino","grupo":"Sócio","total_temas":4,"publicados":0},{"nome":"Marina Freire","grupo":"Sócio","total_temas":4,"publicados":1},{"nome":"Henrique Maluta","grupo":"Advogado","total_temas":4,"publicados":2},{"nome":"Giuliano D.S. Tanganeli","grupo":"Advogado","total_temas":4,"publicados":1},{"nome":"Cássia Tavares","grupo":"Adm","total_temas":4,"publicados":2},{"nome":"Jefferson Silva","grupo":"Adm","total_temas":4,"publicados":0},{"nome":"Bruna Furtini","grupo":"Advogado","total_temas":1,"publicados":0}]
+};
+
+// ===== NAVEGAÇÃO DE SUB-ABAS COM =====
+document.addEventListener('DOMContentLoaded', function() {
+  const comSubButtons = document.querySelectorAll('[data-com-sub]');
+  comSubButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const subId = this.dataset.comSub;
+      // Remove active de todos os botões
+      comSubButtons.forEach(b => b.style.background = ''; b.style.color = ''; b.style.borderColor = '');
+      // Ativa o botão clicado
+      this.style.background = 'var(--azul)';
+      this.style.color = '#fff';
+      this.style.borderColor = 'var(--azul)';
+      // Remove active de todas as sub-páginas
+      document.querySelectorAll('.com-subpage').forEach(page => page.classList.remove('active'));
+      // Ativa a sub-página
+      document.getElementById('com-' + subId).classList.add('active');
+      // Renderiza gráficos se não foram feitos ainda
+      renderComCharts();
+    });
+  });
+  
+  // Renderizar tabelas de COM
+  renderComTables();
+  renderComCharts();
+});
+
+function renderComTables() {
+  // RADAR TRIBUTÁRIO
+  const tblRadar = document.getElementById('tblRadarTributario');
+  if (tblRadar) {
+    tblRadar.innerHTML = COM_DATA.radar.map(item => `
+      <tr><td style="padding:10px; border-bottom:1px solid #eee;">${item.mes}</td><td style="padding:10px; border-bottom:1px solid #eee; font-size:11px;">${item.tema}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.taxa_abertura.toFixed(2)}%</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.taxa_clique.toFixed(2)}%</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.visualizacoes}</td></tr>
+    `).join('');
+  }
+  
+  // NEWSLETTER
+  const tblNewsletter = document.getElementById('tblNewsletter');
+  if (tblNewsletter) {
+    tblNewsletter.innerHTML = COM_DATA.newsletter.map(item => `
+      <tr><td style="padding:10px; border-bottom:1px solid #eee;">${item.mes}</td><td style="padding:10px; border-bottom:1px solid #eee; font-size:11px;">${item.areas}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.curtidas}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.visualizacoes}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.novos_assinantes}</td></tr>
+    `).join('');
+  }
+  
+  // CAPITAL ABERTO
+  const tblCapital = document.getElementById('tblCapital');
+  if (tblCapital) {
+    tblCapital.innerHTML = COM_DATA.capital.map(item => `
+      <tr><td style="padding:10px; border-bottom:1px solid #eee;">${item.mes}</td><td style="padding:10px; border-bottom:1px solid #eee; font-size:11px;">${item.areas}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;"><span style="background:${item.status === 'Publicado' ? '#8fd694' : item.status === 'Entrevista marcada' ? '#fff6d3' : '#fc745c'}; color:#000; padding:4px 8px; border-radius:12px; font-size:11px;">${item.status || '-'}</span></td><td style="padding:10px; border-bottom:1px solid #eee; font-size:11px;">${item.tema}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.visualizacoes}</td></tr>
+    `).join('');
+  }
+  
+  // POSTS
+  const tblPosts = document.getElementById('tblPosts');
+  if (tblPosts) {
+    tblPosts.innerHTML = COM_DATA.posts.map(item => `
+      <tr><td style="padding:10px; border-bottom:1px solid #eee;">${item.mes}</td><td style="padding:10px; border-bottom:1px solid #eee; font-size:11px;">${item.areas}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.status || '-'}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.impressoes}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.cliques}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${(item.ctr * 100).toFixed(2)}%</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.leads}</td></tr>
+    `).join('');
+  }
+  
+  // EMBAIXADORES
+  const tblEmba = document.getElementById('tblEmbaixadores');
+  if (tblEmba) {
+    tblEmba.innerHTML = COM_DATA.embaixadores.map(item => `
+      <tr><td style="padding:10px; border-bottom:1px solid #eee;">${item.nome}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;"><span style="background:#00b2ff; color:#fff; padding:4px 8px; border-radius:12px; font-size:11px;">${item.grupo}</span></td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;">${item.total_temas}</td><td style="padding:10px; text-align:center; border-bottom:1px solid #eee;"><strong style="color:#8fd694;">${item.publicados}</strong></td></tr>
+    `).join('');
+  }
+}
+
+function renderComCharts() {
+  const ctx1 = document.getElementById('chRadarTaxas');
+  if (ctx1 && !ctx1.dataset.chartInitialized) {
+    ctx1.dataset.chartInitialized = 'true';
+    new Chart(ctx1, {
+      type: 'bar',
+      data: {
+        labels: COM_DATA.radar.map(r => r.mes),
+        datasets: [
+          {label: 'Taxa Abertura (%)', data: COM_DATA.radar.map(r => r.taxa_abertura), backgroundColor: '#00b2ff'},
+          {label: 'Taxa Clique (%)', data: COM_DATA.radar.map(r => r.taxa_clique), backgroundColor: '#fc745c'}
+        ]
+      },
+      options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {display: true}}}
+    });
+  }
+  
+  const ctx2 = document.getElementById('chRadarViz');
+  if (ctx2 && !ctx2.dataset.chartInitialized) {
+    ctx2.dataset.chartInitialized = 'true';
+    new Chart(ctx2, {
+      type: 'line',
+      data: {
+        labels: COM_DATA.radar.map(r => r.mes),
+        datasets: [{label: 'Visualizações', data: COM_DATA.radar.map(r => r.visualizacoes), borderColor: '#8fd694', tension: 0.3}]
+      },
+      options: {responsive: true, maintainAspectRatio: false, plugins: {legend: {display: true}}}
+    });
+  }
+  
+  const ctx3 = document.getElementById('chNewsletterTrend');
+  if (ctx3 && !ctx3.dataset.chartInitialized) {
+    ctx3.dataset.chartInitialized = 'true';
+    new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: COM_DATA.newsletter.map(n => n.mes),
+        datasets: [
+          {label: 'Visualizações', data: COM_DATA.newsletter.map(n => n.visualizacoes), backgroundColor: '#00b2ff'},
+          {label: 'Novos Assinantes', data: COM_DATA.newsletter.map(n => n.novos_assinantes), backgroundColor: '#8fd694'}
+        ]
+      },
+      options: {responsive: true, maintainAspectRatio: false}
+    });
+  }
+  
+  const ctx4 = document.getElementById('chNewsletterArea');
+  if (ctx4 && !ctx4.dataset.chartInitialized) {
+    ctx4.dataset.chartInitialized = 'true';
+    const areas = {};
+    COM_DATA.newsletter.forEach(n => {
+      n.areas.split(',').forEach(a => {
+        const area = a.trim();
+        areas[area] = (areas[area] || 0) + 1;
+      });
+    });
+    new Chart(ctx4, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(areas),
+        datasets: [{data: Object.values(areas), backgroundColor: ['#00b2ff', '#fc745c', '#8fd694', '#fff6d3', '#b2bab9']}]
+      },
+      options: {responsive: true, maintainAspectRatio: false}
+    });
+  }
+  
+  const ctx5 = document.getElementById('chCapitalStatus');
+  if (ctx5 && !ctx5.dataset.chartInitialized) {
+    ctx5.dataset.chartInitialized = 'true';
+    const status = {Publicado: 0, 'Entrevista marcada': 0, 'Tema enviado para avaliação': 0, Outro: 0};
+    COM_DATA.capital.forEach(c => {
+      if (c.status === 'Publicado') status.Publicado++;
+      else if (c.status === 'Entrevista marcada') status['Entrevista marcada']++;
+      else if (c.status === 'Tema enviado para avaliação') status['Tema enviado para avaliação']++;
+      else status.Outro++;
+    });
+    new Chart(ctx5, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(status),
+        datasets: [{data: Object.values(status), backgroundColor: ['#8fd694', '#fff6d3', '#fc745c', '#b2bab9']}]
+      },
+      options: {responsive: true, maintainAspectRatio: false}
+    });
+  }
+  
+  const ctx6 = document.getElementById('chPostsImpClick');
+  if (ctx6 && !ctx6.dataset.chartInitialized) {
+    ctx6.dataset.chartInitialized = 'true';
+    new Chart(ctx6, {
+      type: 'bar',
+      data: {
+        labels: COM_DATA.posts.map(p => p.mes),
+        datasets: [
+          {label: 'Impressões', data: COM_DATA.posts.map(p => p.impressoes), backgroundColor: '#00b2ff'},
+          {label: 'Cliques', data: COM_DATA.posts.map(p => p.cliques), backgroundColor: '#fc745c'}
+        ]
+      },
+      options: {responsive: true, maintainAspectRatio: false, scales: {y: {beginAtZero: true}}}
+    });
+  }
+  
+  const ctx7 = document.getElementById('chEmbaProgresso');
+  if (ctx7 && !ctx7.dataset.chartInitialized) {
+    ctx7.dataset.chartInitialized = 'true';
+    const totalPublicados = COM_DATA.embaixadores.reduce((s, e) => s + e.publicados, 0);
+    const totalPlanejados = COM_DATA.embaixadores.reduce((s, e) => s + (e.total_temas - e.publicados), 0);
+    new Chart(ctx7, {
+      type: 'bar',
+      data: {
+        labels: ['Publicações'],
+        datasets: [
+          {label: 'Realizadas', data: [totalPublicados], backgroundColor: '#8fd694'},
+          {label: 'Planejadas', data: [totalPlanejados], backgroundColor: '#fff6d3'}
+        ]
+      },
+      options: {responsive: true, maintainAspectRatio: false, indexAxis: 'y'}
+    });
+  }
+  
+  const ctx8 = document.getElementById('chEmbaGrupo');
+  if (ctx8 && !ctx8.dataset.chartInitialized) {
+    ctx8.dataset.chartInitialized = 'true';
+    const grupos = {};
+    COM_DATA.embaixadores.forEach(e => {
+      grupos[e.grupo] = (grupos[e.grupo] || 0) + 1;
+    });
+    new Chart(ctx8, {
+      type: 'bar',
+      data: {
+        labels: Object.keys(grupos),
+        datasets: [{label: 'Quantidade', data: Object.values(grupos), backgroundColor: '#00b2ff'}]
+      },
+      options: {responsive: true, maintainAspectRatio: false, indexAxis: 'y'}
+    });
+  }
+}
+
 </script>
 
 </body></html>"
