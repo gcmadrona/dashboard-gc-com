@@ -1079,9 +1079,9 @@ function classifyPosicao(pos){
   const p = (pos||'').toString().toLowerCase();
   if(p.includes('estagi')) return 'Estagiário';
   if(p.includes('sócio') || p.includes('socio')) return 'Sócio';
-  if(p.includes('sã�nior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sã�nior';
+  if(p.includes('sã�nior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sênior';
   if(p.includes('pleno')) return 'Pleno';
-  if(p.includes('jã�nior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Jã�nior';
+  if(p.includes('jã�nior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Júnior';
   return 'ADM';
 }
 
@@ -1351,11 +1351,18 @@ function renderAll(){
           </details>
         </div>
       `;
-      // Inicializar TS GC inline
-      setTimeout(() => {
+      // Inicializar TS GC inline - com múltiplas tentativas
+      const initTSGC = () => {
         const selectMes = document.getElementById('tsgc-mes');
-        if (!selectMes || !TSGC_DATA) {
-          console.error('Elementos TS GC não encontrados');
+        const destaqueEl = document.getElementById('tsgc-destaque');
+
+        if (!selectMes || !destaqueEl) {
+          console.error('Elementos TS GC não encontrados, tentando novamente...');
+          setTimeout(initTSGC, 100);
+          return;
+        }
+        if (!TSGC_DATA || !TSGC_DATA.byMonth) {
+          console.error('TSGC_DATA não inicializado corretamente');
           return;
         }
 
@@ -1498,7 +1505,10 @@ function renderAll(){
         selectMes.addEventListener('change', () => {
           renderTSGC(selectMes.value);
         });
-      }, 100);
+      };
+
+      // Iniciar com delay seguro
+      setTimeout(initTSGC, 200);
       break;
     }
     case 'ferramentas': main.innerHTML = pageFerramentasHTML(); afterRenderFerramentas(); break;
@@ -1825,112 +1835,12 @@ function buildGCOverview(){
     </div>
   </div>
 
-  <div id="tsgcResumoGeral" class="card" style="margin-bottom:20px; background:#f5f5f5; border-left:4px solid #00b2ff; padding:20px;">
-    <h3 style="margin:0 0 12px 0; color:#444;">TS GC - Resumo da Equipe</h3>
-    <div id="tsgcResumoConteudo" style="font-size:14px; color:#666; line-height:1.6;">Carregando dados...</div>
-  </div>
-
-  <div id="treinamentoResumoGeral" class="card" style="margin-bottom:20px; background:#f5f5f5; border-left:4px solid #fc745c; padding:20px;">
-    <h3 style="margin:0 0 12px 0; color:#444;">Treinamento iManage - Resumo</h3>
-    <div id="treinamentoResumoConteudo" style="font-size:14px; color:#666; line-height:1.6;">Carregando dados...</div>
-  </div>
-
-  <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
-    <div style="display:flex; align-items:center; gap:12px;">
-      <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
-      <select id="gcMonthFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px;">
-        <option value="todos" ${GC_MONTH_FILTER==='todos'?'selected':''}>Todos os meses</option>
-        ${mesesOrdenados.map(m=>`<option value="${m}" ${GC_MONTH_FILTER===m?'selected':''}>${m}</option>`).join('')}
-      </select>
-    </div>
-    <div style="display:flex; align-items:center; gap:12px;">
-      <h3 style="margin:0; border:none; padding:0;">Unidade de Negócio</h3>
-      <select id="gcUnFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px; min-width:220px;">
-        <option value="todas">Todas as UNs</option>
-        ${unsDisponiveis.map(un=>`<option value="${un}">${un}</option>`).join('')}
-      </select>
-    </div>
-  </div>
-
-  <div id="gcFilterChips"></div>
-  <p class="chart-hint">Clique numa barra de Frente ou de UN (ou use o filtro acima) para atualizar os gráficos e o painel de produtos e serviços. Clique de novo, ou selecione "Todas as UNs", para limpar.</p>
-
-  <div id="gcProdutosPorUN"></div>
-
-  <div class="card" style="margin-bottom:20px;">
-    <h3>Investimento por frente (Madrona Lab), em horas</h3>
-    <div class="chart-wrap tall"><canvas id="chGCFrente"></canvas></div>
-  </div>
-  <div class="grid2">
-    <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCUn"></canvas></div></div>
-    <div class="card"><h3>Média geral por profissionais da UN, em horas</h3><div class="chart-wrap tall"><canvas id="chGCProf"></canvas></div></div>
-  </div>
   `;
 }
 
 function renderGCOverviewCharts(){
-  // Renderizar resumo TS GC
-  const tsgcResumoEl = document.getElementById('tsgcResumoConteudo');
-  if(tsgcResumoEl && TSGC_DATA && TSGC_DATA.byMonth) {
-    const mesAtual = TSGC_DATA.months[0]; // Primeiro mês disponível
-    const mesData = TSGC_DATA.byMonth[mesAtual];
-    if(mesData) {
-      const cats = TSGC_DATA.categories;
-      const catTop = cats.reduce((a,b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
-      const catMenor = cats.filter(c => mesData.equipe.percentuais[c] > 0).reduce((a,b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
-      const pessoasCount = Object.keys(mesData.pessoas).length;
-
-      tsgcResumoEl.innerHTML = `
-        <p><strong>Mês:</strong> ${mesAtual}</p>
-        <p><strong>Total de horas:</strong> ${mesData.equipe.total_horas.toFixed(1)} horas</p>
-        <p><strong>Equipe:</strong> ${pessoasCount} pessoas</p>
-        <p><strong>Maior investimento:</strong> <span style="color:#00b2ff; font-weight:bold;">${catTop}</span> com ${mesData.equipe.percentuais[catTop]}% do tempo</p>
-        <p><strong>Menor investimento:</strong> ${catMenor} com ${mesData.equipe.percentuais[catMenor]}% do tempo</p>
-      `;
-    }
-  }
-
-  // Renderizar resumo Treinamento iM
-  const treinamentoResumoEl = document.getElementById('treinamentoResumoConteudo');
-  if(treinamentoResumoEl) {
-    try {
-      const treinamento = getTreinamentoIM();
-      if(treinamento && treinamento.length > 0) {
-        const totalTreinamentos = treinamento.length;
-        const totalParticipantes = treinamento.reduce((sum, r) => sum + (num(r['Participantes'])||0), 0);
-        const totalHoras = treinamento.reduce((sum, r) => sum + (num(r['Horas']) || num(r['h/TI']) || 0), 0);
-        const unsUnicos = [...new Set(treinamento.map(r => r['Unidade'] || r['UN'] || '').filter(u => u))].length;
-
-        treinamentoResumoEl.innerHTML = `
-          <p><strong>Total de treinamentos:</strong> ${totalTreinamentos}</p>
-          <p><strong>Total de participantes:</strong> ${totalParticipantes}</p>
-          <p><strong>Total de horas investidas:</strong> ${totalHoras.toFixed(1)} horas</p>
-          <p><strong>Unidades envolvidas:</strong> ${unsUnicos > 0 ? unsUnicos + ' UNs' : 'N/A'}</p>
-        `;
-      } else {
-        treinamentoResumoEl.innerHTML = '<p>Nenhum dado de treinamento disponível</p>';
-      }
-    } catch(e) {
-      treinamentoResumoEl.innerHTML = '<p>Erro ao carregar dados de treinamento</p>';
-    }
-  }
-
-  const monthSelect = document.getElementById('gcMonthFilter');
-  if(monthSelect){
-    monthSelect.addEventListener('change', ()=>{
-      GC_MONTH_FILTER = monthSelect.value;
-      renderGCStrategicCharts();
-    });
-  }
-  const unSelect = document.getElementById('gcUnFilter');
-  if(unSelect){
-    unSelect.addEventListener('change', ()=>{
-      if(unSelect.value==='todas') delete cfState(CF_GC)['Desc. Grupo Jurídico'];
-      else cfState(CF_GC)['Desc. Grupo Jurídico'] = unSelect.value;
-      renderGCStrategicCharts();
-    });
-  }
-  renderGCStrategicCharts();
+  // Visão Geral agora exibe apenas o quadro de KPIs
+  // Gráficos e resumos foram removidos
 }
 
 const CF_GC = 'geral-gc';
@@ -2119,7 +2029,7 @@ function renderCOMOverviewCharts(){
   });
 
   const redes = getRedesSociais();
-  const labels = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short'}) : rr['Mê�s']);
+  const labels = redes.map(r=> r['MÊS'] instanceof Date ? r['MÊS'].toLocaleDateString('pt-BR',{month:'short'}) : r['MÊS']);
   makeChart('chCOMLinkedin', {
     type:'line',
     data:{ labels, datasets:[{ label:'Seguidores LinkedIn', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]},
@@ -2207,7 +2117,7 @@ function afterRenderPublicacoes(){
   const unEntries = sortedEntries(unMap);
   makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PUB,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'UN',afterRenderPublicacoes)}});
 
-  const labelsRedes = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : rr['Mê�s']);
+  const labelsRedes = redes.map(r=> r['MÊS'] instanceof Date ? r['MÊS'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['MÊS']);
   makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
       { label:'Visualizações', data:redes.map(r=>num(r['Site - Visualizações'])), backgroundColor:PALETTE[0] },
       { label:'Usuários', data:redes.map(r=>num(r['Site - Usuários'])), backgroundColor:PALETTE[2] }
@@ -2277,7 +2187,7 @@ function afterRenderRedes(){
     ${monthGrowthCard(redes,'LinkedIn - Seguidores','Crescimento LinkedIn')}
     ${monthGrowthCard(redes,'Insta - Seguidores','Crescimento Instagram')}
   `;
-  const labels = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : rr['Mê�s']);
+  const labels = redes.map(r=> r['MÊS'] instanceof Date ? r['MÊS'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['MÊS']);
   makeChart('chRLinkedin',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRInsta',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRIntranet',{ type:'line', data:{ labels, datasets:[{ label:'Visualizações Intranet', data:redes.map(r=>num(r['Intranet - Visualizações da página'])), borderColor:PALETTE[5], backgroundColor:PALETTE[5]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
@@ -2311,7 +2221,7 @@ function afterRenderAcademiaMadrona(){
   const academiaAll = getAcademia();
   const treinIm = getTreinamentoIM();
   const totalPart = academiaAll.reduce((s,r)=>s+num(r['PARTICIPANTES']),0);
-  const totalMeta = academiaAll.reduce((s,r)=>s+num(rr['META']),0);
+  const totalMeta = academiaAll.reduce((s,r)=>s+num(r['META']),0);
   document.getElementById('acadMadKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtInt(academiaAll.length)}</div><div class="lbl">Sessões Academia Madrona</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalPart)}</div><div class="lbl">Total de participantes</div></div>
@@ -2328,7 +2238,7 @@ function afterRenderAcademiaMadrona(){
   const academia = cfApply(academiaAll, CF_ACADMAD);
   makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TÍTULO']), datasets:[
       { label:'Participantes', data:academia.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
-      { label:'Meta', data:academia.map(r=>num(rr['META'])), backgroundColor:PALETTE[4] }
+      { label:'Meta', data:academia.map(r=>num(r['META'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
   const pilarRows = cfApply(academiaAll, CF_ACADMAD, 'PILAR');
   const pilarMap = groupSum(pilarRows,'PILAR',()=>1);
@@ -2363,16 +2273,18 @@ function afterRenderAcademia(){
   const byTitulo = {};
   grupos.forEach(r=>{
     const t = r['TÍTULO']||'Outro';
-    if(!byTitulo[t]) byTitulo[t] = {presenc:0,n:0};
+    if(!byTitulo[t]) byTitulo[t] = {presenc:0,n:0,participantes:0,convidados:0};
     byTitulo[t].presenc += num(r['% presença']);
     byTitulo[t].n++;
+    byTitulo[t].participantes += num(r['PARTICIPANTES']);
+    byTitulo[t].convidados += num(r['CONVIDADOS']);
   });
   const gLabels = Object.keys(byTitulo);
   makeChart('chAcadGrupos',{ type:'bar', data:{ labels:gLabels, datasets:[{ label:'Presença média', data:gLabels.map(k=>byTitulo[k].presenc/byTitulo[k].n), backgroundColor:PALETTE[1] }]}, options:{responsive:true,maintainAspectRatio:false, scales:{y:{ticks:{callback:v=>fmtPct(v)}}}}});
 
-  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TÍTULO']), datasets:[
-      { label:'Participantes', data:grupos.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
-      { label:'Convidados', data:grupos.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[4] }
+  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:gLabels, datasets:[
+      { label:'Participantes', data:gLabels.map(k=>byTitulo[k].participantes), backgroundColor:PALETTE[0] },
+      { label:'Convidados', data:gLabels.map(k=>byTitulo[k].convidados), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
 }
 
@@ -2777,16 +2689,16 @@ function renderLexterCharts(){
     const pctTop10 = lexAll.length ? top10Count/lexAll.length : 0;
 
     const cards = [];
-    cards.push({ cls:'positivo', icone:'â', titulo:`Pico de uso: ${mesTop}`,
+    cards.push({ cls:'positivo', icone:'📈', titulo:`Pico de uso: ${mesTop}`,
       texto:`${mesTop} registrou ${fmtInt(mesAnaliseMap[mesTop])} análises${crescimento? `, crescimento de ${crescimento.toFixed(1)}x vs. os meses iniciais`:''}${unDestaqueMesTop? `, com destaque para ${unDestaqueMesTop[0]}`:''}.` });
     if(semAdocao.length>=2){
-      cards.push({ cls:'alerta', icone:'â ', titulo:`${semAdocao.length} unidades sem nenhuma adoção`,
+      cards.push({ cls:'alerta', icone:'🚨', titulo:`${semAdocao.length} unidades sem nenhuma adoção`,
         texto:`${semAdocao.map(e=>e.un).join(', ')} ainda não geraram nenhuma análise no Lexter (0 de ${semAdocao.reduce((s,e)=>s+e.total,0)} pessoas ao todo).` });
     } else if(piorAdocao){
-      cards.push({ cls:'alerta', icone:'â ', titulo:`Menor adoção: ${piorAdocao.un}`,
+      cards.push({ cls:'alerta', icone:'🚨', titulo:`Menor adoção: ${piorAdocao.un}`,
         texto:`Apenas ${fmtPct(piorAdocao.pct)} das pessoas dessa UN (${piorAdocao.ativos} de ${piorAdocao.total}) já geraram alguma análise no Lexter.` });
     }
-    cards.push({ cls:'atencao', icone:'ð', titulo:'Uso concentrado em poucos',
+    cards.push({ cls:'atencao', icone:'⚠️', titulo:'Uso concentrado em poucos',
       texto:`Os top 10 usuários representam ${fmtPct(pctTop10)} de todas as análises geradas. Meta: ampliar a base de usuários engajados.` });
     insightsEl.innerHTML = cards.map(c=>`
       <div class="insight-card ${c.cls}">
@@ -2964,7 +2876,7 @@ let IM_MONTH_FILTER = 'todos';
 
 function buildImanageHTML(){
   const imAll = getIManage();
-  const meses = [...new Set(imAll.map(r=>monthAbbrPT(rr['Mê�S'])))].filter(Boolean);
+  const meses = [...new Set(imAll.map(r=>monthAbbrPT(r['MÊS'])))].filter(Boolean);
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -2998,8 +2910,8 @@ function renderImanageCharts(){
 }
 function renderImanageChartsData(){
   const imAllMeses = getIManage();
-  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIã�ã�O']); });
-  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(rr['Mê�S'])===IM_MONTH_FILTER);
+  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIÇÃO']); });
+  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(r['MÊS'])===IM_MONTH_FILTER);
 
   const chipsEl = document.getElementById('imFilterChips');
   if(chipsEl){
@@ -3023,7 +2935,7 @@ function renderImanageChartsData(){
   const posRows = cfApply(imMonth, CF_IM, '_POS');
   const posMap = {};
   posRows.forEach(r=>{ posMap[r._POS] = (posMap[r._POS]||0) + num(r['TOTAL']); });
-  const posOrder = ['Estagiário','Jã�nior','Pleno','Sã�nior','Sócio','ADM'];
+  const posOrder = ['Estagiário','Júnior','Pleno','Sênior','Sócio','ADM'];
   const posLabels = posOrder.filter(p=>posMap[p]!==undefined);
   makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:cfSliceColors(posLabels, PALETTE, cfActive(CF_IM,'_POS')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_IM,'_POS',renderImanageChartsData)}});
 
