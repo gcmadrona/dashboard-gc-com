@@ -1259,7 +1259,12 @@ function renderTabsNav(){
     `<button data-tab="${t.id}" class="${t.id===ACTIVE_TAB?'active':''}">${t.label}</button>`
   ).join('');
   nav.querySelectorAll('button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{ ACTIVE_TAB = btn.dataset.tab; renderAll(); });
+    btn.addEventListener('click', function(e){
+      console.log('[CLICK] Aba clicada:', this.dataset.tab);
+      ACTIVE_TAB = this.dataset.tab;
+      console.log('[CLICK] ACTIVE_TAB agora é:', ACTIVE_TAB);
+      renderAll();
+    });
   });
 }
 
@@ -1268,13 +1273,17 @@ function emptyState(msg){
 }
 
 function renderAll(){
+  console.log('[RENDER] renderAll() iniciado, ACTIVE_TAB:', ACTIVE_TAB);
   renderTabsNav();
   const main = document.getElementById('mainContent');
+  console.log('[RENDER] mainContent encontrado?', !!main);
   // TS GC não precisa da planilha Excel — tem dados próprios embutidos
   if(!WORKBOOK && ACTIVE_TAB !== 'tsgc'){
+    console.log('[RENDER] WORKBOOK não carregado, mostrando empty state');
     main.innerHTML = emptyState('Aguardando o carregamento automático da planilha de dados.');
     return;
   }
+  console.log('[RENDER] Processando aba:', ACTIVE_TAB);
   switch(ACTIVE_TAB){
     case 'geral': main.innerHTML = pageGeralHTML(); afterRenderGeral(); break;
     case 'publicacoes': main.innerHTML = pagePublicacoesHTML(); afterRenderPublicacoes(); break;
@@ -1729,9 +1738,15 @@ document.getElementById('fileInput').addEventListener('change', function(e){
   reader.readAsArrayBuffer(file);
 });
 
+console.log('[INIT] Iniciando dashboard...');
+console.log('[INIT] TABS:', TABS);
+console.log('[INIT] ACTIVE_TAB:', ACTIVE_TAB);
 renderTabsNav();
+console.log('[INIT] renderTabsNav() chamado');
 renderAll();
+console.log('[INIT] renderAll() chamado');
 autoLoadWorkbook();
+console.log('[INIT] autoLoadWorkbook() chamado');
 
 /* =========================================================
    DATA GETTERS
