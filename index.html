@@ -1508,7 +1508,7 @@ const TSGC_DATA = {"months": ["Agosto"], "people": ["Amanda", "Andrezza", "Clari
   selectMes.value = TSGC_DATA.months[0];
   renderTudo();
 })();
-        </script>`;
+        </script>
       `;
       // Inicializar TS GC inline - com múltiplas tentativas
       const initTSGC = () => {
@@ -1976,6 +1976,10 @@ function buildGCOverview(){
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   const unsDisponiveis = [...new Set(ts.map(r=>r['Desc. Grupo Jurídico']))].filter(Boolean).sort();
 
+  // Resumo TS GC
+  const tsgcData = TSGC_DATA.byMonth[TSGC_DATA.months[0]];
+  const tsgcCatTop = TSGC_DATA.categories.reduce((a,b) => tsgcData.equipe.percentuais[b] > tsgcData.equipe.percentuais[a] ? b : a);
+
   return `
   <div class="hero">
     <div class="hero-title">Gestão do Conhecimento 2026</div>
@@ -1991,6 +1995,15 @@ function buildGCOverview(){
       <div><div class="hero-num">${fmtPct(upminer.pctBD+upminer.pctCT)}</div><div class="hero-lbl">Consumo contrato upMiner</div></div>
       <div><div class="hero-num">${dc? fmtPct(dc.certisign.usados/dc.certisign.contratados) : '-'}</div><div class="hero-lbl">Consumo Certisign${dc? '' : ' (sem dados na planilha)'}</div></div>
       <div><div class="hero-num">${dc? fmtPct(dc.docusign.usados/dc.docusign.contratados) : '-'}</div><div class="hero-lbl">Consumo Docusign${dc? '' : ' (sem dados na planilha)'}</div></div>
+    </div>
+  </div>
+
+  <div style="margin-top:30px; padding:20px; background:#f0f0f0; border-radius:8px; color:#444;">
+    <div style="font-size:14px; font-weight:600; margin-bottom:10px; color:#666;">Resumo - Atividades de GC (${TSGC_DATA.months[0]})</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:15px;">
+      <div><div style="font-size:20px; font-weight:700; color:#00b2ff;">${Object.keys(tsgcData.pessoas).length}</div><div style="font-size:12px; color:#666;">Pessoas na equipe</div></div>
+      <div><div style="font-size:20px; font-weight:700; color:#fc745c;">${tsgcData.equipe.percentuais[tsgcCatTop].toFixed(1)}%</div><div style="font-size:12px; color:#666;">Maior investimento: ${tsgcCatTop}</div></div>
+      <div><div style="font-size:20px; font-weight:700; color:#444;">${tsgcData.equipe.total_horas.toFixed(1)}h</div><div style="font-size:12px; color:#666;">Total de horas investidas</div></div>
     </div>
   </div>
 
