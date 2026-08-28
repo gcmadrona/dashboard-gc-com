@@ -1631,8 +1631,13 @@ function getTimesheet(){
 }
 function getTSGC(){
   if(DATA.tsgc) return DATA.tsgc;
-  const ws = findSheet('TS GC');
-  if(!ws) return null;
+  // Tenta vários nomes possíveis da aba
+  let ws = findSheet('TS GC') || findSheet('TS-GC') || findSheet('TSGC') || findSheet('Timesheet GC');
+  if(!ws){
+    console.error('[TS GC] Aba "TS GC" (ou variações) não encontrada. Abas disponíveis:', Object.keys(WORKBOOK.Sheets));
+    return null;
+  }
+  console.log('[TS GC] Aba encontrada, processando dados...');
 
   const rows = sheetToRows(ws);
   if(!rows.length) return null;
@@ -1734,11 +1739,14 @@ function getTSGC(){
   });
 
   DATA.tsgc = data;
+  console.log('[TS GC] Dados carregados:', data);
   return DATA.tsgc;
 }
 function afterRenderTSGC(){
   const TSGC_DATA = getTSGC();
+  console.log('[afterRenderTSGC] TSGC_DATA:', TSGC_DATA);
   if(!TSGC_DATA){
+    console.error('[afterRenderTSGC] Falha ao carregar dados TS GC');
     document.getElementById('ts-gc-tab').innerHTML = emptyState('Aba TS GC não encontrada na planilha.');
     return;
   }
