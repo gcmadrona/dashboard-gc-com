@@ -183,7 +183,7 @@ main{
 .kpi-card.amarelo{ border-left-color:#e0b400; }
 .kpi-card.grafite{ border-left-color:var(--grafite); }
 
-/* ---------- Cards de insight (leitura estratégica, não só nãºmero bruto) ---------- */
+/* ---------- Cards de insight (leitura estratégica, não só nã�mero bruto) ---------- */
 .insight-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:22px; }
 .insight-card{
   background:var(--card);
@@ -318,7 +318,7 @@ footer{
 }
 .chart-hint{ font-size:11px; color:var(--cinza); margin:-10px 0 12px; }
 
-/* ---------- Card de referãªncia (ex.: link para dashboard externo) ---------- */
+/* ---------- Card de referã�ncia (ex.: link para dashboard externo) ---------- */
 .ref-card{
   background:#0a3a5c;
   color:#fff;
@@ -752,7 +752,7 @@ footer{
       <h3 style="margin:0; border:none; padding:0;">Unidade de Negócio</h3>
       <select id="gcUnFilter" style="padding:8px 12px; border-radius:6px; border:1px solid #ddd; font-size:13px; min-width:220px;">
         <option value="todas">Todas as UNs</option>
-        <option value="UN Ambiental">UN Ambiental</option><option value="UN Bancário">UN Bancário</option><option value="UN Compliance/White Collar">UN Compliance/White Collar</option><option value="UN Concorrencial">UN Concorrencial</option><option value="UN Contencioso">UN Contencioso</option><option value="UN Corporativo">UN Corporativo</option><option value="UN Digital, LGPD e Propriedade Intelectual">UN Digital, LGPD e Propriedade Intelectual</option><option value="UN Financeiro &amp; Mercado | Bancário">UN Financeiro &amp; Mercado | Bancário</option><option value="UN Imobiliário">UN Imobiliário</option><option value="UN Infraestrutura">UN Infraestrutura</option><option value="UN Seguros Resseguros e Previdãªncia Privada">UN Seguros Resseguros e Previdãªncia Privada</option><option value="UN Trabalhista e Sindical">UN Trabalhista e Sindical</option><option value="UN Tributária">UN Tributária</option><option value="UN Wealth">UN Wealth</option>
+        <option value="UN Ambiental">UN Ambiental</option><option value="UN Bancário">UN Bancário</option><option value="UN Compliance/White Collar">UN Compliance/White Collar</option><option value="UN Concorrencial">UN Concorrencial</option><option value="UN Contencioso">UN Contencioso</option><option value="UN Corporativo">UN Corporativo</option><option value="UN Digital, LGPD e Propriedade Intelectual">UN Digital, LGPD e Propriedade Intelectual</option><option value="UN Financeiro &amp; Mercado | Bancário">UN Financeiro &amp; Mercado | Bancário</option><option value="UN Imobiliário">UN Imobiliário</option><option value="UN Infraestrutura">UN Infraestrutura</option><option value="UN Seguros Resseguros e Previdã�ncia Privada">UN Seguros Resseguros e Previdã�ncia Privada</option><option value="UN Trabalhista e Sindical">UN Trabalhista e Sindical</option><option value="UN Tributária">UN Tributária</option><option value="UN Wealth">UN Wealth</option>
       </select>
     </div>
   </div>
@@ -888,7 +888,7 @@ footer{
 
 <script>
 /* =========================================================
-   DASHBOARD GC & COMUNICAããO - MADRONA ADVOGADOS
+   DASHBOARD GC & COMUNICAã�ã�O - MADRONA ADVOGADOS
    ========================================================= */
 
 const PALETTE = ['#00b2ff','#fc745c','#8fd694','#fff6d3','#b2bab9','#444444','#7fd1ff','#ffb3a3'];
@@ -1055,7 +1055,7 @@ function sortedEntries(map, desc=true){
   return Object.entries(map).sort((a,b)=> desc ? b[1]-a[1] : a[1]-b[1]);
 }
 
-// Retorna { row, index } do ãºltimo registro com valor não nulo/indefinido no campo informado
+// Retorna { row, index } do ã�ltimo registro com valor não nulo/indefinido no campo informado
 function latestValid(rows, field){
   for(let i=rows.length-1;i>=0;i--){
     const v = rows[i][field];
@@ -1079,9 +1079,9 @@ function classifyPosicao(pos){
   const p = (pos||'').toString().toLowerCase();
   if(p.includes('estagi')) return 'Estagiário';
   if(p.includes('sócio') || p.includes('socio')) return 'Sócio';
-  if(p.includes('sãªnior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sãªnior';
+  if(p.includes('sã�nior') || p.includes('senior') || /\bsr\b/.test(p)) return 'Sã�nior';
   if(p.includes('pleno')) return 'Pleno';
-  if(p.includes('jãºnior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Jãºnior';
+  if(p.includes('jã�nior') || p.includes('junior') || /\bjr\b/.test(p)) return 'Jã�nior';
   return 'ADM';
 }
 
@@ -1100,23 +1100,23 @@ function monthAbbrPT(val){
 // A planilha usa grafias diferentes para a mesma Unidade de Negócio em abas
 // diferentes (ex.: "UN Corporativa" em Lexter/PortData/iM/Publicações vs.
 // "UN Corporativo" na aba CT, que é a fonte de verdade de pessoas). Este mapa
-// converte cada variante conhecida para o nome canã´nico (o usado na aba CT).
+// converte cada variante conhecida para o nome canã�nico (o usado na aba CT).
 // Ajuste/complete este mapa se aparecerem novas variações na planilha.
 const UN_CANONICAL_MAP = {
   'un corporativa': 'UN Corporativo',
   // A própria aba CT tem as duas grafias (25 pessoas em "UN Tributária", 8 em
-  // "UN Tributário"); adotamos a forma feminina, majoritária, como canã´nica.
+  // "UN Tributário"); adotamos a forma feminina, majoritária, como canã�nica.
   'un tributário': 'UN Tributária',
   'un contencioso, mediação & arbitragem': 'UN Contencioso',
   'un contencioso, mediação e arbitragem': 'UN Contencioso',
-  'un infraestrutura e direito pãºblico': 'UN Infraestrutura',
+  'un infraestrutura e direito pã�blico': 'UN Infraestrutura',
   'un trabalhista': 'UN Trabalhista e Sindical',
   'un wc&c': 'UN Compliance/White Collar',
   'un white collar & compliance': 'UN Compliance/White Collar',
   'un digital, comex e pi': 'UN Digital, LGPD e Propriedade Intelectual',
   'an wealth planning': 'UN Wealth',
-  'un seguros': 'UN Seguros Resseguros e Previdãªncia Privada',
-  'un seguros, resseguros e previdãªncia privada': 'UN Seguros Resseguros e Previdãªncia Privada',
+  'un seguros': 'UN Seguros Resseguros e Previdã�ncia Privada',
+  'un seguros, resseguros e previdã�ncia privada': 'UN Seguros Resseguros e Previdã�ncia Privada',
   'comunicação': 'Comunicação Corporativa',
   // Variações de grafia/abreviação da mesma área. "UN Bancário" fica de fora
   // de propósito: na aba Relatório TS ele aparece com volume grande e distinto
@@ -1197,7 +1197,7 @@ function cfClearAll(pageKey, rerender){
   CROSSFILTER[pageKey] = {};
   rerender();
 }
-// Aplica os filtros ativos da página ã s linhas, exceto o campo `excludeField`
+// Aplica os filtros ativos da página ã�s linhas, exceto o campo `excludeField`
 // (usado pelo próprio gráfico-fonte daquele campo, que deve continuar mostrando
 // todas as suas categorias, só destacando a selecionada).
 function cfApply(rows, pageKey, excludeField){
@@ -1212,7 +1212,7 @@ function cfChipsHTML(pageKey, labelMap){
   const keys = Object.keys(state);
   if(!keys.length) return '';
   return `<div class="filter-chips">
-    ${keys.map(k=>`<span class="filter-chip">${(labelMap&&labelMap[k])||k}: ${state[k]} <button data-cf-clear="${k}">ã</button></span>`).join('')}
+    ${keys.map(k=>`<span class="filter-chip">${(labelMap&&labelMap[k])||k}: ${state[k]} <button data-cf-clear="${k}">ã�</button></span>`).join('')}
     <button class="filter-clear-all" data-cf-clear-all="1">Limpar filtros</button>
   </div>`;
 }
@@ -1224,7 +1224,7 @@ function cfBindChips(pageKey, containerSel, rerender){
   if(clearAll) clearAll.addEventListener('click', ()=> cfClearAll(pageKey, rerender));
 }
 // Cores das barras: quando há filtro ativo para este mesmo campo, destaca a
-// barra selecionada e esmaece as demais (sem removãª-las do gráfico-fonte).
+// barra selecionada e esmaece as demais (sem removã�-las do gráfico-fonte).
 function cfBarColors(labels, baseColor, activeValue){
   if(activeValue===undefined || activeValue===null) return labels.map(()=>baseColor);
   return labels.map(l => String(l).trim()===String(activeValue) ? baseColor : baseColor+'35');
@@ -1358,29 +1358,24 @@ function renderAll(){
           console.error('Elementos TS GC não encontrados');
           return;
         }
-        // Popular seletor de mês
-        TSGC_DATA.months.forEach(m => {
-          const opt = document.createElement('option');
-          opt.value = m;
-          opt.textContent = m;
-          selectMes.appendChild(opt);
-        });
-        selectMes.value = TSGC_DATA.months[0];
-        // Renderizar conteúdo
-        const mes = selectMes.value;
-        const mesData = TSGC_DATA.byMonth[mes];
-        if (mesData) {
-          // Renderizar destaque
-          const destaqueEl = document.getElementById('tsgc-destaque');
+
+        // Função reutilizável para renderizar todo o conteúdo TS GC
+        const renderTSGC = (mes) => {
+          const mesData = TSGC_DATA.byMonth[mes];
+          if (!mesData) return;
+
           const cats = TSGC_DATA.categories;
           const catTop = cats.reduce((a,b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+          const catMenor = cats.filter(c => mesData.equipe.percentuais[c] > 0).reduce((a,b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
+
+          // Renderizar destaque
+          const destaqueEl = document.getElementById('tsgc-destaque');
           destaqueEl.innerHTML = `Maior investimento de tempo da equipe em ${mes}: <strong>${catTop}</strong>, com ${mesData.equipe.percentuais[catTop]}% do tempo total.`;
 
           // Renderizar KPIs
           const kpisEl = document.getElementById('tsgc-kpis');
           kpisEl.innerHTML = '';
           const pessoasCount = Object.keys(mesData.pessoas).length;
-          const catMenor = cats.filter(c => mesData.equipe.percentuais[c] > 0).reduce((a,b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
           [
             {valor: pessoasCount, rotulo: 'Pessoas na equipe'},
             {valor: mesData.equipe.percentuais[catTop] + '%', rotulo: 'Maior investimento: ' + catTop},
@@ -1393,11 +1388,12 @@ function renderAll(){
           });
 
           // Renderizar gráfico da equipe
+          destroyChart('chart-equipe');
           const canvasEquipe = document.getElementById('chart-equipe');
           if (canvasEquipe) {
             const catsUsadas = cats.filter(c => mesData.equipe.horas[c] > 0).sort((a,b) => mesData.equipe.percentuais[b] - mesData.equipe.percentuais[a]);
             const percentuais = catsUsadas.map(c => mesData.equipe.percentuais[c]);
-            new Chart(canvasEquipe, {
+            makeChart('chart-equipe', {
               type: 'bar',
               data: {
                 labels: catsUsadas,
@@ -1452,7 +1448,7 @@ function renderAll(){
             const canvasPessoa = card.querySelector('canvas');
             const catsUsadas = cats.filter(c => pdata.horas[c] > 0).sort((a,b) => pdata.percentuais[b] - pdata.percentuais[a]);
             if (catsUsadas.length > 0) {
-              new Chart(canvasPessoa, {
+              makeChart('chart-pessoa-' + pessoa.replace(/\s+/g,'_'), {
                 type: 'bar',
                 data: {
                   labels: catsUsadas,
@@ -1484,7 +1480,24 @@ function renderAll(){
               });
             }
           });
-        }
+        };
+
+        // Popular seletor de mês
+        TSGC_DATA.months.forEach(m => {
+          const opt = document.createElement('option');
+          opt.value = m;
+          opt.textContent = m;
+          selectMes.appendChild(opt);
+        });
+        selectMes.value = TSGC_DATA.months[0];
+
+        // Renderizar inicial
+        renderTSGC(selectMes.value);
+
+        // Adicionar event listener para mudança de mês
+        selectMes.addEventListener('change', () => {
+          renderTSGC(selectMes.value);
+        });
       }, 100);
       break;
     }
@@ -1595,7 +1608,9 @@ function getGruposEstudo(){
   if(DATA.grupos) return DATA.grupos;
   const ws = findSheet('Grupos de Estudos');
   const rows = sheetToRows(ws);
-  DATA.grupos = rowsToObjects(rows);
+  // A aba tem duas estruturas lado a lado; usar apenas a primeira (colunas A-H)
+  const filtered = rows.map(row => row.slice(0, 8)); // Pegar apenas primeiras 8 colunas
+  DATA.grupos = rowsToObjects(filtered);
   return DATA.grupos;
 }
 function getPesquisas(){
@@ -1659,7 +1674,7 @@ function getLabCoins(){
 }
 function getUpMiner(){
   if(DATA.upminer) return DATA.upminer;
-  const ws = findSheet('upminer contrato');
+  const ws = findSheet('upMiner');
   const rows = sheetToRows(ws);
   DATA.upminer = rowsToObjects(rows);
   return DATA.upminer;
@@ -1726,10 +1741,22 @@ function getBibliotecas(){
   DATA.bibliotecas = ws ? rowsToObjects(sheetToRows(ws)) : null;
   return DATA.bibliotecas;
 }
+function getProView(){
+  if(DATA.proview) return DATA.proview;
+  const ws = findSheet('ProView');
+  DATA.proview = ws ? rowsToObjects(sheetToRows(ws)) : [];
+  return DATA.proview;
+}
+function getMB(){
+  if(DATA.mb) return DATA.mb;
+  const ws = findSheet('MB');
+  DATA.mb = ws ? rowsToObjects(sheetToRows(ws)) : [];
+  return DATA.mb;
+}
 
 
 /* =========================================================
-   PãGINA: VISãO GERAL (GC / COM)
+   PãGINA: VISã�O GERAL (GC / COM)
    ========================================================= */
 function pageGeralHTML(){
   return `
@@ -1752,8 +1779,8 @@ function afterRenderGeral(){
 
 function computeUpMinerSummary(){
   const rows = getUpMiner();
-  const totalBD = rows.filter(r=>(r['ãREA']||'').toString().trim().toUpperCase()==='BD').reduce((s,r)=>s+num(r['TOTAL']),0);
-  const totalCT = rows.filter(r=>(r['ãREA']||'').toString().trim().toUpperCase()==='CT').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalBD = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='BD').reduce((s,r)=>s+num(r['TOTAL']),0);
+  const totalCT = rows.filter(r=>(r['ÁREA']||'').toString().trim().toUpperCase()==='CT').reduce((s,r)=>s+num(r['TOTAL']),0);
   const totalUsado = totalBD + totalCT;
   const pctBD = UPMINER_CONTRACT_TOTAL ? totalBD/UPMINER_CONTRACT_TOTAL : 0;
   const pctCT = UPMINER_CONTRACT_TOTAL ? totalCT/UPMINER_CONTRACT_TOTAL : 0;
@@ -1798,6 +1825,16 @@ function buildGCOverview(){
     </div>
   </div>
 
+  <div id="tsgcResumoGeral" class="card" style="margin-bottom:20px; background:#f5f5f5; border-left:4px solid #00b2ff; padding:20px;">
+    <h3 style="margin:0 0 12px 0; color:#444;">TS GC - Resumo da Equipe</h3>
+    <div id="tsgcResumoConteudo" style="font-size:14px; color:#666; line-height:1.6;">Carregando dados...</div>
+  </div>
+
+  <div id="treinamentoResumoGeral" class="card" style="margin-bottom:20px; background:#f5f5f5; border-left:4px solid #fc745c; padding:20px;">
+    <h3 style="margin:0 0 12px 0; color:#444;">Treinamento iManage - Resumo</h3>
+    <div id="treinamentoResumoConteudo" style="font-size:14px; color:#666; line-height:1.6;">Carregando dados...</div>
+  </div>
+
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
     <div style="display:flex; align-items:center; gap:12px;">
       <h3 style="margin:0; border:none; padding:0;">Filtro de mês (Madrona Lab)</h3>
@@ -1832,6 +1869,52 @@ function buildGCOverview(){
 }
 
 function renderGCOverviewCharts(){
+  // Renderizar resumo TS GC
+  const tsgcResumoEl = document.getElementById('tsgcResumoConteudo');
+  if(tsgcResumoEl && TSGC_DATA && TSGC_DATA.byMonth) {
+    const mesAtual = TSGC_DATA.months[0]; // Primeiro mês disponível
+    const mesData = TSGC_DATA.byMonth[mesAtual];
+    if(mesData) {
+      const cats = TSGC_DATA.categories;
+      const catTop = cats.reduce((a,b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+      const catMenor = cats.filter(c => mesData.equipe.percentuais[c] > 0).reduce((a,b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
+      const pessoasCount = Object.keys(mesData.pessoas).length;
+
+      tsgcResumoEl.innerHTML = `
+        <p><strong>Mês:</strong> ${mesAtual}</p>
+        <p><strong>Total de horas:</strong> ${mesData.equipe.total_horas.toFixed(1)} horas</p>
+        <p><strong>Equipe:</strong> ${pessoasCount} pessoas</p>
+        <p><strong>Maior investimento:</strong> <span style="color:#00b2ff; font-weight:bold;">${catTop}</span> com ${mesData.equipe.percentuais[catTop]}% do tempo</p>
+        <p><strong>Menor investimento:</strong> ${catMenor} com ${mesData.equipe.percentuais[catMenor]}% do tempo</p>
+      `;
+    }
+  }
+
+  // Renderizar resumo Treinamento iM
+  const treinamentoResumoEl = document.getElementById('treinamentoResumoConteudo');
+  if(treinamentoResumoEl) {
+    try {
+      const treinamento = getTreinamentoIM();
+      if(treinamento && treinamento.length > 0) {
+        const totalTreinamentos = treinamento.length;
+        const totalParticipantes = treinamento.reduce((sum, r) => sum + (num(r['Participantes'])||0), 0);
+        const totalHoras = treinamento.reduce((sum, r) => sum + (num(r['Horas']) || num(r['h/TI']) || 0), 0);
+        const unsUnicos = [...new Set(treinamento.map(r => r['Unidade'] || r['UN'] || '').filter(u => u))].length;
+
+        treinamentoResumoEl.innerHTML = `
+          <p><strong>Total de treinamentos:</strong> ${totalTreinamentos}</p>
+          <p><strong>Total de participantes:</strong> ${totalParticipantes}</p>
+          <p><strong>Total de horas investidas:</strong> ${totalHoras.toFixed(1)} horas</p>
+          <p><strong>Unidades envolvidas:</strong> ${unsUnicos > 0 ? unsUnicos + ' UNs' : 'N/A'}</p>
+        `;
+      } else {
+        treinamentoResumoEl.innerHTML = '<p>Nenhum dado de treinamento disponível</p>';
+      }
+    } catch(e) {
+      treinamentoResumoEl.innerHTML = '<p>Erro ao carregar dados de treinamento</p>';
+    }
+  }
+
   const monthSelect = document.getElementById('gcMonthFilter');
   if(monthSelect){
     monthSelect.addEventListener('change', ()=>{
@@ -2036,7 +2119,7 @@ function renderCOMOverviewCharts(){
   });
 
   const redes = getRedesSociais();
-  const labels = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short'}) : r['Mãªs']);
+  const labels = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short'}) : rr['Mê�s']);
   makeChart('chCOMLinkedin', {
     type:'line',
     data:{ labels, datasets:[{ label:'Seguidores LinkedIn', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]},
@@ -2063,7 +2146,7 @@ function renderCOMOverviewCharts(){
 }
 
 /* =========================================================
-   PãGINA: PUBLICAããES
+   PãGINA: PUBLICAã�ã�ES
    ========================================================= */
 function pagePublicacoesHTML(){
   return `
@@ -2077,7 +2160,7 @@ function pagePublicacoesHTML(){
   <div class="card"><h3>Top Unidades de Negócio</h3><div class="chart-wrap tall"><canvas id="chPubUn"></canvas></div></div>
   <div class="card"><h3>Site, visualizações e usuários</h3><div class="chart-wrap"><canvas id="chRSite"></canvas></div></div>
   <div class="card">
-    <h3>ãltimas publicações</h3>
+    <h3>ã�ltimas publicações</h3>
     <div class="table-scroll">
       <table class="data-table" id="tblPub"></table>
     </div>
@@ -2093,7 +2176,7 @@ function afterRenderPublicacoes(){
     <div class="kpi-card"><div class="val">${fmtInt(pubAll.length)}</div><div class="lbl">Total de publicações</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalViews)}</div><div class="lbl">Visualizações totais (LinkedIn)</div></div>
     <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteãºdo</div></div>
+    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteã�do</div></div>
     ${monthValueCard(redes,'Site - Visualizações','Visualização Site')}
     ${monthGrowthCard(redes,'Site - Visualizações','Crescimento Site')}
   `;
@@ -2124,7 +2207,7 @@ function afterRenderPublicacoes(){
   const unEntries = sortedEntries(unMap);
   makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PUB,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'UN',afterRenderPublicacoes)}});
 
-  const labelsRedes = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mãªs']);
+  const labelsRedes = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : rr['Mê�s']);
   makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
       { label:'Visualizações', data:redes.map(r=>num(r['Site - Visualizações'])), backgroundColor:PALETTE[0] },
       { label:'Usuários', data:redes.map(r=>num(r['Site - Usuários'])), backgroundColor:PALETTE[2] }
@@ -2167,7 +2250,7 @@ function monthGrowthCard(rows, field, label){
   const latest = latestValid(rows, field);
   if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
   const prev = previousValid(rows, latest.index, field);
-  const mesNome = monthNamePT(excelDateToJS(latest.row['Mãªs']));
+  const mesNome = monthNamePT(excelDateToJS(latest.rowr['Mê�s']));
   if(!prev){
     return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}, crescimento no mês: ${mesNome}</div></div>`;
   }
@@ -2178,7 +2261,7 @@ function monthGrowthCard(rows, field, label){
 function monthValueCard(rows, field, label){
   const latest = latestValid(rows, field);
   if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
-  const mesNome = monthNamePT(excelDateToJS(latest.row['Mãªs']));
+  const mesNome = monthNamePT(excelDateToJS(latest.rowr['Mê�s']));
   return `<div class="kpi-card"><div class="val">${fmtInt(num(latest.row[field]))}</div><div class="lbl">${label}: ${mesNome}</div></div>`;
 }
 
@@ -2194,14 +2277,14 @@ function afterRenderRedes(){
     ${monthGrowthCard(redes,'LinkedIn - Seguidores','Crescimento LinkedIn')}
     ${monthGrowthCard(redes,'Insta - Seguidores','Crescimento Instagram')}
   `;
-  const labels = redes.map(r=> r['Mãªs'] instanceof Date ? r['Mãªs'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['Mãªs']);
+  const labels = redes.map(r=> rr['Mê�s'] instanceof Date ? rr['Mê�s'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : rr['Mê�s']);
   makeChart('chRLinkedin',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRInsta',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chRIntranet',{ type:'line', data:{ labels, datasets:[{ label:'Visualizações Intranet', data:redes.map(r=>num(r['Intranet - Visualizações da página'])), borderColor:PALETTE[5], backgroundColor:PALETTE[5]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
 
   const monthCols = mail.length ? Object.keys(mail[0]).filter(k=>k!=='Area') : [];
   document.getElementById('tblMail').innerHTML = `
-    <tr><th>ãrea</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
+    <tr><th>area</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
     ${mail.map(r=>`<tr><td>${r['Area']}</td>${monthCols.map(m=>`<td>${r[m]!==null&&r[m]!==undefined?fmtInt(num(r[m])):''}</td>`).join('')}</tr>`).join('')}
   `;
 }
@@ -2228,7 +2311,7 @@ function afterRenderAcademiaMadrona(){
   const academiaAll = getAcademia();
   const treinIm = getTreinamentoIM();
   const totalPart = academiaAll.reduce((s,r)=>s+num(r['PARTICIPANTES']),0);
-  const totalMeta = academiaAll.reduce((s,r)=>s+num(r['META']),0);
+  const totalMeta = academiaAll.reduce((s,r)=>s+num(rr['META']),0);
   document.getElementById('acadMadKpis').innerHTML = `
     <div class="kpi-card"><div class="val">${fmtInt(academiaAll.length)}</div><div class="lbl">Sessões Academia Madrona</div></div>
     <div class="kpi-card"><div class="val">${fmtInt(totalPart)}</div><div class="lbl">Total de participantes</div></div>
@@ -2243,16 +2326,16 @@ function afterRenderAcademiaMadrona(){
   }
 
   const academia = cfApply(academiaAll, CF_ACADMAD);
-  makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TãTULO']), datasets:[
+  makeChart('chAcadMadPart',{ type:'bar', data:{ labels:academia.map(r=>r['TÍTULO']), datasets:[
       { label:'Participantes', data:academia.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
-      { label:'Meta', data:academia.map(r=>num(r['META'])), backgroundColor:PALETTE[4] }
+      { label:'Meta', data:academia.map(r=>num(rr['META'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
   const pilarRows = cfApply(academiaAll, CF_ACADMAD, 'PILAR');
   const pilarMap = groupSum(pilarRows,'PILAR',()=>1);
   const pilarLabels = Object.keys(pilarMap);
   makeChart('chAcadMadPilar',{ type:'doughnut', data:{ labels:pilarLabels, datasets:[{ data:Object.values(pilarMap), backgroundColor:cfSliceColors(pilarLabels, PALETTE, cfActive(CF_ACADMAD,'PILAR')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_ACADMAD,'PILAR',afterRenderAcademiaMadrona)}});
 
-  makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TãTULO']; }), datasets:[
+  makeChart('chTreinImConv',{ type:'bar', data:{ labels:treinIm.map(r=>{ const d=excelDateToJS(r['DATA']); return d?d.toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}):r['TÍTULO']; }), datasets:[
       { label:'Participantes', data:treinIm.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Convidados', data:treinIm.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[2] }
     ]}, options:{responsive:true,maintainAspectRatio:false}});
@@ -2279,7 +2362,7 @@ function afterRenderAcademia(){
 
   const byTitulo = {};
   grupos.forEach(r=>{
-    const t = r['TãTULO']||'Outro';
+    const t = r['TÍTULO']||'Outro';
     if(!byTitulo[t]) byTitulo[t] = {presenc:0,n:0};
     byTitulo[t].presenc += num(r['% presença']);
     byTitulo[t].n++;
@@ -2287,7 +2370,7 @@ function afterRenderAcademia(){
   const gLabels = Object.keys(byTitulo);
   makeChart('chAcadGrupos',{ type:'bar', data:{ labels:gLabels, datasets:[{ label:'Presença média', data:gLabels.map(k=>byTitulo[k].presenc/byTitulo[k].n), backgroundColor:PALETTE[1] }]}, options:{responsive:true,maintainAspectRatio:false, scales:{y:{ticks:{callback:v=>fmtPct(v)}}}}});
 
-  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TãTULO']), datasets:[
+  makeChart('chAcadGruposPart',{ type:'bar', data:{ labels:grupos.map(r=>r['TÍTULO']), datasets:[
       { label:'Participantes', data:grupos.map(r=>num(r['PARTICIPANTES'])), backgroundColor:PALETTE[0] },
       { label:'Convidados', data:grupos.map(r=>num(r['CONVIDADOS'])), backgroundColor:PALETTE[4] }
     ]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false}});
@@ -2374,7 +2457,7 @@ function pageTimesheetHTML(){
     <div class="card"><h3>Investimento por UN, em horas</h3><div class="chart-wrap tall"><canvas id="chTsUn"></canvas></div></div>
   </div>
   <div class="grid2">
-    <div class="card"><h3>Investimento por mês, em horas${TS_MONTH_FILTER!=='todos'?' (sempre mostra o ano todo, para dar contexto de tendãªncia)':''}</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
+    <div class="card"><h3>Investimento por mês, em horas${TS_MONTH_FILTER!=='todos'?' (sempre mostra o ano todo, para dar contexto de tendã�ncia)':''}</h3><div class="chart-wrap"><canvas id="chTsMes"></canvas></div></div>
     <div class="card"><h3>Top 15 profissionais por horas investidas</h3><div class="chart-wrap tall"><canvas id="chTsProf"></canvas></div></div>
   </div>
   <div class="card"><h3>Participação proporcional por Unidade de Negócio (% de pessoas da UN que lançaram horas)</h3><div class="chart-wrap tall"><canvas id="chTsPart"></canvas></div></div>
@@ -2424,8 +2507,8 @@ function afterRenderTimesheetData(){
   const unEntries = sortedEntries(unMap);
   makeChart('chTsUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Horas investidas', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[1], cfActive(CF_TS,'Desc. Grupo Jurídico')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_TS,'Desc. Grupo Jurídico',afterRenderTimesheetData)}});
 
-  // Tendãªncia mensal: propositalmente sempre com o ano completo e sem os filtros de UN/Frente,
-  // para servir de referãªncia de contexto (não "some" quando se seleciona uma barra).
+  // Tendã�ncia mensal: propositalmente sempre com o ano completo e sem os filtros de UN/Frente,
+  // para servir de referã�ncia de contexto (não "some" quando se seleciona uma barra).
   const mesMap = {};
   tsAll.forEach(r=>{ const m = monthAbbrPT(r['Data']); if(m) mesMap[m]=(mesMap[m]||0)+num(r['Tempo Investido']); });
   const mesLabels = MES_ABBR_ORDER.filter(m=>mesMap[m]!==undefined);
@@ -2534,14 +2617,71 @@ function renderDocuCertiCharts(){
 function buildBibliotecasHTML(){
   return `
   <div class="kpi-grid" id="bibKpis"></div>
-  <p style="font-size:12px;color:#999;margin-top:-8px;">Planilha em revisão: os nãºmeros de uso mensal ainda não estão disponíveis.</p>
+  <div class="grid2">
+    <div class="card"><h3>ProView - Acessos por UN</h3><div class="chart-wrap"><canvas id="chProViewUN"></canvas></div></div>
+    <div class="card"><h3>ProView - Evolução mensal</h3><div class="chart-wrap"><canvas id="chProViewMes"></canvas></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Minha Biblioteca - Acessos por UN</h3><div class="chart-wrap"><canvas id="chMBUN"></canvas></div></div>
+    <div class="card"><h3>Minha Biblioteca - Top 10 usuários</h3><div class="chart-wrap tall"><canvas id="chMBUsers"></canvas></div></div>
+  </div>
   `;
 }
 function renderBibliotecasCharts(){
+  const proview = getProView();
+  const mb = getMB();
+
+  // KPIs
+  const totalProView = proview.reduce((s,r)=>s+num(r['Acessos']),0);
+  const totalMB = mb.reduce((s,r)=>s+num(r['Acessos']),0);
+  const unsProView = [...new Set(proview.map(r=>r['UN']))].length;
+  const unsMB = [...new Set(mb.map(r=>r['UN']))].length;
+
   document.getElementById('bibKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">-</div><div class="lbl">Uso mensal, Minha Biblioteca</div></div>
-    <div class="kpi-card"><div class="val">-</div><div class="lbl">Uso mensal, ProView</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalProView)}</div><div class="lbl">Total de acessos, ProView</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(unsProView)}</div><div class="lbl">UNs com acesso, ProView</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(totalMB)}</div><div class="lbl">Total de acessos, Minha Biblioteca</div></div>
+    <div class="kpi-card"><div class="val">${fmtInt(unsMB)}</div><div class="lbl">UNs com acesso, Minha Biblioteca</div></div>
   `;
+
+  // ProView por UN
+  const pvByUN = {};
+  proview.forEach(r=>{
+    const un = r['UN'] || 'Sem UN';
+    pvByUN[un] = (pvByUN[un]||0) + num(r['Acessos']);
+  });
+  const pvUNLabels = Object.keys(pvByUN).sort((a,b)=>pvByUN[b]-pvByUN[a]);
+  makeChart('chProViewUN',{ type:'doughnut', data:{ labels:pvUNLabels, datasets:[{ data:pvUNLabels.map(u=>pvByUN[u]), backgroundColor:cfSliceColors(pvUNLabels, PALETTE) }]}, options:{responsive:true,maintainAspectRatio:false}});
+
+  // ProView por Mês
+  const pvByMes = {};
+  proview.forEach(r=>{
+    const mes = r['Mês'] || 'Outro';
+    pvByMes[mes] = (pvByMes[mes]||0) + num(r['Acessos']);
+  });
+  const pvMesLabels = MESES_ORDER.filter(m=>pvByMes[m]).length > 0 ? MESES_ORDER.filter(m=>pvByMes[m]) : Object.keys(pvByMes);
+  const pvMesData = pvMesLabels.map(m=>pvByMes[m]||0);
+  makeChart('chProViewMes',{ type:'line', data:{ labels:pvMesLabels, datasets:[{ label:'Acessos', data:pvMesData, backgroundColor:PALETTE[0], borderColor:PALETTE[0], fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}});
+
+  // MB por UN
+  const mbByUN = {};
+  mb.forEach(r=>{
+    const un = r['UN'] || 'Sem UN';
+    mbByUN[un] = (mbByUN[un]||0) + num(r['Acessos']);
+  });
+  const mbUNLabels = Object.keys(mbByUN).sort((a,b)=>mbByUN[b]-mbByUN[a]);
+  makeChart('chMBUN',{ type:'bar', data:{ labels:mbUNLabels, datasets:[{ label:'Acessos', data:mbUNLabels.map(u=>mbByUN[u]), backgroundColor:PALETTE[1] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
+
+  // MB Top 10 usuários
+  const mbByUser = {};
+  mb.forEach(r=>{
+    const user = r['Nome'] || 'Anônimo';
+    mbByUser[user] = (mbByUser[user]||0) + num(r['Acessos']);
+  });
+  const mbUserEntries = Object.entries(mbByUser).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const mbUserLabels = mbUserEntries.map(e=>e[0]);
+  const mbUserData = mbUserEntries.map(e=>e[1]);
+  makeChart('chMBUsers',{ type:'bar', data:{ labels:mbUserLabels, datasets:[{ label:'Acessos', data:mbUserData, backgroundColor:PALETTE[2] }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}}});
 }
 
 function buildLexterHTML(){
@@ -2824,7 +2964,7 @@ let IM_MONTH_FILTER = 'todos';
 
 function buildImanageHTML(){
   const imAll = getIManage();
-  const meses = [...new Set(imAll.map(r=>monthAbbrPT(r['MãS'])))].filter(Boolean);
+  const meses = [...new Set(imAll.map(r=>monthAbbrPT(rr['Mê�S'])))].filter(Boolean);
   const mesesOrdenados = MES_ABBR_ORDER.filter(m=>meses.includes(m));
   return `
   <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -2858,8 +2998,8 @@ function renderImanageCharts(){
 }
 function renderImanageChartsData(){
   const imAllMeses = getIManage();
-  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIããO']); });
-  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(r['MãS'])===IM_MONTH_FILTER);
+  imAllMeses.forEach(r=>{ if(r._POS===undefined) r._POS = classifyPosicao(r['POSIã�ã�O']); });
+  const imMonth = IM_MONTH_FILTER==='todos' ? imAllMeses : imAllMeses.filter(r=>monthAbbrPT(rr['Mê�S'])===IM_MONTH_FILTER);
 
   const chipsEl = document.getElementById('imFilterChips');
   if(chipsEl){
@@ -2883,7 +3023,7 @@ function renderImanageChartsData(){
   const posRows = cfApply(imMonth, CF_IM, '_POS');
   const posMap = {};
   posRows.forEach(r=>{ posMap[r._POS] = (posMap[r._POS]||0) + num(r['TOTAL']); });
-  const posOrder = ['Estagiário','Jãºnior','Pleno','Sãªnior','Sócio','ADM'];
+  const posOrder = ['Estagiário','Jã�nior','Pleno','Sã�nior','Sócio','ADM'];
   const posLabels = posOrder.filter(p=>posMap[p]!==undefined);
   makeChart('chImPos',{ type:'doughnut', data:{ labels:posLabels, datasets:[{ data:posLabels.map(p=>posMap[p]), backgroundColor:cfSliceColors(posLabels, PALETTE, cfActive(CF_IM,'_POS')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_IM,'_POS',renderImanageChartsData)}});
 
@@ -2925,7 +3065,7 @@ function buildUpMinerHTML(){
 const CF_UP = 'upminer';
 function renderUpMinerCharts(){
   const upAll = getUpMiner();
-  const up = upAll.filter(r=>['BD','CT'].includes((r['ãREA']||'').toString().trim().toUpperCase()));
+  const up = upAll.filter(r=>['BD','CT'].includes((r['ÁREA']||'').toString().trim().toUpperCase()));
   const summary = computeUpMinerSummary();
 
   document.getElementById('upContractBlock').innerHTML = contractLoadingBlockHTML('upminer', summary.pctBD+summary.pctCT, 'Créditos consumidos do contrato');
@@ -2939,26 +3079,26 @@ function renderUpMinerCharts(){
 
   const chipsEl = document.getElementById('upFilterChips');
   if(chipsEl){
-    chipsEl.innerHTML = cfChipsHTML(CF_UP, {'ãREA':'ãrea'});
+    chipsEl.innerHTML = cfChipsHTML(CF_UP, {'AREA':'area'});
     cfBindChips(CF_UP, '#upFilterChips', renderUpMinerCharts);
   }
 
   const areaMap = { BD: summary.totalBD, CT: summary.totalCT };
   const areaLabels = Object.keys(areaMap);
-  makeChart('chUpArea',{ type:'doughnut', data:{ labels:areaLabels, datasets:[{ data:Object.values(areaMap), backgroundColor:cfSliceColors(areaLabels, [PALETTE[0],PALETTE[1]], cfActive(CF_UP,'ãREA')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_UP,'ãREA',renderUpMinerCharts)}});
+  makeChart('chUpArea',{ type:'doughnut', data:{ labels:areaLabels, datasets:[{ data:Object.values(areaMap), backgroundColor:cfSliceColors(areaLabels, [PALETTE[0],PALETTE[1]], cfActive(CF_UP,'AREA')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_UP,'AREA',renderUpMinerCharts)}});
 
-  const activeArea = cfActive(CF_UP,'ãREA');
+  const activeArea = cfActive(CF_UP,'AREA');
   const areas = activeArea ? [activeArea] : ['BD','CT'];
-  const meses = [...new Set(up.map(r=>r['MãS']))];
+  const meses = [...new Set(up.map(r=>r['MÊS']))];
   const mesesOrdenados = MESES_ORDER.map(m=> meses.find(x=>(x||'').toString().toLowerCase()===m)).filter(Boolean);
   const finalMeses = mesesOrdenados.length ? mesesOrdenados : meses;
   makeChart('chUpMes',{ type:'bar', data:{ labels:finalMeses, datasets: areas.map((a)=>({
-      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ãREA']||'').toString().trim().toUpperCase()===a && r['MãS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: a==='BD'?PALETTE[0]:PALETTE[1]
+      label:a, data:finalMeses.map(m=>{ const row = up.find(r=>(r['ÁREA']||'').toString().trim().toUpperCase()===a && r['MÊS']===m); return row?num(row['TOTAL']):0; }), backgroundColor: a==='BD'?PALETTE[0]:PALETTE[1]
     })) }, options:{responsive:true,maintainAspectRatio:false}});
 }
 
 /* =========================================================
-   PãGINA: LAB COINS (Madrona Star)
+   PÁGINA: LAB COINS (Madrona Star)
    ========================================================= */
 function computeLabCoinsSummary(){
   const rows = getLabCoins();
@@ -2969,8 +3109,8 @@ function computeLabCoinsSummary(){
   const idxEnt = colIndex(header,'Entregável');
   const idxCoins = colIndex(header,'LAB COINS');
   const idxOrc = colIndex(header,'Orçamento total');
-  const idxPremioEsp = colIndex(header,'Prãªmio especial');
-  const idxPremioMes = colIndex(header,'Prãªmios mensais');
+  const idxPremioEsp = colIndex(header,'Prã�mio especial');
+  const idxPremioMes = colIndex(header,'Prã�mios mensais');
 
   const items = [];
   for(let i=1;i<rows.length;i++){
@@ -3000,11 +3140,11 @@ function pageLabCoinsHTML(){
   return `<div class="empty-state"><h2>Aba em revisão</h2><p>A planilha de Lab Coins está sendo revista pelo time. Assim que o novo modelo for consolidado, os indicadores voltam a aparecer aqui.</p></div>`;
 }
 function afterRenderLabCoins(){
-  // Conteãºdo zerado propositalmente: a planilha de Lab Coins está sendo revista.
+  // Conteã�do zerado propositalmente: a planilha de Lab Coins está sendo revista.
 }
 
 /* =========================================================
-   PãGINA: AQUISIããES
+   PãGINA: AQUISIã�ã�ES
    ========================================================= */
 function pageAquisicoesHTML(){
   return `
@@ -3048,7 +3188,7 @@ function afterRenderAquisicoes(){
 
   const aq = cfApply(aqAll, CF_AQ); // filtrado por tipo/localidade/UN, para mês, valor e tabela
   const mesMapCount = {}; const mesMapValor = {};
-  aq.forEach(r=>{ const m=(r['MãS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
+  aq.forEach(r=>{ const m=(r['MÊS']||'Não informado').toString().toLowerCase(); mesMapCount[m]=(mesMapCount[m]||0)+1; mesMapValor[m]=(mesMapValor[m]||0)+num(r['VALOR']); });
   const mesLabels = MESES_ORDER.filter(m=>mesMapCount[m]!==undefined);
   makeChart('chAqMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Aquisições', data:mesLabels.map(m=>mesMapCount[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
   makeChart('chAqValor',{ type:'line', data:{ labels:mesLabels, datasets:[{ label:'Valor (R$)', data:mesLabels.map(m=>mesMapValor[m]), borderColor:PALETTE[3], backgroundColor:PALETTE[3]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
@@ -3075,8 +3215,8 @@ function afterRenderAquisicoes(){
   makeChart('chAqUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Aquisições', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[4], cfActive(CF_AQ,'UN/AN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, plugins:{legend:{display:false}}, onClick:cfOnClick(CF_AQ,'UN/AN',afterRenderAquisicoes)}});
 
   document.getElementById('tblAq').innerHTML = `
-    <tr><th>Mãªs</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
-    ${aq.slice(0,80).map(r=>`<tr><td>${r['MãS']||''}</td><td>${r['TãTULO']||''}</td><td>${r['UN/AN']||''}</td><td>${r['TIPO']||''}</td><td>${r['VALOR']?fmtMoney(num(r['VALOR'])):''}</td><td>${r['LOCALIDADE']||''}</td></tr>`).join('')}
+    <tr><th>Mês</th><th>Título</th><th>UN</th><th>Tipo</th><th>Valor</th><th>Localidade</th></tr>
+    ${aq.slice(0,80).map(r=>`<tr><td>${r['MÊS']||''}</td><td>${r['TÍTULO']||''}</td><td>${r['UN/AN']||''}</td><td>${r['TIPO']||''}</td><td>${r['VALOR']?fmtMoney(num(r['VALOR'])):''}</td><td>${r['LOCALIDADE']||''}</td></tr>`).join('')}
   `;
 }
 
