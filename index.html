@@ -1282,9 +1282,13 @@ function renderAll(){
   renderTabsNav();
   const main = document.getElementById('mainContent');
   console.log('[RENDER] mainContent encontrado?', !!main);
+
+  // Abas que NÃO precisam de WORKBOOK
+  const abaSemDados = ['tsgc', 'geral'];
+
   // TS GC não precisa da planilha Excel — tem dados próprios embutidos
-  if(!WORKBOOK && ACTIVE_TAB !== 'tsgc'){
-    console.log('[RENDER] WORKBOOK não carregado, mostrando empty state');
+  if(!WORKBOOK && !abaSemDados.includes(ACTIVE_TAB)){
+    console.log('[RENDER] WORKBOOK não carregado para aba:', ACTIVE_TAB);
     main.innerHTML = emptyState('Aguardando o carregamento automático da planilha de dados.');
     return;
   }
