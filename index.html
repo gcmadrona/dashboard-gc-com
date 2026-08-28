@@ -1519,6 +1519,9 @@ const TSGC_DATA = {"months": ["Agosto"], "people": ["Amanda", "Andrezza", "Clari
 })();
         </script>
       `;
+      break;
+    }
+    case 'ts-gc-old': {
       // Inicializar TS GC inline - com múltiplas tentativas
       const initTSGC = () => {
         const selectMes = document.getElementById('tsgc-mes');
@@ -3612,7 +3615,11 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function() {
       const subId = this.dataset.comSub;
       // Remove active de todos os botões
-      comSubButtons.forEach(b => b.style.background = ''; b.style.color = ''; b.style.borderColor = '');
+      comSubButtons.forEach(b => {
+        b.style.background = '';
+        b.style.color = '';
+        b.style.borderColor = '';
+      });
       // Ativa o botão clicado
       this.style.background = 'var(--azul)';
       this.style.color = '#fff';
