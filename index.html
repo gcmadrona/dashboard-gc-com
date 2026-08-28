@@ -1306,6 +1306,7 @@ function renderAll(){
     case 'tsgc': {
       main.innerHTML = `
         <div id="ts-gc-tab">
+
           <div class="tsgc-header">
             <div>
               <h1>Atividades de GC</h1>
@@ -1316,40 +1317,198 @@ function renderAll(){
               <select id="tsgc-mes"></select>
             </div>
           </div>
+
           <div class="tsgc-destaque" id="tsgc-destaque"></div>
+
           <div class="tsgc-kpis" id="tsgc-kpis"></div>
+
           <div class="tsgc-secao">
             <h2>Visão Geral da Equipe</h2>
             <p class="tsgc-sub">Percentual do tempo total da equipe investido em cada categoria no mês selecionado.</p>
-            <div id="chart-equipe-wrap" style="position:relative;height:400px;">
+            <div id="chart-equipe-wrap">
               <canvas id="chart-equipe"></canvas>
             </div>
-            <div class="tsgc-dica">Clique em uma barra para destacar a categoria em todos os gráficos individuais. Clique novamente para limpar o destaque.</div>
           </div>
-          <div class="tsgc-secao">
-            <h2>Investimento de Tempo por Pessoa</h2>
-            <p class="tsgc-sub">Percentual do tempo de cada pessoa dedicado a cada categoria no mês selecionado.</p>
-            <div class="tsgc-pessoas-grid" id="tsgc-pessoas-grid"></div>
-          </div>
+
           <details class="tsgc-glossario">
             <summary>O que entra em cada categoria</summary>
             <div class="tsgc-glossario-grid">
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#00b2ff"></span><div><strong>Monitoramento Legislativo e Jurisprudencial</strong><p>Acompanhamento legislativo, análise do DOU e do legislativo, Madrona Lex e Juris.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#fc745c"></span><div><strong>Curadoria e Distribuição de Conteúdo</strong><p>Curadoria de notícias, envio de clippings, Mailchimp, Madrona Scout, GC Indica, curadoria de jurisprudência.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#d0ffc9"></span><div><strong>Atendimento e Relacionamento Interno</strong><p>Ligação com cliente interno, atendimento para identificar demandas, atendimentos de livros, entre outros.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#444444"></span><div><strong>Gestão Administrativa e Financeira</strong><p>Financeiro, gestão de contratos, planejamento estratégico e orçamento, Excel Dashboard, lançamento de pagamentos, atualização de planilha orçamentária, provisão de gastos.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b2bab9"></span><div><strong>Academia Madrona</strong><p>Tudo relacionado ao projeto Academia Madrona, incluindo treinamentos de Lexter, Portdata e Imanage refresh.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#fff6d3"></span><div><strong>Madrona Research</strong><p>Reunião Madrona Research e tudo relacionado ao projeto.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#0080b8"></span><div><strong>Pesquisa e Conhecimento</strong><p>Pesquisa, compra de materiais (livros e revistas), atendimento de sócios para eventos, tratamento de livros da biblioteca.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b55442"></span><div><strong>Inovação e Eficiência</strong><p>Inovação, projetos de melhoria de processos, upMiner, iManage, Turivius, Saga, Inspira, Registradores, testes de ferramentas, prospecção e relacionamento com fornecedores, tratamento de dados.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#96b891"></span><div><strong>Suporte TI</strong><p>Suporte a demandas de tecnologia da equipe.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#313131"></span><div><strong>Demandas operacionais</strong><p>Revisão TS. Também reúne o que era lançado como Administrativo na planilha original.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#808685"></span><div><strong>Madrona Lab Coins</strong><p>Tudo relacionado ao projeto Madrona Lab Coins.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#b8b198"></span><div><strong>Gestão de Equipes</strong><p>Reuniões one a one, alinhamentos, conversas sobre projetos, apoio na execução de projetos.</p></div></div>
-              <div class="tsgc-glossario-item"><span class="tsgc-dot" style="background:#59cdff"></span><div><strong>Gestão de Recortes</strong><p>Recortes, planilha de recortes, controle de publicações.</p></div></div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#00b2ff"></span>
+                <div><strong>Monitoramento Legislativo e Jurisprudencial</strong><p>Acompanhamento legislativo, análise do DOU e do legislativo, Madrona Lex e Juris.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#fc745c"></span>
+                <div><strong>Curadoria e Distribuição de Conteúdo</strong><p>Curadoria de notícias, envio de clippings, Mailchimp, Madrona Scout, GC Indica, curadoria de jurisprudência.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#d0ffc9"></span>
+                <div><strong>Atendimento e Relacionamento Interno</strong><p>Ligação com cliente interno, atendimento para identificar demandas, atendimentos de livros, entre outros.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#444444"></span>
+                <div><strong>Gestão Administrativa e Financeira</strong><p>Financeiro, gestão de contratos, planejamento estratégico e orçamento, Excel Dashboard, lançamento de pagamentos, atualização de planilha orçamentária, provisão de gastos.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#b2bab9"></span>
+                <div><strong>Academia Madrona</strong><p>Tudo relacionado ao projeto Academia Madrona, incluindo treinamentos de Lexter, Portdata e Imanage refresh.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#fff6d3"></span>
+                <div><strong>Madrona Research</strong><p>Reunião Madrona Research e tudo relacionado ao projeto.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#0080b8"></span>
+                <div><strong>Pesquisa e Conhecimento</strong><p>Pesquisa, compra de materiais (livros e revistas), atendimento de sócios para eventos, tratamento de livros da biblioteca.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#b55442"></span>
+                <div><strong>Inovação e Eficiência</strong><p>Inovação, projetos de melhoria de processos, upMiner, iManage, Turivius, Saga, Inspira, Registradores, testes de ferramentas, prospecção e relacionamento com fornecedores, tratamento de dados.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#96b891"></span>
+                <div><strong>Suporte TI</strong><p>Suporte a demandas de tecnologia da equipe.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#313131"></span>
+                <div><strong>Demandas operacionais</strong><p>Revisão TS. Também reúne o que era lançado como Administrativo na planilha original.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#808685"></span>
+                <div><strong>Madrona Lab Coins</strong><p>Tudo relacionado ao projeto Madrona Lab Coins.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#b8b198"></span>
+                <div><strong>Gestão de Equipes</strong><p>Reuniões one a one, alinhamentos, conversas sobre projetos, apoio na execução de projetos.</p></div>
+              </div>
+              <div class="tsgc-glossario-item">
+                <span class="tsgc-dot" style="background:#59cdff"></span>
+                <div><strong>Gestão de Recortes</strong><p>Recortes, planilha de recortes, controle de publicações.</p></div>
+              </div>
             </div>
           </details>
+
         </div>
+
+        <script>
+const TSGC_DATA = {"months": ["Agosto"], "people": ["Amanda", "Andrezza", "Clarissa", "Deborah", "Filipi", "Raquel"], "categories": ["Monitoramento Legislativo e Jurisprudencial", "Curadoria e Distribuição de Conteúdo", "Atendimento e Relacionamento Interno", "Gestão Administrativa e Financeira", "Academia Madrona", "Madrona Research", "Pesquisa e Conhecimento", "Inovação e Eficiência", "Suporte TI", "Demandas operacionais", "Madrona Lab Coins", "Gestão de Equipes", "Gestão de Recortes"], "palette": {"Monitoramento Legislativo e Jurisprudencial": "#00b2ff", "Curadoria e Distribuição de Conteúdo": "#fc745c", "Atendimento e Relacionamento Interno": "#d0ffc9", "Gestão Administrativa e Financeira": "#444444", "Academia Madrona": "#b2bab9", "Madrona Research": "#fff6d3", "Pesquisa e Conhecimento": "#0080b8", "Inovação e Eficiência": "#b55442", "Suporte TI": "#96b891", "Demandas operacionais": "#313131", "Madrona Lab Coins": "#808685", "Gestão de Equipes": "#b8b198", "Gestão de Recortes": "#59cdff"}, "brand": {"azul": "#00b2ff", "grafite": "#444444", "cinza": "#b2bab9", "vermelho": "#fc745c", "verde": "#d0ffc9", "amarelo": "#fff6d3"}, "byMonth": {"Agosto": {"equipe": {"total_horas": 468.97, "horas": {"Monitoramento Legislativo e Jurisprudencial": 8.0, "Curadoria e Distribuição de Conteúdo": 99.95, "Atendimento e Relacionamento Interno": 28.0, "Gestão Administrativa e Financeira": 23.08, "Academia Madrona": 59.92, "Madrona Research": 0.75, "Pesquisa e Conhecimento": 2.68, "Inovação e Eficiência": 166.5, "Suporte TI": 4.67, "Demandas operacionais": 17.83, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 44.25, "Gestão de Recortes": 13.33}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 1.71, "Curadoria e Distribuição de Conteúdo": 21.31, "Atendimento e Relacionamento Interno": 5.97, "Gestão Administrativa e Financeira": 4.92, "Academia Madrona": 12.78, "Madrona Research": 0.16, "Pesquisa e Conhecimento": 0.57, "Inovação e Eficiência": 35.5, "Suporte TI": 1.0, "Demandas operacionais": 3.8, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 9.44, "Gestão de Recortes": 2.84}}, "pessoas": {"Amanda": {"total_horas": 68.42, "horas": {"Monitoramento Legislativo e Jurisprudencial": 1.33, "Curadoria e Distribuição de Conteúdo": 63.58, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 0.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 0.0, "Suporte TI": 0.0, "Demandas operacionais": 3.5, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 1.95, "Curadoria e Distribuição de Conteúdo": 92.94, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 0.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 0.0, "Suporte TI": 0.0, "Demandas operacionais": 5.12, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.0, "Gestão de Recortes": 0.0}}, "Andrezza": {"total_horas": 30.58, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 8.25, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 1.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 5.58, "Suporte TI": 0.67, "Demandas operacionais": 1.58, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.17, "Gestão de Recortes": 13.33}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 26.98, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 3.27, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 18.26, "Suporte TI": 2.18, "Demandas operacionais": 5.18, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 0.55, "Gestão de Recortes": 43.6}}, "Clarissa": {"total_horas": 132.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 11.0, "Academia Madrona": 21.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 64.0, "Suporte TI": 0.0, "Demandas operacionais": 11.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 25.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 8.33, "Academia Madrona": 15.91, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 48.48, "Suporte TI": 0.0, "Demandas operacionais": 8.33, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 18.94, "Gestão de Recortes": 0.0}}, "Deborah": {"total_horas": 52.97, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 19.78, "Atendimento e Relacionamento Interno": 4.0, "Gestão Administrativa e Financeira": 12.08, "Academia Madrona": 5.75, "Madrona Research": 0.75, "Pesquisa e Conhecimento": 0.52, "Inovação e Eficiência": 3.25, "Suporte TI": 4.0, "Demandas operacionais": 1.75, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 1.08, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 37.35, "Atendimento e Relacionamento Interno": 7.55, "Gestão Administrativa e Financeira": 22.81, "Academia Madrona": 10.86, "Madrona Research": 1.42, "Pesquisa e Conhecimento": 0.98, "Inovação e Eficiência": 6.14, "Suporte TI": 7.55, "Demandas operacionais": 3.3, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 2.05, "Gestão de Recortes": 0.0}}, "Filipi": {"total_horas": 61.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 6.67, "Curadoria e Distribuição de Conteúdo": 8.33, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 4.17, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 2.17, "Inovação e Eficiência": 37.67, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 2.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 10.93, "Curadoria e Distribuição de Conteúdo": 13.66, "Atendimento e Relacionamento Interno": 0.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 6.83, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 3.55, "Inovação e Eficiência": 61.75, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 3.28, "Gestão de Recortes": 0.0}}, "Raquel": {"total_horas": 124.0, "horas": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 24.0, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 28.0, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 56.0, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 16.0, "Gestão de Recortes": 0.0}, "percentuais": {"Monitoramento Legislativo e Jurisprudencial": 0.0, "Curadoria e Distribuição de Conteúdo": 0.0, "Atendimento e Relacionamento Interno": 19.35, "Gestão Administrativa e Financeira": 0.0, "Academia Madrona": 22.58, "Madrona Research": 0.0, "Pesquisa e Conhecimento": 0.0, "Inovação e Eficiência": 45.16, "Suporte TI": 0.0, "Demandas operacionais": 0.0, "Madrona Lab Coins": 0.0, "Gestão de Equipes": 12.9, "Gestão de Recortes": 0.0}}}}}};
+
+(function () {
+  const categorias = TSGC_DATA.categories;
+  const palette = TSGC_DATA.categories.map(c => TSGC_DATA.palette[c]);
+  const grafite = TSGC_DATA.brand.grafite;
+
+  const selectMes = document.getElementById('tsgc-mes');
+  TSGC_DATA.months.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m;
+    opt.textContent = m;
+    selectMes.appendChild(opt);
+  });
+
+  let chartEquipe = null;
+
+  function renderDestaque(mesData) {
+    const wrap = document.getElementById('tsgc-destaque');
+    const categoriaTop = categorias.reduce((a, b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+    const pct = mesData.equipe.percentuais[categoriaTop];
+    wrap.innerHTML = \`Maior investimento de tempo da equipe em \${selectMes.value}: <strong>\${categoriaTop}</strong>, com \${pct}% do tempo total.\`;
+  }
+
+  function renderKpis(mesData) {
+    const wrap = document.getElementById('tsgc-kpis');
+    wrap.innerHTML = '';
+    const pessoasCount = Object.keys(mesData.pessoas).length;
+    const categoriaTop = categorias.reduce((a, b) => mesData.equipe.percentuais[b] > mesData.equipe.percentuais[a] ? b : a);
+    const categoriasAtivas = categorias.filter(c => mesData.equipe.percentuais[c] > 0);
+    const categoriaMenor = categoriasAtivas.reduce((a, b) => mesData.equipe.percentuais[b] < mesData.equipe.percentuais[a] ? b : a);
+    const kpis = [
+      { valor: pessoasCount, rotulo: 'Pessoas na equipe' },
+      { valor: mesData.equipe.percentuais[categoriaTop] + '%', rotulo: 'Maior investimento: ' + categoriaTop },
+      { valor: mesData.equipe.percentuais[categoriaMenor] + '%', rotulo: 'Menor investimento: ' + categoriaMenor },
+    ];
+    kpis.forEach(k => {
+      const div = document.createElement('div');
+      div.className = 'tsgc-kpi';
+      div.innerHTML = \`<div class="valor">\${k.valor}</div><div class="rotulo">\${k.rotulo}</div>\`;
+      wrap.appendChild(div);
+    });
+  }
+
+  function renderChartEquipe(mesData) {
+    const ctx = document.getElementById('chart-equipe').getContext('2d');
+
+    // Mantém apenas as categorias com tempo investido pela equipe, maior para menor.
+    const catsUsadas = categorias
+      .filter(c => mesData.equipe.horas[c] > 0)
+      .sort((a, b) => mesData.equipe.percentuais[b] - mesData.equipe.percentuais[a]);
+
+    const percentuais = catsUsadas.map(c => mesData.equipe.percentuais[c]);
+    const labels = catsUsadas;
+
+    if (chartEquipe) chartEquipe.destroy();
+    chartEquipe = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '% do tempo da equipe',
+          data: percentuais,
+          backgroundColor: catsUsadas.map(c => TSGC_DATA.palette[c]),
+          borderColor: grafite,
+          borderWidth: 1.5,
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: grafite,
+            callbacks: {
+              label: (item) => \`\${item.formattedValue}% do tempo da equipe\`
+            }
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'end',
+            color: grafite,
+            font: { size: 11, weight: '600' },
+            formatter: (value) => value + '%'
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+            max: 100,
+            ticks: { callback: v => v + '%' },
+            grid: { color: '#eceeee' }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: grafite, font: { size: 12 } }
+          }
+        }
+      }
+    });
+  }
+
+  function renderTudo() {
+    const mes = selectMes.value;
+    const mesData = TSGC_DATA.byMonth[mes];
+    renderDestaque(mesData);
+    renderKpis(mesData);
+    renderChartEquipe(mesData);
+  }
+
+  selectMes.addEventListener('change', renderTudo);
+  selectMes.value = TSGC_DATA.months[0];
+  renderTudo();
+})();
+        </script>`;
       `;
       // Inicializar TS GC inline - com múltiplas tentativas
       const initTSGC = () => {
