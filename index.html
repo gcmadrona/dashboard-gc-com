@@ -1517,7 +1517,6 @@ const TSGC_DATA = {"months": ["Agosto"], "people": ["Amanda", "Andrezza", "Clari
   selectMes.value = TSGC_DATA.months[0];
   renderTudo();
 })();
-        </script>
       `;
       break;
     }
@@ -1978,6 +1977,7 @@ function computeUpMinerSummary(){
 let GC_MONTH_FILTER = 'todos';
 
 function buildGCOverview(){
+  if(!WORKBOOK) return '';
   const academia = getAcademia();
   const grupos = getGruposEstudo();
   const pesquisas = getPesquisas();
@@ -3840,16 +3840,7 @@ setTimeout(function() {
 
 
 // ===== FIX: FORÇA RENDERIZAÇÃO DOS GRÁFICOS DE ACADEMIA E TREINAMENTOS =====
-setTimeout(function() {
-  if(ACTIVE_TAB === 'academiamadrona' && typeof afterRenderAcademiaMadrona === 'function') {
-    try {
-      afterRenderAcademiaMadrona();
-      console.log('[Academia] Gráficos renderizados com sucesso');
-    } catch(e) {
-      console.error('[Academia] Erro ao renderizar gráficos:', e.message);
-    }
-  }
-}, 1000);
+// (Movido para depois da inicialização)
 
 
 
@@ -3857,8 +3848,19 @@ setTimeout(function() {
 const origRenderAll = window.renderAll || (() => {});
 window.renderAll = function() {
   origRenderAll.apply(this, arguments);
-  
-  if(ACTIVE_TAB === 'academia') {
+
+  if(typeof ACTIVE_TAB !== 'undefined' && ACTIVE_TAB === 'academiamadrona' && typeof afterRenderAcademiaMadrona === 'function') {
+    setTimeout(function() {
+      try {
+        afterRenderAcademiaMadrona();
+        console.log('[Academia] Gráficos renderizados com sucesso');
+      } catch(e) {
+        console.error('[Academia] Erro ao renderizar gráficos:', e.message);
+      }
+    }, 200);
+  }
+
+  if(typeof ACTIVE_TAB !== 'undefined' && ACTIVE_TAB === 'academia') {
     setTimeout(function() {
       try {
         console.log('[DEBUG] Tentando renderizar Grupos...');
