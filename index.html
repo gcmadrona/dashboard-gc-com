@@ -1500,11 +1500,11 @@ function getPublicacoes(){
   return DATA.pub;
 }
 function getRedesSociais(){
-  if(DATA.redes) return DATA.redes;
+  if(DATA.redesSociais) return DATA.redesSociais;
   const ws = findSheet('Redes Sociais');
   const rows = sheetToRows(ws);
-  DATA.redes = rowsToObjects(rows);
-  return DATA.redes;
+  DATA.redesSociais = rowsToObjects(rows);
+  return DATA.redesSociais;
 }
 function getMailling(){
   if(DATA.mailling) return DATA.mailling;
@@ -1853,6 +1853,246 @@ function afterRenderTSGC(){
   if(TSGC_DATA.months.length > 0){
     selectMes.value = TSGC_DATA.months[0];
     renderTudo();
+  }
+}
+function getPublicacoesData(){
+  if(DATA.publicacoes) return DATA.publicacoes;
+  if(!WORKBOOK) return null;
+
+  const data = {
+    contribuicoes_jornalb: [],
+    imprensa: [],
+    controle: [],
+    newsletter_linkedin: [],
+    capital_aberto: [],
+    posts_patrocinados: [],
+    radar_tributario: [],
+    resumo: {}
+  };
+
+  const sheetNames = ['Contribuições jornal B&F', 'Cópia Atividades Imprensa', 'Controle de Publicações'];
+  const dataKeys = ['contribuicoes_jornalb', 'imprensa', 'controle'];
+
+  sheetNames.forEach((name, idx) => {
+    const ws = findSheet(name);
+    if(!ws) return;
+    const rows = sheetToRows(ws);
+    if(!rows.length) return;
+
+    const headers = rows[0] || [];
+    rows.slice(1).forEach(row => {
+      if(!row || !row[0]) return;
+      const entry = {};
+      headers.forEach((h, i) => {
+        const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+        const val = row[i];
+        if(typeof val === 'number') entry[key] = val;
+        else entry[key] = val ? val.toString().trim() : null;
+      });
+      if(Object.keys(entry).length > 0) data[dataKeys[idx]].push(entry);
+    });
+  });
+
+  const nlws = findSheet('Newsletter LinkedIn');
+  if(nlws) {
+    const rows = sheetToRows(nlws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.newsletter_linkedin.push(entry);
+      });
+    }
+  }
+
+  const caws = findSheet('Capital Aberto');
+  if(caws) {
+    const rows = sheetToRows(caws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.capital_aberto.push(entry);
+      });
+    }
+  }
+
+  const ppws = findSheet('Posts Patrocinados no LinkedIn');
+  if(ppws) {
+    const rows = sheetToRows(ppws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.posts_patrocinados.push(entry);
+      });
+    }
+  }
+
+  const rtws = findSheet('Radar Tributário');
+  if(rtws) {
+    const rows = sheetToRows(rtws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.radar_tributario.push(entry);
+      });
+    }
+  }
+
+  data.resumo = {
+    total_contribuicoes: data.contribuicoes_jornalb.length,
+    total_imprensa: data.imprensa.length,
+    total_controle: data.controle.length,
+    taxa_abertura_media: calcMediaMetrica(data.contribuicoes_jornalb, 'taxa_abertura'),
+    newsletter_registros: data.newsletter_linkedin.length,
+    capital_aberto_registros: data.capital_aberto.length,
+    posts_patrocinados: data.posts_patrocinados.length
+  };
+
+  DATA.publicacoes = data;
+  return DATA.publicacoes;
+}
+function getRedesData(){
+  if(DATA.redes) return DATA.redes;
+  if(!WORKBOOK) return null;
+
+  const data = {
+    redes_sociais: [],
+    mailling: [],
+    embaixadores: {},
+    resumo: {}
+  };
+
+  const rsws = findSheet('Redes Sociais');
+  if(rsws) {
+    const rows = sheetToRows(rsws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.redes_sociais.push(entry);
+      });
+    }
+  }
+
+  const mws = findSheet('Mailing');
+  if(mws) {
+    const rows = sheetToRows(mws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+        if(Object.keys(entry).length > 0) data.mailling.push(entry);
+      });
+    }
+  }
+
+  const emws = findSheet('Embaixadores');
+  if(emws) {
+    const rows = sheetToRows(emws);
+    if(rows.length) {
+      const headers = rows[0] || [];
+      const grupos = {};
+
+      rows.slice(1).forEach(row => {
+        if(!row) return;
+        const entry = {};
+        headers.forEach((h, i) => {
+          const key = (h || '').toString().trim().toLowerCase().replace(/\s+/g, '_');
+          const val = row[i];
+          entry[key] = typeof val === 'number' ? val : (val ? val.toString().trim() : null);
+        });
+
+        if(entry.grupo && entry.nome){
+          if(!grupos[entry.grupo]) grupos[entry.grupo] = [];
+          grupos[entry.grupo].push(entry);
+        }
+      });
+
+      data.embaixadores = grupos;
+    }
+  }
+
+  data.resumo = {
+    total_redes: data.redes_sociais.length,
+    total_areas_mailing: data.mailling.length,
+    embaixadores_grupos: Object.keys(data.embaixadores).length,
+    embaixadores_total: Object.values(data.embaixadores).reduce((s, g) => s + g.length, 0)
+  };
+
+  DATA.redes = data;
+  return DATA.redes;
+}
+function calcMediaMetrica(array, campo){
+  if(!array || !array.length) return 0;
+  const valores = array.filter(x => x[campo] && typeof x[campo] === 'number').map(x => x[campo]);
+  if(!valores.length) return 0;
+  return parseFloat((valores.reduce((a,b) => a+b, 0) / valores.length).toFixed(2));
+}
+function afterRenderPublicacoes(){
+  const PUB_DATA = getPublicacoesData();
+  if(!PUB_DATA) return;
+
+  const pubKpis = document.getElementById('pubKpis');
+  if(pubKpis){
+    pubKpis.innerHTML = `
+      <div class="kpi-card"><div class="val">${fmtInt(PUB_DATA.resumo.total_contribuicoes)}</div><div class="lbl">Contribuições B&F</div></div>
+      <div class="kpi-card"><div class="val">${fmtInt(PUB_DATA.resumo.total_imprensa)}</div><div class="lbl">Publicações Imprensa</div></div>
+      <div class="kpi-card"><div class="val">${PUB_DATA.resumo.taxa_abertura_media.toFixed(1)}%</div><div class="lbl">Taxa Abertura Média</div></div>
+      <div class="kpi-card"><div class="val">${fmtInt(PUB_DATA.resumo.newsletter_registros)}</div><div class="lbl">Newsletter LinkedIn</div></div>
+    `;
+  }
+}
+function afterRenderRedes(){
+  const REDES_DATA = getRedesData();
+  if(!REDES_DATA) return;
+
+  const redesKpis = document.getElementById('redesKpis');
+  if(redesKpis){
+    redesKpis.innerHTML = `
+      <div class="kpi-card"><div class="val">${fmtInt(REDES_DATA.resumo.total_redes)}</div><div class="lbl">Registros Redes Sociais</div></div>
+      <div class="kpi-card"><div class="val">${fmtInt(REDES_DATA.resumo.total_areas_mailing)}</div><div class="lbl">Áreas Mailing</div></div>
+      <div class="kpi-card"><div class="val">${fmtInt(REDES_DATA.resumo.embaixadores_total)}</div><div class="lbl">Embaixadores</div></div>
+      <div class="kpi-card"><div class="val">${fmtInt(REDES_DATA.resumo.embaixadores_grupos)}</div><div class="lbl">Grupos de Embaixadores</div></div>
+    `;
   }
 }
 function computeDocuCertisignSummary(){
@@ -2221,68 +2461,6 @@ function pagePublicacoesHTML(){
   </div>
   `;
 }
-const CF_PUB = 'publicacoes';
-function afterRenderPublicacoes(){
-  const pubAll = getPublicacoes();
-  const redes = getRedesSociais();
-  const totalViews = pubAll.reduce((s,r)=>s+num(r['Visualizações']),0);
-  document.getElementById('pubKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(pubAll.length)}</div><div class="lbl">Total de publicações</div></div>
-    <div class="kpi-card"><div class="val">${fmtInt(totalViews)}</div><div class="lbl">Visualizações totais (LinkedIn)</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'UN',()=>1)).length}</div><div class="lbl">Unidades de Negócio ativas</div></div>
-    <div class="kpi-card"><div class="val">${Object.keys(groupSum(pubAll,'Classificação',()=>1)).length}</div><div class="lbl">Formatos de conteã�do</div></div>
-    ${monthValueCard(redes,'Site - Visualizações','Visualização Site')}
-    ${monthGrowthCard(redes,'Site - Visualizações','Crescimento Site')}
-  `;
-
-  const chipsEl = document.getElementById('pubFilterChips');
-  if(chipsEl){
-    chipsEl.innerHTML = cfChipsHTML(CF_PUB, {'Classificação':'Classificação','UN':'UN'});
-    cfBindChips(CF_PUB, '#pubFilterChips', afterRenderPublicacoes);
-  }
-
-  const classRows = cfApply(pubAll, CF_PUB, 'Classificação');
-  const classMap = groupSum(classRows,'Classificação',()=>1);
-  const classLabels = Object.keys(classMap);
-  makeChart('chPubClass',{ type:'pie', data:{ labels:classLabels, datasets:[{ data:Object.values(classMap), backgroundColor:cfSliceColors(classLabels, PALETTE, cfActive(CF_PUB,'Classificação')) }]}, options:{responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'Classificação',afterRenderPublicacoes)}});
-
-  const pub = cfApply(pubAll, CF_PUB); // pub filtrado por classificação/UN, para mês e tabela
-  const mesMap = {};
-  pub.forEach(r=>{
-    const d = excelDateToJS(r['Data']);
-    const k = d ? monthKeyFromDate(d) : null;
-    if(k) mesMap[k]=(mesMap[k]||0)+1;
-  });
-  const mesLabels = MESES_ORDER.filter(m=>mesMap[m]!==undefined);
-  makeChart('chPubMes',{ type:'bar', data:{ labels:mesLabels, datasets:[{ label:'Publicações', data:mesLabels.map(m=>mesMap[m]), backgroundColor:PALETTE[0] }]}, options:{responsive:true,maintainAspectRatio:false}});
-
-  const unRows = cfApply(pubAll, CF_PUB, 'UN');
-  const unMap = groupSum(unRows,'UN',()=>1);
-  const unEntries = sortedEntries(unMap);
-  makeChart('chPubUn',{ type:'bar', data:{ labels:unEntries.map(e=>e[0]), datasets:[{ label:'Publicações', data:unEntries.map(e=>e[1]), backgroundColor:cfBarColors(unEntries.map(e=>e[0]), PALETTE[2], cfActive(CF_PUB,'UN')) }]}, options:{indexAxis:'y',responsive:true,maintainAspectRatio:false, onClick:cfOnClick(CF_PUB,'UN',afterRenderPublicacoes)}});
-
-  const labelsRedes = redes.map(r=> r['MÊS'] instanceof Date ? r['MÊS'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['MÊS']);
-  makeChart('chRSite',{ type:'bar', data:{ labels:labelsRedes, datasets:[
-      { label:'Visualizações', data:redes.map(r=>num(r['Site - Visualizações'])), backgroundColor:PALETTE[0] },
-      { label:'Usuários', data:redes.map(r=>num(r['Site - Usuários'])), backgroundColor:PALETTE[2] }
-    ]}, options:{responsive:true,maintainAspectRatio:false}});
-
-  const sorted = [...pub].sort((a,b)=>{
-    const da = excelDateToJS(a['Data']); const db = excelDateToJS(b['Data']);
-    return (db?db.getTime():0) - (da?da.getTime():0);
-  }).slice(0,50);
-  document.getElementById('tblPub').innerHTML = `
-    <tr><th>Data</th><th>Título</th><th>Classificação</th><th>UN</th></tr>
-    ${sorted.map(r=>{
-      const d = excelDateToJS(r['Data']);
-      return `<tr><td>${d?d.toLocaleDateString('pt-BR'):''}</td><td>${r['Título + Link']||''}</td><td>${r['Classificação']||''}</td><td>${r['UN']||''}</td></tr>`;
-    }).join('')}
-  `;
-}
-
-/* =========================================================
-   PãGINA: REDES & MAILING
-   ========================================================= */
 function pageRedesHTML(){
   return `
   <div class="kpi-grid" id="redesKpis"></div>
@@ -2317,30 +2495,6 @@ function monthValueCard(rows, field, label){
   if(!latest) return `<div class="kpi-card"><div class="val">-</div><div class="lbl">${label}</div></div>`;
   const mesNome = monthNamePT(excelDateToJS(latest.rowr['Mê�s']));
   return `<div class="kpi-card"><div class="val">${fmtInt(num(latest.row[field]))}</div><div class="lbl">${label}: ${mesNome}</div></div>`;
-}
-
-function afterRenderRedes(){
-  const redes = getRedesSociais();
-  const mail = getMailling();
-  const liLatest = latestValid(redes,'LinkedIn - Seguidores');
-  const igLatest = latestValid(redes,'Insta - Seguidores');
-
-  document.getElementById('redesKpis').innerHTML = `
-    <div class="kpi-card"><div class="val">${fmtInt(liLatest?num(liLatest.row['LinkedIn - Seguidores']):0)}</div><div class="lbl">Seguidores LinkedIn (atual)</div></div>
-    <div class="kpi-card"><div class="val">${fmtInt(igLatest?num(igLatest.row['Insta - Seguidores']):0)}</div><div class="lbl">Seguidores Instagram (atual)</div></div>
-    ${monthGrowthCard(redes,'LinkedIn - Seguidores','Crescimento LinkedIn')}
-    ${monthGrowthCard(redes,'Insta - Seguidores','Crescimento Instagram')}
-  `;
-  const labels = redes.map(r=> r['MÊS'] instanceof Date ? r['MÊS'].toLocaleDateString('pt-BR',{month:'short',year:'2-digit'}) : r['MÊS']);
-  makeChart('chRLinkedin',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['LinkedIn - Seguidores'])), borderColor:PALETTE[0], backgroundColor:PALETTE[0]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
-  makeChart('chRInsta',{ type:'line', data:{ labels, datasets:[{ label:'Seguidores', data:redes.map(r=>num(r['Insta - Seguidores'])), borderColor:PALETTE[1], backgroundColor:PALETTE[1]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
-  makeChart('chRIntranet',{ type:'line', data:{ labels, datasets:[{ label:'Visualizações Intranet', data:redes.map(r=>num(r['Intranet - Visualizações da página'])), borderColor:PALETTE[5], backgroundColor:PALETTE[5]+'33', fill:true, tension:0.3 }]}, options:{responsive:true,maintainAspectRatio:false}});
-
-  const monthCols = mail.length ? Object.keys(mail[0]).filter(k=>k!=='Area') : [];
-  document.getElementById('tblMail').innerHTML = `
-    <tr><th>area</th>${monthCols.map(m=>`<th>${m}</th>`).join('')}</tr>
-    ${mail.map(r=>`<tr><td>${r['Area']}</td>${monthCols.map(m=>`<td>${r[m]!==null&&r[m]!==undefined?fmtInt(num(r[m])):''}</td>`).join('')}</tr>`).join('')}
-  `;
 }
 
 /* =========================================================
